@@ -7,7 +7,7 @@ public class Specialty extends Entity {
     private String specialityName;
     private int recruitmentPlan;
     private int facultyId;
-    private ArrayList<Integer> subjectList=new ArrayList<>(3);
+    private ArrayList<Subject> subjectList=new ArrayList<>(3);
 
     public int getFacultyId() {
         return facultyId;

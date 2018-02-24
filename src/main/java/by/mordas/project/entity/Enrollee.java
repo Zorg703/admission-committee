@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Enrollee extends Entity {
+    private String login;
+    private String password;
     private int enrolleeId;
     private String firstName;
     private String lastName;
@@ -13,6 +15,31 @@ public class Enrollee extends Entity {
     private int specialityId;
     private Date birthday;
     private Map<Integer,Integer> subjectList=new HashMap<>(3);
+    private boolean isRegister;
+
+    public boolean isRegister() {
+        return isRegister;
+    }
+
+    public void setRegister(boolean register) {
+        isRegister = register;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public int getEnrolleeId() {
         return enrolleeId;
