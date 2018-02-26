@@ -1,13 +1,27 @@
 package by.mordas.project.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Specialty extends Entity {
+public class Speciality extends Entity {
     private int specialityId;
     private String specialityName;
     private int recruitmentPlan;
     private int facultyId;
-    private ArrayList<Subject> subjectList=new ArrayList<>(3);
+    private List<Subject> subjects;
+
+
+    public Speciality(){
+        subjects=new ArrayList<>();
+    }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
+    }
 
     public int getFacultyId() {
         return facultyId;

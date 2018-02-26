@@ -11,10 +11,7 @@
   <title>$Title$</title>
 </head>
 <body>
-<form action="Input">
-  <input type="text" name="insert">
-  <input type="submit" value="Execute">
-</form>
+
 </body>
 
 </html>

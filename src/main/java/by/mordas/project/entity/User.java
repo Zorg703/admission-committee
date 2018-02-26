@@ -4,25 +4,36 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Enrollee extends Entity {
+public class User extends Entity {
     private String login;
     private String password;
-    private int enrolleeId;
+    private int userId;
     private String firstName;
     private String lastName;
-    private String patronymic;
     private int certificateMark;
     private int specialityId;
     private Date birthday;
-    private Map<Integer,Integer> subjectList=new HashMap<>(3);
-    private boolean isRegister;
+    private Map<Subject,Integer> subjectMark;
+    private String email;
 
-    public boolean isRegister() {
-        return isRegister;
+    public User() {
+        subjectMark=new HashMap<>(3);
     }
 
-    public void setRegister(boolean register) {
-        isRegister = register;
+    public Map<Subject, Integer> getSubjectMark() {
+        return subjectMark;
+    }
+
+    public void setSubjectMark(Map<Subject, Integer> subjectMark) {
+        this.subjectMark = subjectMark;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getLogin() {
@@ -41,12 +52,12 @@ public class Enrollee extends Entity {
         this.password = password;
     }
 
-    public int getEnrolleeId() {
-        return enrolleeId;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setEnrolleeId(int enrolleeId) {
-        this.enrolleeId = enrolleeId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -63,14 +74,6 @@ public class Enrollee extends Entity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
     }
 
     public int getCertificateMark() {

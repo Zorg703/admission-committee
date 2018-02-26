@@ -1,6 +1,7 @@
 package by.mordas.project.dao;
 
 import by.mordas.project.entity.Faculty;
+import by.mordas.project.entity.Speciality;
 import by.mordas.project.pool.ConnectionPool;
 import by.mordas.project.pool.DBConnection;
 
@@ -14,9 +15,12 @@ import java.util.List;
 public class FacultyDAO extends AbstractDAO<Integer,Faculty> {
     private static final String FIND_ALL_FACULTY="SELECT ID,FACULTY_NAME FROM FACULTY";
     private static final String FIND_FACULTY_BY_ID="SELECT ID,FACULTY_NAME WHERE ID=?";
-    private static final String CREATE_FACULTY="INSERT INTO FACULTY(ID,FACULTY_NAME) VALUES(?,?)";
+    private static final String CREATE_FACULTY="INSERT INTO FACULTY(FACULTY_NAME) VALUES(?,?)";
     private static final String UPDATE_FACULTY="UPDATE FACULTY SET ID=? FACULTY_NAME=?";
     private static final String DELETE_FACULTY="DELETE FROM FACULTY WHERE ID=?";
+    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_NAME="SELECT SPECIALITY.ID,SPECIALITY.SPECIALITY_NAME," +
+            "SPECIALITY.RECRUITMENT_PALN, SPECIALITY.FACULTY_ID FROM FACULTY,SPECIALITY" +
+            " WHERE SPECIALITY.ID=SPECIALITY.FACULTY_ID AND FACULTY=?";
 
 
     @Override
@@ -82,11 +86,12 @@ public class FacultyDAO extends AbstractDAO<Integer,Faculty> {
     @Override
     public boolean create(Faculty faculty) {
         DBConnection connection=ConnectionPool.getConnection();
+
         try(PreparedStatement pStatement=connection.prepareStatement(CREATE_FACULTY)){
-            pStatement.setInt(1,faculty.getFacultyId());
-            pStatement.setString(2,faculty.getFacultyName());
+            pStatement.setString(1,faculty.getFacultyName());
             int result=pStatement.executeUpdate();
-            return result==2;
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -113,5 +118,10 @@ public class FacultyDAO extends AbstractDAO<Integer,Faculty> {
         return faculty;
     }
 
+    public List<Speciality> findSpecialityFromFaculty(){
+        List<Speciality> specialties=new ArrayList<>();
+        return specialties;
+
+    }
 
 }
