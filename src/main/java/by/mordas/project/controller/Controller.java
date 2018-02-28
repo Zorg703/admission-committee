@@ -33,5 +33,6 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request,HttpServletResponse response){
         Command command= CommandMap.getInstance().get(request.getParameter("command"));
 
+
     }
 }
