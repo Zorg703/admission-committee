@@ -30,8 +30,19 @@ public class Controller extends HttpServlet {
         super.service(req, resp);
     }
 
-    protected void processRequest(HttpServletRequest request,HttpServletResponse response){
+    protected void processRequest(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+        Router router;
         Command command= CommandMap.getInstance().get(request.getParameter("command"));
+        router=command.execute(request);
+        switch (router.getRouter()){
+            case FORWARD: request.getRequestDispatcher(router.getPagePath()).forward(request,response);
+            break;
+            case REDIRECT:response.sendRedirect(router.getPagePath());
+            break;
+        }
+
+
+
 
 
     }

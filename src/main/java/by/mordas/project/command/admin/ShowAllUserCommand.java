@@ -1,6 +1,8 @@
 package by.mordas.project.command.admin;
 
 import by.mordas.project.command.Command;
+import by.mordas.project.command.PageConstant;
+import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.entity.User;
 import by.mordas.project.logic.AdminLogic;
@@ -17,7 +19,9 @@ public class ShowAllUserCommand implements Command {
         Router router=new Router();
         List<User> userList;
         userList=adminLogic.findAllUser();
-        request.setAttribute();
+        request.setAttribute(ParamConstant.SHOW_ALL_USERS,userList);
+        router.setPagePath(PageConstant.PAGE_SHOW_USERS);
+        return router;
 
 
     }

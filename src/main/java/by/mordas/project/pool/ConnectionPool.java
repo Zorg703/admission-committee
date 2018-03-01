@@ -60,12 +60,13 @@ public class ConnectionPool {
     }
 
     public static DBConnection getConnection(){
+        DBConnection connection=null;
         try {
-            DBConnection connection=connectionsStorage.take();
+            connection=connectionsStorage.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return null;
+        return connection;
     }
     public static void closeConnection(DBConnection connection){
         connectionsStorage.offer(connection);

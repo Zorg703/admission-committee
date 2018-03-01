@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Admin
@@ -12,8 +13,12 @@
 </head>
 <body>
 <%--a href="/controller">Show all users</a>--%>
+
 <form name="doAction" method="post" action="/controller">
-    <input type="submit" value="action">
+    <input type="hidden" name="command" value="show_all_users"/>
+    <input type="submit" name="show" value="action"/>
+<c:forEach var="user" items="${userList}" varStatus="loop">
+    
 </form>
 </body>
 </html>
