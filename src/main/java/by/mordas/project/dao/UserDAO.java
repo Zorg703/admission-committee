@@ -29,7 +29,7 @@ public class UserDAO extends AbstractDAO<Integer,User> {
 
     @Override
     public List<User> findAll() {
-        DBConnection conn= ConnectionPool.getConnection();
+        DBConnection conn= ConnectionPool.getInstance(). getConnection();
         List<User> users =new ArrayList<>();
         try(Statement statement=conn.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_USER)) {

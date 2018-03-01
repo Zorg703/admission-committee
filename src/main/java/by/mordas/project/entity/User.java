@@ -52,6 +52,22 @@ public class User extends Entity {
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", certificateMark=" + certificateMark +
+                ", specialityId=" + specialityId +
+                ", birthday=" + birthday +
+                ", subjectMark=" + subjectMark +
+                ", email='" + email + '\'' +
+                "} " + super.toString();
+    }
+
     public int getUserId() {
         return userId;
     }

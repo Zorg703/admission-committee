@@ -13,20 +13,24 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ConnectionPool {
     private static ArrayBlockingQueue<DBConnection> connectionsStorage;
     public static ConnectionPool instance;
-    private DBManager manager;
+    private static DBManager manager;
     private static Lock lock=new ReentrantLock();
     private static AtomicBoolean isInstance=new AtomicBoolean(false);
-    private Properties properties;
-    private final int POOL_SIZE;
-
-
-    private ConnectionPool() {
+    private static Properties properties;
+    private static int POOL_SIZE;
+    static {
         manager=new DBManager();
         manager.registerDriver();
         properties=manager.getProperties();
         POOL_SIZE=Integer.parseInt(properties.getProperty("poolSize"));
         connectionsStorage=new ArrayBlockingQueue<DBConnection>(POOL_SIZE);
+    }
+
+
+    private ConnectionPool() {
+
         initializePool();
+
     }
 
     private void initializePool(){
@@ -73,7 +77,7 @@ public class ConnectionPool {
 
     }
 
-    public void closePool(){
+    public static void closePool(){
         try {
             for (int i=0;i<POOL_SIZE;i++) {
                 connectionsStorage.take();
@@ -84,10 +88,5 @@ public class ConnectionPool {
         manager.deregisterDriver();
     }
 
-    public static void main(String[] args) {
-        ConnectionPool.getInstance();
 
-
-
-    }
 }

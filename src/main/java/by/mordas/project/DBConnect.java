@@ -1,6 +1,10 @@
 package by.mordas.project;
 
+import by.mordas.project.entity.User;
+import by.mordas.project.logic.AdminLogic;
+
 import java.sql.*;
+import java.util.List;
 import java.util.Properties;
 
 public class DBConnect {
@@ -141,6 +145,14 @@ public class DBConnect {
                 }
             }
         }
+
+    }
+
+    public static void main(String[] args) {
+        AdminLogic adminLogic=new AdminLogic();
+        List<User> list=adminLogic.findAllUser();
+        System.out.println(list);
+
 
     }
 
