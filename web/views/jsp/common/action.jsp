@@ -15,14 +15,20 @@
 </head>
 <body>
 <%--a href="/controller">Show all users</a>--%>
-
+<input type="submit" >
 <a href="${pageContext.request.contextPath}/controller">Показать всех пользователей</a>
-    <input type="hidden" name="command" value="show_all_users"/>
+<input type="hidden" name="command" value="show_all_users"/>
+    <table>
 
-    <c:forEach var="user" items="${userList}" varStatus="status">
-        <td><c:out value="${user.login}"/></td>
+    <c:forEach var="user" items="${show_all_users}" varStatus="status">
+        <tr>
+        <td><c:out value="${user.firstName}"/></td>
+        <td><c:out value="${user.lastName}"/></td>
+         <td><c:out value="${user.birthday}"/></td>
+        </tr>
+
     </c:forEach>
-123
-</form>
+    </table>
+
 </body>
 </html>

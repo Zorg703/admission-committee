@@ -23,13 +23,14 @@ public class UserDAO extends AbstractDAO<Integer,User> {
     private static final String DELETE_USER_BY_ID="DELETE FROM USER WHERE ID=?";
     private static final String INSERT_STUDENTS_SUBJECTS="INSERT INTO USER_SUBJECT_MARK(SUBJECT_ID,USER_ID," +
             "USER_MARK) VALUES(?,?,?) ";
+    private static final String FIND_USER_BY_PASSWORD_AND_LOGIN="SELECT FIRST_NAME FROM USER WHERE LOGIN=? and PASSWORD=?";
 
 
 
 
     @Override
     public List<User> findAll() {
-        DBConnection conn= ConnectionPool.getInstance(). getConnection();
+        DBConnection conn= ConnectionPool. getConnection();
         List<User> users =new ArrayList<>();
         try(Statement statement=conn.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_USER)) {
@@ -172,7 +173,10 @@ public class UserDAO extends AbstractDAO<Integer,User> {
         return user;
     }
 
-
+    public User findUserByPasswordAndLogin(String login,String password){
+        DBConnection connection;
+        return null;
+    }
 
 
 }

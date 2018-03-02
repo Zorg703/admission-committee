@@ -41,19 +41,19 @@ public class Controller extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-
+        ConnectionPool.getInstance();
         super.init();
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Router router;
-        //Command command= CommandMap.getInstance().get(request.getParameter("command"));
-        Command command=new ShowAllUserCommand();
+        String s=request.getParameter("command");
+        Command command= CommandMap.getInstance().get(request.getParameter("command"));
         router=command.execute(request);
-
-
         switch (router.getRouter()){
             case FORWARD: request.getRequestDispatcher(router.getPagePath()).forward(request,response);
+            break;
+            case REDIRECT:response.sendRedirect(router.getPagePath());
             break;
 
         }

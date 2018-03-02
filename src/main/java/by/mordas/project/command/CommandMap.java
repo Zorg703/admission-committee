@@ -18,7 +18,8 @@ public class CommandMap {
     }
     public Command get(String cmd){
         try {
-            CommandType key = CommandType.valueOf(CommandType.class, cmd);
+            CommandType key = CommandType.valueOf(CommandType.class, cmd.toUpperCase());
+
             return map.get(key);
         }
         catch (EnumConstantNotPresentException e){
