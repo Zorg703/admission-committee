@@ -9,7 +9,7 @@ public class AdminLogic {
 public List<User> findAllUser(){
     List<User> userList;
     UserDAO userDAO=new UserDAO();
-    userList=userDAO.findAll();
+    userList=userDAO.findAllEntity();
     return userList;
 }
 }

@@ -29,7 +29,7 @@ public class SpecialityDAO extends AbstractDAO<Integer,Speciality> {
 
 
     @Override
-    public List<Speciality> findAll() {
+    public List<Speciality> findAllEntity() {
         DBConnection connection= ConnectionPool.getConnection();
         List<Speciality> specialties=new ArrayList<>();
         try(Statement statement=connection.createStatement();

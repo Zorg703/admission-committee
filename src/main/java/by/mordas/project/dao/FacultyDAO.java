@@ -24,7 +24,7 @@ public class FacultyDAO extends AbstractDAO<Integer,Faculty> {
 
 
     @Override
-    public List<Faculty> findAll() {
+    public List<Faculty> findAllEntity() {
         DBConnection connection=ConnectionPool.getConnection();
         List<Faculty> faculties=new ArrayList<>();
         try(Statement statement=connection.createStatement();

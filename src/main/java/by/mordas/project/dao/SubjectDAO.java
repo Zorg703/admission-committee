@@ -18,7 +18,7 @@ public class SubjectDAO extends AbstractDAO<Integer,Subject> {
     private static final String UPDATE_SUBJECT="UPDATE SUBJECT SET ID=? SUBJECT_NAME=?";
     private static final String DELETE_SUBJECT="DELETE FROM SUBJECT WHERE ID=?";
     @Override
-    public List<Subject> findAll() {
+    public List<Subject> findAllEntity() {
         DBConnection connection= ConnectionPool.getConnection();
         List<Subject> subjects=new ArrayList<>();
         try(Statement statement=connection.createStatement();
