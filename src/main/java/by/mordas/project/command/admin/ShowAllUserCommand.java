@@ -19,7 +19,7 @@ public class ShowAllUserCommand implements Command {
         Router router=new Router();
         List<User> userList;
         userList=adminLogic.findAllUser();
-        request.setAttribute(ParamConstant.SHOW_ALL_USERS,userList);
+        request.setAttribute(ParamConstant.USER_LIST,userList);
         router.setPagePath(PageConstant.PAGE_SHOW_USERS);
         return router;
 

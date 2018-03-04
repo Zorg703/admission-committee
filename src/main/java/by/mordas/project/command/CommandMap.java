@@ -1,12 +1,16 @@
 package by.mordas.project.command;
 
 import by.mordas.project.command.admin.ShowAllUserCommand;
+import by.mordas.project.command.common.LoginCommand;
+import by.mordas.project.command.common.UpdateLocaleCommand;
 
 import java.util.EnumMap;
 
 public class CommandMap {
     private EnumMap<CommandType,Command> map=new EnumMap<CommandType, Command>(CommandType.class){{
         this.put(CommandType.SHOW_ALL_USERS,new ShowAllUserCommand());
+        this.put(CommandType.LOGIN,new LoginCommand());
+        this.put(CommandType.UPDATE_LOCALE,new UpdateLocaleCommand());
     }
 
     };

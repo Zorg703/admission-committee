@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -11,16 +12,18 @@
 
 <html>
 <head>
-    <title>Show all users</title>
+    <fmt:setLocale value="ru_RU" scope="request"/>
+    <fmt:setBundle basename="localization"/>
+    <title> <fmt:message key="admin.action.title"/> </title>
 </head>
 <body>
 <%--a href="/controller">Show all users</a>--%>
-<input type="submit" >
-<a href="${pageContext.request.contextPath}/controller">Показать всех пользователей</a>
+
+<a href="${pageContext.request.contextPath}/controller?command=show_all_users"><fmt:message key="admin.action.show"/></a>
 <input type="hidden" name="command" value="show_all_users"/>
     <table>
 
-    <c:forEach var="user" items="${show_all_users}" varStatus="status">
+    <c:forEach var="user" items="${user_list}" varStatus="status">
         <tr>
         <td><c:out value="${user.firstName}"/></td>
         <td><c:out value="${user.lastName}"/></td>

@@ -23,7 +23,7 @@ public class UserDAO extends AbstractDAO<Integer,User> {
     private static final String DELETE_USER_BY_ID="DELETE FROM USER WHERE ID=?";
     private static final String INSERT_STUDENTS_SUBJECTS="INSERT INTO USER_SUBJECT_MARK(SUBJECT_ID,USER_ID," +
             "USER_MARK) VALUES(?,?,?) ";
-    private static final String FIND_USER_BY_PASSWORD_AND_LOGIN="SELECT FIRST_NAME FROM USER WHERE LOGIN=? and PASSWORD=?";
+    private static final String FIND_USER_BY_PASSWORD_AND_LOGIN="SELECT * FROM USER WHERE LOGIN=? and PASSWORD=?";
 
 
 
@@ -179,27 +179,21 @@ public class UserDAO extends AbstractDAO<Integer,User> {
         User user=new User();
         try{
             PreparedStatement pStetement=connection.prepareStatement(FIND_USER_BY_PASSWORD_AND_LOGIN);
-            ResultSet rs=pStetement.executeQuery();
+
             pStetement.setString(1,login);
             pStetement.setString(2,password);
-            if(rs!=null){
-                user.setUserId(rs.getInt("ID"));
+            ResultSet rs=pStetement.executeQuery();
+            if(rs.next()){
                 user.setFirstName(rs.getString("FIRST_NAME"));
-                user.setLastName(rs.getString("LAST_NAME"));
-                user.setBirthday(rs.getDate("BIRTHDAY"));
-                user.setCertificateMark(rs.getInt("CERTIFICATE_AVG"));
-                user.setSpecialityId(rs.getInt("SPECIALITY_ID"));
-                user.setLogin(rs.getString("LOGIN"));
-                user.setPassword(rs.getString("PASSWORD"));
-                user.setEmail(rs.getString("EMAIL"));
-                return user;
+
+
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return user;
     }
 
 
