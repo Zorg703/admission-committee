@@ -8,13 +8,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:import url="${pageContext.request.contextPath}/views/include/header.jsp"/>
 <html>
 <head>
-    <fmt:setLocale value="en_EN" scope="request"/>
-    <fmt:setBundle basename="localization"/>
+
+
     <title><fmt:message key="login.form.sign_in"/> </title>
 </head>
 <body>
+
+<fmt:setLocale value="${locale}" scope="request"/>
+<fmt:setBundle basename="localization"/>
 <form name="LoginForm" method="post" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="login">
     <fmt:message key="login.form.login"/>:<br/>

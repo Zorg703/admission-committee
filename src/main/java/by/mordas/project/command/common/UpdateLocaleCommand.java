@@ -11,12 +11,21 @@ import java.util.Locale;
 public class UpdateLocaleCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
-        HttpSession session=request.getSession();
         Router router=new Router();
-        String locale=request.getParameter(ParamConstant.LOCALE);
-        session.setAttribute(ParamConstant.LOCALE,locale);
 
+        HttpSession session = request.getSession();
+        String locale = (String) session.getAttribute("locale");
+        String s3=(String)session.getAttribute("current");
+        if (locale == null || "en_EN".equals(locale)) {
+            locale = "ru-RU";
+        } else {
+            locale = "en_EN";
+        }
 
-        return null;
+        router.setRouter(Router.RouteType.REDIRECT);
+        session.setAttribute("locale", locale);
+        router.setPagePath(s3);
+
+        return router;
     }
 }
