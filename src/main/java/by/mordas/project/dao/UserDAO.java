@@ -24,6 +24,7 @@ public class UserDAO extends AbstractDAO<Integer,User> {
     private static final String INSERT_STUDENTS_SUBJECTS="INSERT INTO USER_SUBJECT_MARK(SUBJECT_ID,USER_ID," +
             "USER_MARK) VALUES(?,?,?) ";
     private static final String FIND_USER_BY_PASSWORD_AND_LOGIN="SELECT * FROM USER WHERE LOGIN=? and PASSWORD=?";
+    private static final String FIND_SUBJECT_USER="SELECT * FROM USER_SUBJECT_MARK WHERE ID=?";
 
 
 
@@ -42,7 +43,6 @@ public class UserDAO extends AbstractDAO<Integer,User> {
                     user.setBirthday(rs.getDate("BIRTHDAY"));
                     user.setCertificateMark(rs.getInt("CERTIFICATE_MARK"));
                     user.setSpecialityId(rs.getInt("SPECIALITY_ID"));
-
                     users.add(user);
                 }
             }
@@ -59,8 +59,10 @@ public class UserDAO extends AbstractDAO<Integer,User> {
     public User findEntityById(int id) {
         DBConnection conn= ConnectionPool.getConnection();
         User user = new User();
-        try(PreparedStatement pStatement=conn.prepareStatement(FIND_USER_BY_ID);
-            ResultSet rs=pStatement.executeQuery()) {
+
+        try {
+            PreparedStatement pStatement=conn.prepareStatement(FIND_USER_BY_ID);
+            ResultSet rs=pStatement.executeQuery();
             pStatement.setInt(1,id);
             if(rs!=null){
                 user.setUserId(rs.getInt("ID"));
@@ -72,9 +74,18 @@ public class UserDAO extends AbstractDAO<Integer,User> {
                 user.setLogin(rs.getString("LOGIN"));
                 user.setPassword(rs.getString("PASSWORD"));
                 user.setEmail(rs.getString("EMAIL"));
-
-
             }
+            pStatement=conn.prepareStatement(FIND_SUBJECT_USER);
+            rs=pStatement.executeQuery() ;
+                pStatement.setInt(1,id);
+                if(rs!=null) {
+                    while (rs.next()){
+                        Subject subject=new Subject();
+                        subject.setSubjectId(rs.getInt("SUBJECT_ID"));
+                        Integer mark=rs.getInt("USER_SUBJECT_MARK");
+                        user.put(subject,mark);
+                    }
+                }
         } catch (SQLException e) {
             e.printStackTrace();
         }

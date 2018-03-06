@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-public class DBConnection implements Connection {
+public class DBConnection implements Connection, AutoCloseable {
     Connection connection;
 
     DBConnection(Connection connection) {
@@ -54,7 +54,7 @@ public class DBConnection implements Connection {
 
     @Override
     public void close() throws SQLException {
-        connection.close();
+        ConnectionPool.closeConnection(this);
     }
 
     @Override

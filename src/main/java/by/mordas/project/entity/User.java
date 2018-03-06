@@ -115,4 +115,8 @@ public class User extends Entity {
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
+
+    public Integer put(Subject key, Integer value) {
+        return subjectMark.put(key, value);
+    }
 }
