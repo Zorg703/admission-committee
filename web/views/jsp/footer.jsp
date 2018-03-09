@@ -13,6 +13,5 @@
 </head>
 <body>
 This is footer!
-
 </body>
 </html>

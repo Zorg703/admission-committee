@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {},initParams = {
-        @WebInitParam(name = "locale",value = "ru_RU")
-})
+@WebFilter(value="/*")
 public class LangugeFilter implements Filter{
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -22,18 +20,11 @@ public class LangugeFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+       HttpSession session=new HttpServletRequestWrapper((HttpServletRequest) servletRequest).getSession();
 
-        HttpServletRequest request=new HttpServletRequestWrapper((HttpServletRequest) servletRequest);
-        HttpSession session=request.getSession(true);
-        if(request.getParameter("locale")==null || "ru_RU".equals(request.getParameter("locale")) ){
-        request.setAttribute(ParamConstant.LOCALE,"en_EN");
-        session.setAttribute(ParamConstant.LOCALE,"ru_RU");
-        }
-        else {
-            request.setAttribute(ParamConstant.LOCALE,"ru_RU");
-            session.setAttribute(ParamConstant.LOCALE,"en_EN");
-        }
-        filterChain.doFilter(request,servletResponse);
+
+
+        filterChain.doFilter(servletRequest,servletResponse);
 
     }
 

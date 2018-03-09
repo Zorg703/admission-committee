@@ -20,9 +20,7 @@ public class SpecialityDAO extends AbstractDAO<Integer,Speciality> {
     private static final String UPDATE_SPECIALITY="UPDATE SPECIALITY SET ID=? SPECIALITY_NAME=?,RECRUITMENT_PLAN=?,FACULTY_ID=?";
     private static final String UPDATE_SPECIALITY_SUBJECT="UPDATE SUBJECT_FOR_SPECIALITY SET ID_SPECIALITY=?,ID_SUBJECT=?";
     private static final String DELETE_SPECIALITY="DELETE FROM SPECIALITY WHERE ID=?";
-    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_NAME="SELECT SPECIALITY.ID,SPECIALITY.SPECIALITY_NAME," +
-            "SPECIALITY.RECRUITMENT_PALN, SPECIALITY.FACULTY_ID FROM FACULTY,SPECIALITY" +
-            " WHERE SPECIALITY.ID=SPECIALITY.FACULTY_ID AND FACULTY=?";
+    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY.SPECIALITY_NAME,SPECIALITY.RECRUITMENT_PLAN, SPECIALITY.FACULTY_ID FROM SPECIALITY WHERE FACULTY_ID=?";
     private static final String FIND_ALL_USERS_ON_SPECIALITY_BY_ID ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_AVG," +
             "SPECIALITY_ID FROM USER  WHERE SPECIALITY ID=?";
     private static final String INSERT_SPECIALITY_SUBJECTS="INSERT INTO SUBJECT_FOR_SPECIALITY(ID_SPECIALITY,ID_SUBJECT)";
@@ -55,8 +53,9 @@ public class SpecialityDAO extends AbstractDAO<Integer,Speciality> {
         DBConnection conn= ConnectionPool.getConnection();
         Speciality speciality =new Speciality();
         try(PreparedStatement pStatement=conn.prepareStatement(FIND_SPECIALITY_BY_ID);
-            ResultSet rs=pStatement.executeQuery()) {
+            ) {
             pStatement.setInt(1,id);
+            ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
                     speciality.setSpecialityId(rs.getInt("ID"));
                     speciality.setSpecialityName(rs.getString("SPECIALITY_NAME"));
@@ -70,6 +69,31 @@ public class SpecialityDAO extends AbstractDAO<Integer,Speciality> {
             ConnectionPool.closeConnection(conn);
         }
         return speciality;
+    }
+    public List<Speciality> findSpecialitiesByFacultyID(int id){
+        DBConnection connection=ConnectionPool.getConnection();
+        List<Speciality> specialities=new ArrayList<>();
+        try(PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_SPECIALITY_BY_FACULTY_ID);
+        ) {
+            pStatement.setInt(1,id);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs!=null){
+                while (rs.next()) {
+                    Speciality speciality=new Speciality();
+                    speciality.setSpecialityId(rs.getInt("ID"));
+                    speciality.setSpecialityName(rs.getString("SPECIALITY_NAME"));
+                    speciality.setRecruitmentPlan(rs.getInt("RECRUITMENT_PLAN"));
+                    speciality.setFacultyId(rs.getInt("FACULTY_ID"));
+                    specialities.add(speciality);
+                }
+                }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            ConnectionPool.closeConnection(connection);
+        }
+        return specialities;
     }
 
     @Override
@@ -149,23 +173,6 @@ public class SpecialityDAO extends AbstractDAO<Integer,Speciality> {
         return specialty;
     }
 
-    public List<Speciality> showSpecialitiesOnFaculty(String name) {
-        DBConnection connection = ConnectionPool.getConnection();
-        List<Speciality> specialties=null;
-        try (PreparedStatement pStatement = connection.prepareStatement(FIND_ALL_SPECIALITY_BY_FACULTY_NAME);
-             ResultSet rs=pStatement.executeQuery()) {
-            pStatement.setString(1, name);
-            if(rs!=null){
-                while (rs.next()){
-                specialties.add(setSpeciality(rs));
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return specialties;
-    }
 
     public List<User> findUserOnSpeciality(int id){
         DBConnection connection=ConnectionPool.getConnection();
