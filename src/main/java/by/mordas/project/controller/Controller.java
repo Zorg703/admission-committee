@@ -50,6 +50,7 @@ public class Controller extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Router router;
+        String s=request.getParameter("first-subject");
         Command command= CommandMap.getInstance().get(request.getParameter("command"));
         router=command.execute(request);
         switch (router.getRouter()){

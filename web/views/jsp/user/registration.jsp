@@ -21,17 +21,17 @@
     <input type="hidden" name="command" value="user_registration">
     <h3><fmt:message key="user.registration.h3"/></h3>
     <label><fmt:message key="user.registration.first_name"/> <br>
-        <input type="text" name="first-name" required pattern="[А-Я][а-я]{1,50}"></label>
+        <input type="text" name="first-name" required pattern="[А-Я][а-я]{1,50}" value=""></label>
     <br>
     <label><fmt:message key="user.registration.last_name"/> <br>
-        <input type="text" name="last-name" required pattern="[А-Я][а-я]{1,50}">
+        <input type="text" name="last-name" required pattern="[А-Я][а-я]{1,50}" value="">
     </label>
     <br>
     <label><fmt:message key="user.registration.birthday"/> <br>
-        <input type="date" name="birthday" required min="1897-01-01" max="2010-01-01"></label>
+        <input type="date" name="birthday" required min="1897-01-01" max="2010-01-01" value=""></label>
     <br>
     <label><fmt:message key="user.registration.certificate"/> <br>
-        <input type="number" name="avg" required min="0" max="100">
+        <input type="number" name="avg" required min="0" max="100" value="">
     </label><br>
     <h3><fmt:message key="user.registration.ct_results"/> </h3>
     <table>
@@ -39,19 +39,19 @@
         <td>
             <input list="subject" required name="first-subject">
             <datalist id="subject">
-                <option><fmt:message key="user.registration.belarusian"/>
-                <option><fmt:message key="user.registration.russian"/>
-                <option><fmt:message key="user.registration.maths"/>
-                <option><fmt:message key="user.registration.chemistry"/>
-                <option><fmt:message key="user.registration.physic"/>
-                <option><fmt:message key="user.registration.biology"/>
-                <option><fmt:message key="user.registration.english"/>
-                <option><fmt:message key="user.registration.history"/>
-                <option><fmt:message key="user.registration.geography"/>
+                <option value="1"><fmt:message key="user.registration.maths"/>
+                <option value="2"><fmt:message key="user.registration.physic"/>
+                <option value="3"><fmt:message key="user.registration.chemistry"/>
+                <option value="4"><fmt:message key="user.registration.russian"/>
+                <option value="5"><fmt:message key="user.registration.belarusian"/>
+                <option value="6"><fmt:message key="user.registration.english"/>
+                <option value="7"><fmt:message key="user.registration.biology"/>
+                <option value="8"><fmt:message key="user.registration.history"/>
+                <option value="9"><fmt:message key="user.registration.geography"/>
             </datalist>
         </td>
         <td>
-            <input type="number" name="avg1" required min="0" max="100"><br>
+            <input type="number" name="avg1" required min="0" max="100" value=""><br>
         </td>
     </tr>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
@@ -59,7 +59,7 @@
             <input list="subject" required name="second-subject">
         </td>
         <td>
-            <input type="number" required min="0" max="100" name="avg2"><br>
+            <input type="number" required min="0" max="100" name="avg2" value=""><br>
         </td>
     </tr>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
@@ -67,7 +67,7 @@
             <input list="subject"required name="third-subject">
         </td>
         <td>
-            <input type="number"required name="avg3" min="0" max="100"><br>
+            <input type="number"required name="avg3" min="0" max="100" value=""><br>
         </td>
     </tr>
     </table>
@@ -76,16 +76,32 @@
         <input type="text" name="login" required pattern="^[a-zA-Z][a-zA-Z0-9-_]{4,30}"></label>
     <br>
     <label><fmt:message key="user.registration.password"/>:<br>
-        <input type="password" required name="password1" id="password1" pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}"> </label>
+        <input type="password" required name="password1" id="password1" pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}" value=""> </label>
     <br>
     <label><fmt:message key="user.registration.password_confirm"/>:<br>
-        <input type="password" required name="password2" id="password2" pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}"> </label>
+        <input type="password" required name="password2" id="password2" pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}" value=""> </label>
     <br>
     <label><fmt:message key="user.registration.email"/>:<br>
-        <input type="email" required name="email"></label>
+        <input type="email" required name="email" value=""></label>
     <br>
     <input class="button" type="submit"value=<fmt:message key="user.registration.confirm"/>>
     <input class="button" type="reset" value=<fmt:message key="user.registration.cancel"/>>
 </form>
+<script type="text/javascript">
+    window.onload = function () {
+        document.getElementById("password1").onchange = validatePassword;
+        document.getElementById("password2").onchange = validatePassword;
+    }
+    function validatePassword(){
+        var pass2=document.getElementById("password2").value;
+        var pass1=document.getElementById("password1").value;
+        if(pass1!=pass2)
+            document.getElementById("password2").setCustomValidity("Пароли не совпадают");
+        else
+            document.getElementById("password2").setCustomValidity('');
+
+    }
+
+</script>
     </body></html>
 
