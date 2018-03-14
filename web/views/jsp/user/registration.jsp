@@ -51,7 +51,7 @@
             </datalist>
         </td>
         <td>
-            <input type="number" name="avg1" required min="0" max="100" value=""><br>
+            <input type="number" name="mark1" required min="0" max="100" value=""><br>
         </td>
     </tr>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
@@ -59,7 +59,7 @@
             <input list="subject" required name="second-subject">
         </td>
         <td>
-            <input type="number" required min="0" max="100" name="avg2" value=""><br>
+            <input type="number" required min="0" max="100" name="mark2" value=""><br>
         </td>
     </tr>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
@@ -67,7 +67,7 @@
             <input list="subject"required name="third-subject">
         </td>
         <td>
-            <input type="number"required name="avg3" min="0" max="100" value=""><br>
+            <input type="number"required min="0" max="100" name="mark3" value=""><br>
         </td>
     </tr>
     </table>

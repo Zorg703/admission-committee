@@ -1,6 +1,8 @@
 package by.mordas.project.logic;
 
+import by.mordas.project.dao.SubjectDAO;
 import by.mordas.project.dao.UserDAO;
+import by.mordas.project.entity.Subject;
 import by.mordas.project.entity.User;
 
 /**
@@ -12,4 +14,5 @@ public class CommonLogic {
         user=new UserDAO().findUserByPasswordAndLogin(login,password);
         return user;
     }
+
 }

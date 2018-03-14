@@ -48,7 +48,7 @@ public class SubjectDAO extends AbstractDAO<Integer,Subject> {
         try(PreparedStatement pStatement=conn.prepareStatement(FIND_SUBJECT_BY_ID);
             ResultSet rs=pStatement.executeQuery()) {
             pStatement.setInt(1,id);
-            if(rs!=null){
+            if(rs.next()){
                 subject.setSubjectId(rs.getInt("ID"));
                 subject.setSubjectName(rs.getString("FACULTY_NAME"));
             }

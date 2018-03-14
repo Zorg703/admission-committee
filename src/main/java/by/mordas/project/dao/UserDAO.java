@@ -25,7 +25,7 @@ public class UserDAO extends AbstractDAO<Integer,User> {
             "USER_MARK) VALUES(?,?,?) ";
     private static final String FIND_USER_BY_PASSWORD_AND_LOGIN="SELECT * FROM USER WHERE LOGIN=? and PASSWORD=?";
     private static final String FIND_SUBJECT_USER="SELECT * FROM USER_SUBJECT_MARK WHERE ID=?";
-
+    private static final String FIND_USER_BY_LOGIN="SELECT * FROM USER WHERE LOGIN=?";
 
 
 
@@ -184,11 +184,27 @@ public class UserDAO extends AbstractDAO<Integer,User> {
         return user;
     }
 
-    public User findUserByPasswordAndLogin(String login,String password){
+    public boolean findUserByLogin(String login){
         DBConnection connection;
         connection=ConnectionPool.getConnection();
+        try{
+            PreparedStatement pStetement=connection.prepareStatement(FIND_USER_BY_LOGIN);
+            pStetement.setString(1,login);
+            ResultSet rs=pStetement.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //throw new DAOException
+        }
+        return false;//TODO
+    }
+
+
+    public User findUserByPasswordAndLogin(String login,String password){
+        DBConnection connection;
         User user=new User();
         try{
+            connection=ConnectionPool.getConnection();
             PreparedStatement pStetement=connection.prepareStatement(FIND_USER_BY_PASSWORD_AND_LOGIN);
 
             pStetement.setString(1,login);
