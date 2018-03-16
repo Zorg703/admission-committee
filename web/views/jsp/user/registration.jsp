@@ -21,14 +21,14 @@
     <input type="hidden" name="command" value="user_registration">
     <h3><fmt:message key="user.registration.h3"/></h3>
     <label><fmt:message key="user.registration.first_name"/> <br>
-        <input type="text" name="first-name" required pattern="[А-Я][а-я]{1,50}" value=""></label>
+        <input type="text" name="first-name" required pattern="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}" value=""></label>
     <br>
     <label><fmt:message key="user.registration.last_name"/> <br>
-        <input type="text" name="last-name" required pattern="[А-Я][а-я]{1,50}" value="">
+        <input type="text" name="last-name" required pattern="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}" value="">
     </label>
     <br>
     <label><fmt:message key="user.registration.birthday"/> <br>
-        <input type="date" name="birthday" required min="1897-01-01" max="2010-01-01" value=""></label>
+        <input type="date" name="birthday" required min="1900-01-01" max="2010-12-12" value=""></label>
     <br>
     <label><fmt:message key="user.registration.certificate"/> <br>
         <input type="number" name="avg" required min="0" max="100" value="">

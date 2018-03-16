@@ -25,7 +25,7 @@ public class RegistrationNewUserCommand implements Command {
             user.put(userLogic.findSubject(Integer.valueOf(request.getParameter("first-subject"))), Integer.valueOf(request.getParameter("mark1")));
             user.put(userLogic.findSubject(Integer.valueOf(request.getParameter("second-subject"))), Integer.valueOf(request.getParameter("mark2")));
             user.put(userLogic.findSubject(Integer.valueOf(request.getParameter("third-subject"))), Integer.valueOf(request.getParameter("mark3")));
-            userLogic.registerUser();
+            userLogic.registerUser(user);
 
         }
         else {
