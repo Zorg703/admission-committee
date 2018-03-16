@@ -11,7 +11,7 @@ import by.mordas.project.entity.User;
 
 import java.util.List;
 
-public class UserLogic {
+public class UserLogic implements Logic{
 public List<Faculty> findAllFaculties(){
     List<Faculty> list=new FacultyDAO().findAllEntity();
     return list;

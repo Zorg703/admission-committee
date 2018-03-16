@@ -5,7 +5,7 @@ import by.mordas.project.entity.User;
 
 import java.util.List;
 
-public class AdminLogic {
+public class AdminLogic implements Logic{
 public List<User> findAllUser(){
     List<User> userList;
     UserDAO userDAO=new UserDAO();
