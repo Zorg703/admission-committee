@@ -3,6 +3,7 @@ package by.mordas.project.command;
 import by.mordas.project.command.admin.ShowAllUserCommand;
 import by.mordas.project.command.common.LoginCommand;
 import by.mordas.project.command.common.UpdateLocaleCommand;
+import by.mordas.project.command.user.RegistrationNewUserCommand;
 import by.mordas.project.command.user.ShowFacultyCommand;
 import by.mordas.project.command.user.ShowSpecialitiesCommand;
 
@@ -15,6 +16,7 @@ public class CommandMap {
         this.put(CommandType.UPDATE_LOCALE,new UpdateLocaleCommand());
         this.put(CommandType.SHOW_ALL_FACULTY,new ShowFacultyCommand());
         this.put(CommandType.FIND_SPECIALITY,new ShowSpecialitiesCommand());
+        this.put(CommandType.USER_REGISTRATION,new RegistrationNewUserCommand());
 
     }
 
@@ -32,7 +34,7 @@ public class CommandMap {
             return map.get(key);
         }
         catch (EnumConstantNotPresentException e){
-            return null;
+            return null;//todo
         }
 
     }

@@ -12,5 +12,22 @@ public final static String FACULTY_LIST="faculty_list";
 public final static String CURRENT_URL="current";
 public final static String ID="id";
 public final static String SPECIALITIES="speciality_list";
+public final static String MESSAGE="message";
+public final static String LOGIN_PARAM="params";
 
+public final static String FIRST_NAME="first_name";
+public final static String LAST_NAME="last_name";
+public final static String BIRTHDAY="birthday";
+public final static String CERTIFICATE_AVG="avg";
+public final static String FIRST_SUBJECT="first_subject";
+public final static String SECOND_SUBJECT="second_subject";
+public final static String THIRD_SUBJECT="third_subject";
+public final static String FIRST_SUBJECT_MARK="mark1";
+public final static String SECOND_SUBJECT_MARK="mark2";
+public final static String THIRD_SUBJECT_MARK="mark3";
+public final static String PASSWORD_ONE="password1";
+public final static String PASSWORD_TWO="password2";
+public final static String EMAIL="email";
+public final static String USER_PARAMS="user_params";
+public final static String ERROR_MESSAGES="messages";
 }

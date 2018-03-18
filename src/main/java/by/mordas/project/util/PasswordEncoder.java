@@ -8,7 +8,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-public class Encoder {
+public class PasswordEncoder {
     private static final String SECRET_KEY="1234SECURITY@key";
 
     public static String encodePassword(String password){

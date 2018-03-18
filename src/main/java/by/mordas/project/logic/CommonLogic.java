@@ -1,10 +1,8 @@
 package by.mordas.project.logic;
 
-import by.mordas.project.dao.SubjectDAO;
-import by.mordas.project.dao.UserDAO;
-import by.mordas.project.entity.Subject;
+import by.mordas.project.dao.impl.UserDAOImpl;
 import by.mordas.project.entity.User;
-import by.mordas.project.util.Encoder;
+import by.mordas.project.util.PasswordEncoder;
 
 /**
  * Created by Enginer on 03.03.2018.
@@ -12,7 +10,7 @@ import by.mordas.project.util.Encoder;
 public class CommonLogic implements Logic{
     public User findUserLoginAndPassword(String login,String password){
         User user;
-        user=new UserDAO().findUserByPasswordAndLogin(login,Encoder.encodePassword(password));
+        user=new UserDAOImpl().findUserByPasswordAndLogin(login, PasswordEncoder.encodePassword(password));
         return user;
     }
 

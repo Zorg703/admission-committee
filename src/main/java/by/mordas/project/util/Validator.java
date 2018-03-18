@@ -1,8 +1,9 @@
 package by.mordas.project.util;
 
+import by.mordas.project.command.ParamConstant;
 import by.mordas.project.logic.UserLogic;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,33 +15,19 @@ public class Validator {
     private static final String LOGIN_REGEX="^[a-zA-Z][a-zA-Z0-9-_]{4,30}";
     private static final String PASSWORD_REGEX="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}";
     private static final String EMAIL_REGEX="^[\\w]+[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$";
+    private static final String SUBJECT_ID="[1-9]";
+
 
 
     public boolean checkLogin(String login){
+        UserLogic userLogic=new UserLogic();
         boolean isLoginFree=false;
         Pattern loginPattern=Pattern.compile(LOGIN_REGEX);
         Matcher matcher=loginPattern.matcher(login);
         if(matcher.find()){
-           isLoginFree= new UserLogic().findUserByLogin(login);
+           isLoginFree=userLogic.findUserByLogin(login);
         }
-        return false;
-    }
-
-    public boolean checkFirstName(String firstName){
-        Pattern loginPattern=Pattern.compile(FIRST_NAME_REGEX);
-        Matcher matcher=loginPattern.matcher(firstName);
-        return matcher.find();
-    }
-    public boolean checkLastName(String lastName){
-        Pattern loginPattern=Pattern.compile(LAST_NAME_REGEX);
-        Matcher matcher=loginPattern.matcher(lastName);
-        return matcher.find();
-    }
-
-    public boolean checkDate(Date date){
-        Pattern loginPattern=Pattern.compile(DATE_REGEX);
-        Matcher matcher=loginPattern.matcher(date.toString());
-        return matcher.find();
+        return isLoginFree;
     }
 
     public boolean checkPassword(String password){
@@ -48,15 +35,60 @@ public class Validator {
         Matcher matcher=loginPattern.matcher(password);
         return matcher.find();
     }
-    public boolean checkEmail(String email){
-        Pattern loginPattern=Pattern.compile(EMAIL_REGEX);
-        Matcher matcher=loginPattern.matcher(email);
+
+
+    private boolean checkData(final String REGEX, String date){
+        Pattern loginPattern=Pattern.compile(REGEX);
+        Matcher matcher=loginPattern.matcher(date);
         return matcher.find();
     }
 
-    public boolean checkMark(Integer mark){
-        Pattern loginPattern=Pattern.compile(MARK_REGEX);
-        Matcher matcher=loginPattern.matcher(mark.toString());
-        return matcher.find();
+
+    public HashMap<String,String> checkUserDate(HashMap<String,String> parameterMap){
+        HashMap<String,String> errorMessageMap=new HashMap<>();
+        if(!checkData(FIRST_NAME_REGEX,parameterMap.get(ParamConstant.FIRST_NAME))){
+            errorMessageMap.put(ParamConstant.FIRST_NAME,parameterMap.get(ParamConstant.FIRST_NAME));
+        }
+        if(!checkData(LAST_NAME_REGEX,parameterMap.get(ParamConstant.LAST_NAME))){
+            errorMessageMap.put(ParamConstant.LAST_NAME,parameterMap.get(ParamConstant.LAST_NAME));
+        }
+        if(!checkLogin(parameterMap.get(ParamConstant.LOG_IN))){
+            errorMessageMap.put(ParamConstant.LOG_IN,parameterMap.get(ParamConstant.LOG_IN));
+        }
+        if(!checkData(DATE_REGEX,parameterMap.get(ParamConstant.BIRTHDAY))){
+            errorMessageMap.put(ParamConstant.FIRST_NAME,parameterMap.get(ParamConstant.FIRST_NAME));
+        }
+        if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.CERTIFICATE_AVG))){
+            errorMessageMap.put(ParamConstant.CERTIFICATE_AVG,parameterMap.get(ParamConstant.CERTIFICATE_AVG));
+        }
+        if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.FIRST_SUBJECT_MARK))){
+            errorMessageMap.put(ParamConstant.FIRST_SUBJECT_MARK,parameterMap.get(ParamConstant.FIRST_SUBJECT_MARK));
+        }
+        if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.SECOND_SUBJECT_MARK))){
+            errorMessageMap.put(ParamConstant.SECOND_SUBJECT_MARK,parameterMap.get(ParamConstant.SECOND_SUBJECT_MARK));
+        }
+        if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.THIRD_SUBJECT_MARK))){
+            errorMessageMap.put(ParamConstant.THIRD_SUBJECT_MARK,parameterMap.get(ParamConstant.THIRD_SUBJECT_MARK));
+        }
+        if(!checkData(SUBJECT_ID,parameterMap.get(ParamConstant.FIRST_SUBJECT))){
+            errorMessageMap.put(ParamConstant.FIRST_SUBJECT,parameterMap.get(ParamConstant.FIRST_SUBJECT));
+        }
+        if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.SECOND_SUBJECT))){
+            errorMessageMap.put(ParamConstant.SECOND_SUBJECT,parameterMap.get(ParamConstant.SECOND_SUBJECT));
+        }
+        if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.THIRD_SUBJECT))){
+            errorMessageMap.put(ParamConstant.THIRD_SUBJECT,parameterMap.get(ParamConstant.THIRD_SUBJECT));
+        }
+        if(!checkData(EMAIL_REGEX,parameterMap.get(ParamConstant.EMAIL))){
+            errorMessageMap.put(ParamConstant.THIRD_SUBJECT,parameterMap.get(ParamConstant.EMAIL));
+        }
+        if(!checkPassword(parameterMap.get(ParamConstant.PASSWORD_ONE))){
+            errorMessageMap.put(ParamConstant.PASSWORD_ONE,parameterMap.get(ParamConstant.PASSWORD_ONE));
+        }
+        if(parameterMap.containsKey(ParamConstant.PASSWORD_TWO)){
+            errorMessageMap.put(ParamConstant.PASSWORD_TWO,parameterMap.get(ParamConstant.PASSWORD_TWO));
+        }
+
+        return errorMessageMap;
     }
 }

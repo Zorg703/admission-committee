@@ -11,103 +11,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubjectDAO extends AbstractDAO<Integer,Subject> {
-    private static final String FIND_ALL_SUBJECT="SELECT ID,SUBJECT_NAME FROM SUBJECT";
-    private static final String FIND_SUBJECT_BY_ID="SELECT ID,SUBJECT_NAME WHERE ID=?";
-    private static final String CREATE_SUBJECT="INSERT INTO SUBJECT(ID,SUBJECT_NAME) VALUES(?,?)";
-    private static final String UPDATE_SUBJECT="UPDATE SUBJECT SET ID=? SUBJECT_NAME=?";
-    private static final String DELETE_SUBJECT="DELETE FROM SUBJECT WHERE ID=?";
-    @Override
-    public List<Subject> findAllEntity() {
-        DBConnection connection= ConnectionPool.getConnection();
-        List<Subject> subjects=new ArrayList<>();
-        try(Statement statement=connection.createStatement();
-            ResultSet rs=statement.executeQuery(FIND_ALL_SUBJECT)){
-            if (rs != null) {
-                while (rs.next()) {
-                    Subject subject=new Subject();
-                    subject.setSubjectId(rs.getInt("ID"));
-                    subject.setSubjectName(rs.getString("FACULTY_NAME"));
-                    subjects.add(subject);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            ConnectionPool.closeConnection(connection);
+public interface SubjectDAO extends AbstractDAO<Subject> {
 
-        }
-        return subjects;
-    }
+    List<Subject> findAllEntity();
 
-    @Override
-    public Subject findEntityById(int id) {
-        DBConnection conn= ConnectionPool.getConnection();
-        Subject subject=new Subject();
-        try(PreparedStatement pStatement=conn.prepareStatement(FIND_SUBJECT_BY_ID);
-            ResultSet rs=pStatement.executeQuery()) {
-            pStatement.setInt(1,id);
-            if(rs.next()){
-                subject.setSubjectId(rs.getInt("ID"));
-                subject.setSubjectName(rs.getString("FACULTY_NAME"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            ConnectionPool.closeConnection(conn);
-        }
-        return subject;
-    }
+    Subject findEntityById(int id);
 
-    @Override
-    public boolean delete(int id) {
-        DBConnection connection = ConnectionPool.getConnection();
-        try (PreparedStatement pStatement = connection.prepareStatement(DELETE_SUBJECT)) {
-            pStatement.setInt(1,id);
-            return pStatement.executeUpdate()==2;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            ConnectionPool.closeConnection(connection);
-        }
-        return false;
-    }
+    boolean delete(int id);
 
-    @Override
-    public boolean create(Subject subject) {
-        DBConnection connection=ConnectionPool.getConnection();
-        try(PreparedStatement pStatement=connection.prepareStatement(CREATE_SUBJECT)){
-            subject.setSubjectId(subject.getSubjectId());
-            subject.setSubjectName(subject.getSubjectName());
-            int result=pStatement.executeUpdate();
-            return result==2;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
+    void create(Subject subject);
 
-            ConnectionPool.closeConnection(connection);
-        }
-        return false;
-    }
-
-    @Override
-    public Subject update(Subject subject) {
-        DBConnection connection=ConnectionPool.getConnection();
-        try(PreparedStatement pStatement=connection.prepareStatement(UPDATE_SUBJECT)){
-            pStatement.setInt(1,subject.getSubjectId());
-            pStatement.setString(2,subject.getSubjectName());
-            pStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-
-            ConnectionPool.closeConnection(connection);
-        }
-        return subject;
-    }
+    Subject update(Subject subject);
 }

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 
 @WebServlet(name = "controller", urlPatterns = "/controller")
@@ -50,9 +51,12 @@ public class Controller extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Router router;
-        String s=request.getParameter("first-subject");
-        Command command= CommandMap.getInstance().get(request.getParameter("command"));
-        router=command.execute(request);
+        request.setCharacterEncoding("UTF-8");
+        SessionRequestContent content=new SessionRequestContent(request);
+        content.extractValues();
+        Command command= CommandMap.getInstance().get(content.getRequestParameter("command"));
+        router=command.execute(content);
+        request=content.getRequest();
         switch (router.getRouter()){
             case FORWARD: request.getRequestDispatcher(router.getPagePath()).forward(request,response);
             break;

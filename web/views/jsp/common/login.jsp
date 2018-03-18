@@ -22,10 +22,15 @@
 <form name="LoginForm" method="post" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="login">
     <fmt:message key="login.form.login"/>:<br/>
-    <input type="text" name="login" value=""/>
+    <input type="text" name="login" value="${params.login}"/>
     <br/><fmt:message key="login.form.password"/>:<br/>
-    <input type="text" name="password" value=""/>
-    <input type="submit" value=<fmt:message key="login.form.submit"/>/>
+    <input type="password" name="password" value="${params.password}" />
+    <input type="submit" value=<fmt:message key="login.form.submit"/> />
+    <br/>
+    <c:if test= "${not empty message}">
+    <fmt:message key="login.form.error_message"/>
+    </c:if>
+    ${message=null}
 </form>
 </body>
 </html>

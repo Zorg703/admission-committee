@@ -4,35 +4,41 @@ import by.mordas.project.dao.FacultyDAO;
 import by.mordas.project.dao.SpecialityDAO;
 import by.mordas.project.dao.SubjectDAO;
 import by.mordas.project.dao.UserDAO;
+import by.mordas.project.dao.impl.FacultyDAOImpl;
+import by.mordas.project.dao.impl.SpecialityDAOImpl;
+import by.mordas.project.dao.impl.SubjectDAOImpl;
+import by.mordas.project.dao.impl.UserDAOImpl;
 import by.mordas.project.entity.Faculty;
 import by.mordas.project.entity.Speciality;
 import by.mordas.project.entity.Subject;
 import by.mordas.project.entity.User;
+import by.mordas.project.util.PasswordEncoder;
 
 import java.util.List;
 
 public class UserLogic implements Logic{
 public List<Faculty> findAllFaculties(){
-    List<Faculty> list=new FacultyDAO().findAllEntity();
+    List<Faculty> list
+            =new FacultyDAOImpl().findAllEntity();
     return list;
 }
 public List<Speciality> findSpecialitiesByFacultyId(int id){
-    List<Speciality> specialities=new SpecialityDAO().findSpecialitiesByFacultyID(id);
+    List<Speciality> specialities=new SpecialityDAOImpl().findSpecialitiesByFacultyID(id);
     return specialities;
 }
 
-public boolean registerUser(User user){
-        new UserDAO().create(user);
+public void registerUser(User user){
+    user.setPassword(PasswordEncoder.encodePassword(user.getPassword()));
+        new UserDAOImpl().create(user);
 
-    return true;
 }
 public boolean findUserByLogin(String login){
-return new UserDAO().findUserByLogin(login);
+return new UserDAOImpl().findUserByLogin(login);
 }
 
 public Subject findSubject(Integer id){
     Subject subject;
-    subject=new SubjectDAO().findEntityById(id);
+    subject=new SubjectDAOImpl().findEntityById(id);
     return subject;
 }
 }

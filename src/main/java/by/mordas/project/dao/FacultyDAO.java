@@ -12,116 +12,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FacultyDAO extends AbstractDAO<Integer,Faculty> {
-    private static final String FIND_ALL_FACULTY="SELECT ID,FACULTY_NAME FROM FACULTY";
-    private static final String FIND_FACULTY_BY_ID="SELECT ID,FACULTY_NAME WHERE ID=?";
-    private static final String CREATE_FACULTY="INSERT INTO FACULTY(FACULTY_NAME) VALUES(?,?)";
-    private static final String UPDATE_FACULTY="UPDATE FACULTY SET ID=? FACULTY_NAME=?";
-    private static final String DELETE_FACULTY="DELETE FROM FACULTY WHERE ID=?";
-    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_NAME="SELECT SPECIALITY.ID,SPECIALITY.SPECIALITY_NAME," +
-            "SPECIALITY.RECRUITMENT_PALN, SPECIALITY.FACULTY_ID FROM FACULTY,SPECIALITY" +
-            " WHERE SPECIALITY.ID=SPECIALITY.FACULTY_ID AND FACULTY=?";
+public interface FacultyDAO extends AbstractDAO<Faculty> {
 
+    List<Faculty> findAllEntity();
 
-    @Override
-    public List<Faculty> findAllEntity() {
-        DBConnection connection=ConnectionPool.getConnection();
-        List<Faculty> faculties=new ArrayList<>();
-        try(Statement statement=connection.createStatement();
-            ResultSet rs=statement.executeQuery(FIND_ALL_FACULTY)) {
-            if (rs != null) {
-                while (rs.next()) {
-                    Faculty faculty=new Faculty();
-                    faculty.setFacultyId(rs.getInt("ID"));
-                    faculty.setFacultyName(rs.getString("FACULTY_NAME"));
-                    faculties.add(faculty);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            ConnectionPool.closeConnection(connection);
+    Faculty findEntityById(int id);
 
-        }
-        return faculties;
-    }
+    boolean delete(int id);
 
-    @Override
-    public Faculty findEntityById(int id) {
-        DBConnection conn= ConnectionPool.getConnection();
-        Faculty faculty=new Faculty();
-        try(PreparedStatement pStatement=conn.prepareStatement(FIND_FACULTY_BY_ID);
-            ResultSet rs=pStatement.executeQuery()) {
-            pStatement.setInt(1,id);
-            if(rs!=null){
-                faculty.setFacultyId(rs.getInt("ID"));
-                faculty.setFacultyName(rs.getString("FACULTY_NAME"));
+    void create(Faculty faculty);
 
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            ConnectionPool.closeConnection(conn);
-        }
-        return faculty;
-    }
+    Faculty update(Faculty faculty) ;
 
-    @Override
-    public boolean delete(int id) {
-        DBConnection connection = ConnectionPool.getConnection();
-        try (PreparedStatement pStatement = connection.prepareStatement(DELETE_FACULTY)) {
-            pStatement.setInt(1,id);
-            return pStatement.executeUpdate()==2;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            ConnectionPool.closeConnection(connection);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean create(Faculty faculty) {
-        DBConnection connection=ConnectionPool.getConnection();
-
-        try(PreparedStatement pStatement=connection.prepareStatement(CREATE_FACULTY)){
-            pStatement.setString(1,faculty.getFacultyName());
-            int result=pStatement.executeUpdate();
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-
-            ConnectionPool.closeConnection(connection);
-        }
-        return false;
-    }
-
-    @Override
-    public Faculty update(Faculty faculty) {
-        DBConnection connection=ConnectionPool.getConnection();
-        try(PreparedStatement pStatement=connection.prepareStatement(UPDATE_FACULTY)){
-            pStatement.setInt(1,faculty.getFacultyId());
-            pStatement.setString(2,faculty.getFacultyName());
-            pStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            ConnectionPool.closeConnection(connection);
-        }
-        return faculty;
-    }
-
-    public List<Speciality> findSpecialityFromFaculty(){
-        List<Speciality> specialties=new ArrayList<>();
-        return specialties;
-
-    }
-
+    List<Speciality> findSpecialityFromFaculty();
 }

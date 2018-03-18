@@ -21,23 +21,26 @@
     <input type="hidden" name="command" value="user_registration">
     <h3><fmt:message key="user.registration.h3"/></h3>
     <label><fmt:message key="user.registration.first_name"/> <br>
-        <input type="text" name="first-name" required pattern="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}" value=""></label>
+        <input type="text" name="first_name" required <%--pattern="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}" --%> value="${user_params.first_name}"></label>
+
+                <c:out value="${messages.first_name}"/>
+
     <br>
     <label><fmt:message key="user.registration.last_name"/> <br>
-        <input type="text" name="last-name" required pattern="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}" value="">
+        <input type="text" name="last_name" required <%--pattern="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}"--%> value="${user_params.last_name}">
     </label>
     <br>
     <label><fmt:message key="user.registration.birthday"/> <br>
-        <input type="date" name="birthday" required min="1900-01-01" max="2010-12-12" value=""></label>
+        <input type="date" name="birthday" required min="1900-01-01" max="2010-12-12" value="${user_params.birthday}"></label>
     <br>
     <label><fmt:message key="user.registration.certificate"/> <br>
-        <input type="number" name="avg" required min="0" max="100" value="">
+        <input type="number" name="avg" required min="0" max="100" value="${user_params.avg}">
     </label><br>
     <h3><fmt:message key="user.registration.ct_results"/> </h3>
     <table>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
         <td>
-            <input list="subject" required name="first-subject">
+            <input list="subject" required name="first_subject" value="${user_params.first_subject}">
             <datalist id="subject">
                 <option value="1"><fmt:message key="user.registration.maths"/>
                 <option value="2"><fmt:message key="user.registration.physic"/>
@@ -51,38 +54,39 @@
             </datalist>
         </td>
         <td>
-            <input type="number" name="mark1" required min="0" max="100" value=""><br>
+            <input type="number" name="mark1" required min="0" max="100" value="${user_params.mark1}"><br>
+
         </td>
     </tr>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
         <td>
-            <input list="subject" required name="second-subject">
+            <input list="subject" required name="second_subject" value="${user_params.second_subject}">
         </td>
         <td>
-            <input type="number" required min="0" max="100" name="mark2" value=""><br>
+            <input type="number" required min="0" max="100" name="mark2" value="${user_params.mark2}"><br>
         </td>
     </tr>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
         <td>
-            <input list="subject"required name="third-subject">
+            <input list="subject"required name="third_subject" value="${user_params.third_subject}">
         </td>
         <td>
-            <input type="number"required min="0" max="100" name="mark3" value=""><br>
+            <input type="number"required min="0" max="100" name="mark3" value="${user_params.mark3}"><br>
         </td>
     </tr>
     </table>
     <h3><fmt:message key="user.registration.date"/></h3>
     <label><fmt:message key="user.registration.login"/>:<br>
-        <input type="text" name="login" required pattern="^[a-zA-Z][a-zA-Z0-9-_]{4,30}"></label>
+        <input type="text" name="login" required <%--pattern="^[a-zA-Z][a-zA-Z0-9-_]{4,30}"--%> value="${user_params.login}"></label>
     <br>
     <label><fmt:message key="user.registration.password"/>:<br>
-        <input type="password" required name="password1" id="password1" pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}" value=""> </label>
+        <input type="password" required name="password1" id="password1" <%--pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}"--%> value=""> </label>
     <br>
     <label><fmt:message key="user.registration.password_confirm"/>:<br>
-        <input type="password" required name="password2" id="password2" pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}" value=""> </label>
+        <input type="password" required name="password2" id="password2"<%-- pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}"--%> value=""> </label>
     <br>
     <label><fmt:message key="user.registration.email"/>:<br>
-        <input type="email" required name="email" value=""></label>
+        <input type="email" required name="email" value="${user_params.email}"></label>
     <br>
     <input class="button" type="submit"value=<fmt:message key="user.registration.confirm"/>>
     <input class="button" type="reset" value=<fmt:message key="user.registration.cancel"/>>
