@@ -1,9 +1,6 @@
 package by.mordas.project.logic;
 
-import by.mordas.project.dao.FacultyDAO;
-import by.mordas.project.dao.SpecialityDAO;
-import by.mordas.project.dao.SubjectDAO;
-import by.mordas.project.dao.UserDAO;
+import by.mordas.project.dao.*;
 import by.mordas.project.dao.impl.FacultyDAOImpl;
 import by.mordas.project.dao.impl.SpecialityDAOImpl;
 import by.mordas.project.dao.impl.SubjectDAOImpl;
@@ -27,7 +24,7 @@ public List<Speciality> findSpecialitiesByFacultyId(int id){
     return specialities;
 }
 
-public void registerUser(User user){
+public void registerUser(User user) {
     user.setPassword(PasswordEncoder.encodePassword(user.getPassword()));
         new UserDAOImpl().create(user);
 

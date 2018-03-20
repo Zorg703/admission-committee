@@ -17,30 +17,43 @@
 </head>
 <body>
 <h2><fmt:message key="user.registration.h2"/> </h2>
-<form name="registration-form" method="post" action="${pageContext.request.contextPath}/controller">
+<form name="registration-form" method="post" action="${pageContext.request.contextPath}/controller" novalidate>
     <input type="hidden" name="command" value="user_registration">
     <h3><fmt:message key="user.registration.h3"/></h3>
     <label><fmt:message key="user.registration.first_name"/> <br>
-        <input type="text" name="first_name" required <%--pattern="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}" --%> value="${user_params.first_name}"></label>
-
-                <c:out value="${messages.first_name}"/>
+        <input type="text" name="first_name" required pattern="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}"  value="${user_params.first_name}"></label>
+            <c:if test="${not empty messages.first_name}">
+                <fmt:message key="user.registration.message.first_name"/>
+            </c:if>
 
     <br>
     <label><fmt:message key="user.registration.last_name"/> <br>
-        <input type="text" name="last_name" required <%--pattern="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}"--%> value="${user_params.last_name}">
+        <input type="text" name="last_name" required pattern="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}" value="${user_params.last_name}">
+        <c:if test="${not empty messages.last_name}">
+            <fmt:message key="user.registration.message.last_name"/>
+        </c:if>
     </label>
     <br>
     <label><fmt:message key="user.registration.birthday"/> <br>
         <input type="date" name="birthday" required min="1900-01-01" max="2010-12-12" value="${user_params.birthday}"></label>
+        <c:if test="${not empty messages.birthday}">
+            <fmt:message key="user.registration.message.birthday"/>
+        </c:if>
     <br>
     <label><fmt:message key="user.registration.certificate"/> <br>
         <input type="number" name="avg" required min="0" max="100" value="${user_params.avg}">
+        <c:if test="${not empty messages.avg}">
+            <fmt:message key="user.registration.message.avg"/>
+        </c:if>
     </label><br>
     <h3><fmt:message key="user.registration.ct_results"/> </h3>
     <table>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
         <td>
             <input list="subject" required name="first_subject" value="${user_params.first_subject}">
+            <c:if test="${not empty messages.first_subject}">
+                <fmt:message key="user.registration.message.subject"/>
+            </c:if>
             <datalist id="subject">
                 <option value="1"><fmt:message key="user.registration.maths"/>
                 <option value="2"><fmt:message key="user.registration.physic"/>
@@ -52,45 +65,88 @@
                 <option value="8"><fmt:message key="user.registration.history"/>
                 <option value="9"><fmt:message key="user.registration.geography"/>
             </datalist>
+
         </td>
+
         <td>
             <input type="number" name="mark1" required min="0" max="100" value="${user_params.mark1}"><br>
-
+            <c:if test="${not empty messages.mark1}">
+                <fmt:message key="user.registration.message.mark"/>
+            </c:if>
         </td>
     </tr>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
         <td>
             <input list="subject" required name="second_subject" value="${user_params.second_subject}">
+            <c:if test="${not empty messages.second_subject}">
+                <fmt:message key="user.registration.message.subject"/>
+            </c:if>
         </td>
         <td>
             <input type="number" required min="0" max="100" name="mark2" value="${user_params.mark2}"><br>
+            <c:if test="${not empty messages.mark2}">
+                <fmt:message key="user.registration.message.mark"/>
+            </c:if>
         </td>
     </tr>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
         <td>
             <input list="subject"required name="third_subject" value="${user_params.third_subject}">
+            <c:if test="${not empty messages.third_subject}">
+                <fmt:message key="user.registration.message.subject"/>
+            </c:if>
         </td>
         <td>
             <input type="number"required min="0" max="100" name="mark3" value="${user_params.mark3}"><br>
+            <c:if test="${not empty messages.mark3}">
+                <fmt:message key="user.registration.message.mark"/>
+            </c:if>
         </td>
     </tr>
     </table>
     <h3><fmt:message key="user.registration.date"/></h3>
     <label><fmt:message key="user.registration.login"/>:<br>
-        <input type="text" name="login" required <%--pattern="^[a-zA-Z][a-zA-Z0-9-_]{4,30}"--%> value="${user_params.login}"></label>
+        <input type="text" name="login" required pattern="^[a-zA-Z][a-zA-Z0-9-_]{4,30}" value="${user_params.login}"></label>
+    <c:if test="${not empty messages.login}">
+        <fmt:message key="user.registration.message.login"/>
+    </c:if>
+    <c:if test="${not empty messages.login_busy}">
+        <fmt:message key="user.registration.message.login_busy"/>
+    </c:if>
     <br>
+
     <label><fmt:message key="user.registration.password"/>:<br>
-        <input type="password" required name="password1" id="password1" <%--pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}"--%> value=""> </label>
+        <input type="password" required name="password1" id="password1"pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}" value=""> </label>
+      <c:if test="${not empty messages.password1}">
+        <fmt:message key="user.registration.message.password1"/>
+    </c:if>
     <br>
     <label><fmt:message key="user.registration.password_confirm"/>:<br>
-        <input type="password" required name="password2" id="password2"<%-- pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}"--%> value=""> </label>
+        <input type="password" required name="password2" id="password2"pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}" value=""> </label>
+    <c:if test="${not empty messages.password2}">
+        <fmt:message key="user.registration.message.password2"/>
+    </c:if>
     <br>
     <label><fmt:message key="user.registration.email"/>:<br>
         <input type="email" required name="email" value="${user_params.email}"></label>
+    <c:if test="${not empty messages.email}">
+        <fmt:message key="user.registration.message.email"/>
+    </c:if>
     <br>
     <input class="button" type="submit"value=<fmt:message key="user.registration.confirm"/>>
     <input class="button" type="reset" value=<fmt:message key="user.registration.cancel"/>>
+    <c:set var="count" value="0" scope="page"/>
+    <c:forEach items="${messages}" var="message">
+        <c:if test="${empty message.value }">
+            <c:set var="count" value="${count + 1}" scope="page"/>
+        </c:if>
+    </c:forEach>
+<c:if test="${count!=0}">
+<fmt:message key="user.registration.empty_field" />
+</c:if>
 </form>
+${messages=null}
+${user_params=null}
 <script type="text/javascript">
     window.onload = function () {
         document.getElementById("password1").onchange = validatePassword;

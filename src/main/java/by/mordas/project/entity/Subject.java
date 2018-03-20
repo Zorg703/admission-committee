@@ -21,7 +21,12 @@ public class Subject extends Entity {
         this.subjectName = subjectName;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "subjectId=" + subjectId +
+                ", subjectName='" + subjectName + '\'' +
+                "} " + super.toString();
+    }
 }
 

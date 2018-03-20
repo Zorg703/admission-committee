@@ -14,7 +14,7 @@ import java.util.List;
 
 public class SubjectDAOImpl implements SubjectDAO {
     private static final String FIND_ALL_SUBJECT="SELECT ID,SUBJECT_NAME FROM SUBJECT";
-    private static final String FIND_SUBJECT_BY_ID="SELECT ID,SUBJECT_NAME WHERE ID=?";
+    private static final String FIND_SUBJECT_BY_ID="SELECT ID,SUBJECT_NAME FROM SUBJECT WHERE ID=?";
     private static final String CREATE_SUBJECT="INSERT INTO SUBJECT(ID,SUBJECT_NAME) VALUES(?,?)";
     private static final String UPDATE_SUBJECT="UPDATE SUBJECT SET ID=? SUBJECT_NAME=?";
     private static final String DELETE_SUBJECT="DELETE FROM SUBJECT WHERE ID=?";
@@ -48,11 +48,13 @@ public class SubjectDAOImpl implements SubjectDAO {
         DBConnection conn= ConnectionPool.getConnection();
         Subject subject=new Subject();
         try(PreparedStatement pStatement=conn.prepareStatement(FIND_SUBJECT_BY_ID);
-            ResultSet rs=pStatement.executeQuery()) {
+           ) {
             pStatement.setInt(1,id);
+
+            ResultSet rs=pStatement.executeQuery();
             if(rs.next()){
                 subject.setSubjectId(rs.getInt("ID"));
-                subject.setSubjectName(rs.getString("FACULTY_NAME"));
+                subject.setSubjectName(rs.getString("SUBJECT_NAME"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

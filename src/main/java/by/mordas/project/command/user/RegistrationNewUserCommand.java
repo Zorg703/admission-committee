@@ -25,16 +25,16 @@ public class RegistrationNewUserCommand implements Command {
         HashMap<String,String> errorMessages=new Validator().checkUserDate(parameters);
         if(errorMessages.isEmpty()) {
             User user=new User();
-            user.setFirstName(content.getRequestParameter("first-name"));
-            user.setLastName(content.getRequestParameter("last-name"));
-            user.setCertificateMark(Integer.parseInt(content.getRequestParameter("avg")));
-            user.setBirthday(Date.valueOf(content.getRequestParameter("birthday")));
-            user.setEmail(content.getRequestParameter("email"));
-            user.setPassword(content.getRequestParameter("password"));
-            user.setLogin(content.getRequestParameter("login"));
-            user.put(userLogic.findSubject(Integer.valueOf(content.getRequestParameter("first-subject"))), Integer.valueOf(content.getRequestParameter("mark1")));
-            user.put(userLogic.findSubject(Integer.valueOf(content.getRequestParameter("second-subject"))), Integer.valueOf(content.getRequestParameter("mark2")));
-            user.put(userLogic.findSubject(Integer.valueOf(content.getRequestParameter("third-subject"))), Integer.valueOf(content.getRequestParameter("mark3")));
+            user.setFirstName(parameters.get(ParamConstant.FIRST_NAME));
+            user.setLastName(parameters.get(ParamConstant.LAST_NAME));
+            user.setCertificateMark(Integer.parseInt(parameters.get(ParamConstant.CERTIFICATE_AVG)));
+            user.setBirthday(Date.valueOf(parameters.get(ParamConstant.BIRTHDAY)));
+            user.setEmail(parameters.get(ParamConstant.EMAIL));
+            user.setPassword(parameters.get(ParamConstant.PASSWORD_ONE));
+            user.setLogin(parameters.get(ParamConstant.LOG_IN));
+            user.put(userLogic.findSubject(Integer.valueOf(parameters.get(ParamConstant.FIRST_SUBJECT))), Integer.valueOf(parameters.get(ParamConstant.FIRST_SUBJECT_MARK)));
+            user.put(userLogic.findSubject(Integer.valueOf(parameters.get(ParamConstant.SECOND_SUBJECT))), Integer.valueOf(parameters.get(ParamConstant.SECOND_SUBJECT_MARK)));
+            user.put(userLogic.findSubject(Integer.valueOf(parameters.get(ParamConstant.THIRD_SUBJECT))), Integer.valueOf(parameters.get(ParamConstant.THIRD_SUBJECT_MARK)));
             userLogic.registerUser(user);
             content.setSessionAttribute(ParamConstant.USER,user);
             router.setRouter(Router.RouteType.REDIRECT);

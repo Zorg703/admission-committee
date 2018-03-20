@@ -21,12 +21,12 @@ public class UserDAOImpl implements UserDAO {
     private static final String FIND_ALL_USER="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
             "SPECIALITY_ID FROM USER ORDER BY LAST_NAME";
     private static final String INSERT_USER ="INSERT INTO USER(FIRST_NAME,LAST_NAME,BIRTHDAY," +
-            "CERTIFICATE_MARK,SPECIALITY_ID,LOGIN,PASSWORD,EMAIL) VALUES (?,?,?,?,?,?,?,?)";
+            "CERTIFICATE_MARK,LOGIN,PASSWORD,EMAIL) VALUES (?,?,?,?,?,?,?)";
     private static final String UPDATE_USER ="UPDATE USER SET ID=?,FIRST_NAME=?,LAST_NAME=?," +
             "BIRTHDAY=?,CERTIFICATE_AVG=?,SPECIALITY_ID=?,LOGIN=?,PASSWORD=?,EMAIL=?";
-    private static final String UPDATE_SUBJECT_USER="UPDATE USER_SUBJECT_MARK SET USER_ID=?, SUBJECT_ID=?,USER_MARK=?";
+    private static final String UPDATE_SUBJECT_USER="UPDATE USER_SUBJECT_MARK SET ID_USER=?, ID_SUBJECT=?,USER_MARK=?";
     private static final String DELETE_USER_BY_ID="DELETE FROM USER WHERE ID=?";
-    private static final String INSERT_STUDENTS_SUBJECTS="INSERT INTO USER_SUBJECT_MARK(SUBJECT_ID,USER_ID," +
+    private static final String INSERT_STUDENTS_SUBJECTS="INSERT INTO USER_SUBJECT_MARK(ID_USER,ID_SUBJECT," +
             "USER_MARK) VALUES(?,?,?) ";
     private static final String FIND_USER_BY_PASSWORD_AND_LOGIN="SELECT * FROM USER WHERE LOGIN=? and PASSWORD=?";
     private static final String FIND_SUBJECT_USER="SELECT * FROM USER_SUBJECT_MARK WHERE ID=?";
@@ -120,34 +120,48 @@ public class UserDAOImpl implements UserDAO {
     public void create(User user)
     {
         DBConnection connection=ConnectionPool.getConnection();
-
+        PreparedStatement pStatement=null;
+        PreparedStatement pStatement2=null;
         try{
-            PreparedStatement pStatement=connection.prepareStatement(INSERT_USER);
+            connection.setAutoCommit(false);
+            pStatement=connection.prepareStatement(INSERT_USER,Statement.RETURN_GENERATED_KEYS);
             pStatement.setString(1, user.getFirstName());
             pStatement.setString(2, user.getLastName());
             pStatement.setDate(3, user.getBirthday());
             pStatement.setInt(4, user.getCertificateMark());
-            pStatement.setInt(5, user.getSpecialityId());
-            pStatement.setString(6,user.getLogin());
-            pStatement.setString(7,user.getPassword());
-            pStatement.setString(8,user.getEmail());
+            pStatement.setString(5,user.getLogin());
+            pStatement.setString(6,user.getPassword());
+            pStatement.setString(7,user.getEmail());
+            pStatement.executeUpdate();
             ResultSet resultSet=pStatement.getGeneratedKeys();
-            while (resultSet.next()){
-                user.setUserId(resultSet.getInt("ID"));
+            if (resultSet.next()){
+                user.setUserId(resultSet.getInt(1));
             }
 
             for(Map.Entry<Subject,Integer> entry: user.getSubjectMark().entrySet()){
-                pStatement=connection.prepareStatement(INSERT_STUDENTS_SUBJECTS);
-                pStatement.setInt(1, user.getUserId());
-                pStatement.setInt(2,entry.getKey().getSubjectId());
-                pStatement.setInt(3,entry.getValue());
-            }
+                pStatement2=connection.prepareStatement(INSERT_STUDENTS_SUBJECTS);
+                pStatement2.setInt(1, user.getUserId());
+                pStatement2.setInt(2,entry.getKey().getSubjectId());
+                pStatement2.setInt(3,entry.getValue());
+                pStatement2.executeUpdate();
 
+            }
+            connection.commit();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
         }
         finally {
+            try {
 
+                pStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             ConnectionPool.closeConnection(connection);
         }
 
@@ -194,7 +208,7 @@ public class UserDAOImpl implements UserDAO {
             PreparedStatement pStetement=connection.prepareStatement(FIND_USER_BY_LOGIN);
             pStetement.setString(1,login);
             ResultSet rs=pStetement.executeQuery();
-            return rs.next();
+            return !rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
             //throw new DAOException

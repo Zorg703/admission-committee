@@ -688,6 +688,7 @@ id_subject</ColNames>
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="165" parent="138" name="login">
@@ -698,7 +699,7 @@ id_subject</ColNames>
     </column>
     <column id="166" parent="138" name="password">
       <Position>8</Position>
-      <DataType>varchar(45)|0</DataType>
+      <DataType>tinyblob|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
@@ -724,49 +725,43 @@ speciality_id</ColNames>
       <ColNames>login</ColNames>
       <UnderlyingIndexName>user_login_uindex</UnderlyingIndexName>
     </key>
-    <foreign-key id="172" parent="138" name="fk_user_speciality1">
-      <ColNames>speciality_id</ColNames>
-      <RefSchemaName>mydb</RefSchemaName>
-      <RefTableName>speciality</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <column id="173" parent="139" name="id_enrollee">
+    <column id="172" parent="139" name="id_user">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="174" parent="139" name="id_subject">
+    <column id="173" parent="139" name="id_subject">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="175" parent="139" name="user_mark">
+    <column id="174" parent="139" name="user_mark">
       <Position>3</Position>
       <DataType>tinyint(4)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="176" parent="139" name="fk_subject_has_user_user1_idx">
-      <ColNames>id_enrollee</ColNames>
+    <index id="175" parent="139" name="fk_subject_has_user_user1_idx">
+      <ColNames>id_user</ColNames>
     </index>
-    <index id="177" parent="139" name="fk_subject_has_user_subject1_idx">
+    <index id="176" parent="139" name="fk_subject_has_user_subject1_idx">
       <ColNames>id_subject</ColNames>
     </index>
-    <key id="178" parent="139" name="PRIMARY">
+    <key id="177" parent="139" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>id_enrollee
+      <ColNames>id_user
 id_subject</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="179" parent="139" name="fk_subject_has_user">
-      <ColNames>id_enrollee</ColNames>
+    <foreign-key id="178" parent="139" name="fk_subject_has_user">
+      <ColNames>id_user</ColNames>
       <RefSchemaName>mydb</RefSchemaName>
       <RefTableName>user</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="180" parent="139" name="fk_subject_has_user_subject">
+    <foreign-key id="179" parent="139" name="fk_subject_has_user_subject">
       <ColNames>id_subject</ColNames>
       <RefSchemaName>mydb</RefSchemaName>
       <RefTableName>subject</RefTableName>

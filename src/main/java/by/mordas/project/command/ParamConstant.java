@@ -30,4 +30,5 @@ public final static String PASSWORD_TWO="password2";
 public final static String EMAIL="email";
 public final static String USER_PARAMS="user_params";
 public final static String ERROR_MESSAGES="messages";
+public final static String SUBJECTS="subjects";
 }
