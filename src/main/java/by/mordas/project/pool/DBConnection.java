@@ -54,7 +54,7 @@ public class DBConnection implements Connection, AutoCloseable {
 
     @Override
     public void close() throws SQLException {
-        ConnectionPool.closeConnection(this);
+        ConnectionPool.getInstance().closeConnection(this);
     }
 
     @Override
@@ -280,5 +280,8 @@ public class DBConnection implements Connection, AutoCloseable {
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return connection.isWrapperFor(iface);
+    }
+    void closeConnection(DBConnection connection) throws SQLException {
+        connection.close();
     }
 }

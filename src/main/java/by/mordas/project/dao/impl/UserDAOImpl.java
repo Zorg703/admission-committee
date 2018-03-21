@@ -36,7 +36,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> findAllEntity() {
-        DBConnection conn= ConnectionPool. getConnection();
+        DBConnection conn= ConnectionPool.getInstance().getConnection();
         List<User> users =new ArrayList<>();
         try(Statement statement=conn.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_USER)) {
@@ -54,9 +54,7 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
-           ConnectionPool.closeConnection(conn);
-        }
+
         return users;
     }
 

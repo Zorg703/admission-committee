@@ -14,15 +14,15 @@ import java.util.List;
 
 public interface FacultyDAO extends AbstractDAO<Faculty> {
 
-    List<Faculty> findAllEntity();
+    List<Faculty> findAllEntity() throws DAOException;
 
-    Faculty findEntityById(int id);
+    Faculty findEntityById(int id) throws DAOException;
 
-    boolean delete(int id);
+    boolean delete(int id) throws DAOException;
 
-    void create(Faculty faculty);
+    void create(Faculty faculty) throws DAOException;
 
-    Faculty update(Faculty faculty) ;
+    Faculty update(Faculty faculty) throws DAOException;
 
-    List<Speciality> findSpecialityFromFaculty();
+    List<Speciality> findSpecialityFromFaculty() throws DAOException;
 }

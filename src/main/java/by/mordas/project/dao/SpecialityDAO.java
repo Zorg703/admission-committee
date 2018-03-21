@@ -15,19 +15,19 @@ import java.util.List;
 
 public interface SpecialityDAO extends AbstractDAO<Speciality> {
 
-    List<Speciality> findAllEntity();
+    List<Speciality> findAllEntity() throws DAOException;
 
-    Speciality findEntityById(int id);
+    Speciality findEntityById(int id) throws DAOException;
 
-    List<Speciality> findSpecialitiesByFacultyID(int id);
+    List<Speciality> findSpecialitiesByFacultyID(int id) throws DAOException;
 
-    boolean delete(int id);
+    boolean delete(int id) throws DAOException;
 
-    void create(Speciality specialty);
+    void create(Speciality specialty) throws DAOException;
 
-    Speciality update(Speciality specialty);
+    Speciality update(Speciality specialty) throws DAOException;
 
-    List<User> findUserOnSpeciality(int id);
+    List<User> findUserOnSpeciality(int id) throws DAOException;
 
 
 

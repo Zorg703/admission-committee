@@ -1,5 +1,6 @@
 package by.mordas.project.dao.impl;
 
+import by.mordas.project.dao.DAOException;
 import by.mordas.project.dao.FacultyDAO;
 import by.mordas.project.entity.Faculty;
 import by.mordas.project.entity.Speciality;
@@ -19,16 +20,15 @@ public class FacultyDAOImpl implements FacultyDAO {
     private static final String CREATE_FACULTY="INSERT INTO FACULTY(FACULTY_NAME) VALUES(?,?)";
     private static final String UPDATE_FACULTY="UPDATE FACULTY SET ID=? FACULTY_NAME=?";
     private static final String DELETE_FACULTY="DELETE FROM FACULTY WHERE ID=?";
-    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_NAME="SELECT SPECIALITY.ID,SPECIALITY.SPECIALITY_NAME," +
-            "SPECIALITY.RECRUITMENT_PALN, SPECIALITY.FACULTY_ID FROM FACULTY,SPECIALITY" +
-            " WHERE SPECIALITY.ID=SPECIALITY.FACULTY_ID AND FACULTY=?";
+    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, FACULTY_ID FROM SPECIALITY" +
+            " INNER JOIN FACULTY ON SPECIALITY.FACULTY_ID=FACULTY.ID AND FACULTY.ID=?";
 
 
     @Override
-    public List<Faculty> findAllEntity() {
-        DBConnection connection=ConnectionPool.getConnection();
+    public List<Faculty> findAllEntity() throws DAOException {
+
         List<Faculty> faculties=new ArrayList<>();
-        try(Statement statement=connection.createStatement();
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection();Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_FACULTY)) {
             if (rs != null) {
                 while (rs.next()) {
@@ -39,88 +39,80 @@ public class FacultyDAOImpl implements FacultyDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           throw new DAOException();
         }
-        finally {
-            ConnectionPool.closeConnection(connection);
 
-        }
         return faculties;
     }
 
     @Override
-    public Faculty findEntityById(int id) {
-        DBConnection conn= ConnectionPool.getConnection();
+    public Faculty findEntityById(int id) throws DAOException {
         Faculty faculty=new Faculty();
-        try(PreparedStatement pStatement=conn.prepareStatement(FIND_FACULTY_BY_ID);
-            ResultSet rs=pStatement.executeQuery()) {
+        try(DBConnection conn= ConnectionPool.getInstance().getConnection();
+            PreparedStatement pStatement=conn.prepareStatement(FIND_FACULTY_BY_ID)) {
             pStatement.setInt(1,id);
+            ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
                 faculty.setFacultyId(rs.getInt("ID"));
                 faculty.setFacultyName(rs.getString("FACULTY_NAME"));
 
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException();
         }
-        finally {
-            ConnectionPool.closeConnection(conn);
-        }
+
         return faculty;
     }
 
     @Override
-    public boolean delete(int id) {
-        DBConnection connection = ConnectionPool.getConnection();
-        try (PreparedStatement pStatement = connection.prepareStatement(DELETE_FACULTY)) {
+    public boolean delete(int id) throws DAOException {
+
+        try (DBConnection connection = ConnectionPool.getInstance().getConnection();PreparedStatement pStatement = connection.prepareStatement(DELETE_FACULTY)) {
             pStatement.setInt(1,id);
             return pStatement.executeUpdate()==2;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException();
         }
-        finally {
-            ConnectionPool.closeConnection(connection);
-        }
-        return false;
     }
 
     @Override
-    public void create(Faculty faculty) {
-        DBConnection connection=ConnectionPool.getConnection();
-
-        try(PreparedStatement pStatement=connection.prepareStatement(CREATE_FACULTY)){
+    public void create(Faculty faculty) throws DAOException {
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(CREATE_FACULTY)){
             pStatement.setString(1,faculty.getFacultyName());
-
-
-
         } catch (SQLException e) {
-            e.printStackTrace();
+           throw new DAOException();
         }
-        finally {
 
-            ConnectionPool.closeConnection(connection);
-        }
 
     }
 
     @Override
-    public Faculty update(Faculty faculty) {
-        DBConnection connection=ConnectionPool.getConnection();
-        try(PreparedStatement pStatement=connection.prepareStatement(UPDATE_FACULTY)){
+    public Faculty update(Faculty faculty) throws DAOException {
+
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(UPDATE_FACULTY)){
             pStatement.setInt(1,faculty.getFacultyId());
             pStatement.setString(2,faculty.getFacultyName());
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException();
         }
-        finally {
-            ConnectionPool.closeConnection(connection);
-        }
+
         return faculty;
     }
 
-    public List<Speciality> findSpecialityFromFaculty(){
+    public List<Speciality> findSpecialityFromFaculty() throws DAOException {
         List<Speciality> specialties=new ArrayList<>();
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection()) {
+            PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_SPECIALITY_BY_FACULTY_ID);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs!=null){
+                while (rs.next()){
+
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException();
+        }
         return specialties;
 
     }
