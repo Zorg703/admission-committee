@@ -4,6 +4,7 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.logic.UserLogic;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,21 +24,12 @@ public class Validator {
     public boolean checkLogin(String login){
         UserLogic userLogic=new UserLogic();
         boolean isLoginFree=false;
-        Pattern loginPattern=Pattern.compile(LOGIN_REGEX);
-        Matcher matcher=loginPattern.matcher(login);
-        if(matcher.matches()){
-           isLoginFree=userLogic.findUserByLogin(login);
-        }
+        isLoginFree=userLogic.findUserByLogin(login);
         return isLoginFree;
     }
 
     public boolean checkPassword(String password){
         Pattern loginPattern=Pattern.compile(PASSWORD_REGEX);
-        Matcher matcher=loginPattern.matcher(password);
-        return matcher.matches();
-    }
-    public boolean checkывPassword(String password){
-        Pattern loginPattern=Pattern.compile(FIRST_NAME_REGEX);
         Matcher matcher=loginPattern.matcher(password);
         return matcher.matches();
     }
@@ -58,9 +50,7 @@ public class Validator {
             errorMessageMap.put(ParamConstant.LAST_NAME,parameterMap.get(ParamConstant.LAST_NAME));
         }
         if(!checkData(LOGIN_REGEX,parameterMap.get(ParamConstant.LOG_IN))) {
-
-                errorMessageMap.put(ParamConstant.LOG_IN, parameterMap.get(ParamConstant.LOG_IN));
-
+            errorMessageMap.put(ParamConstant.LOG_IN, parameterMap.get(ParamConstant.LOG_IN));
         }
         if(checkData(LOGIN_REGEX,parameterMap.get(ParamConstant.LOG_IN)) && !checkLogin(parameterMap.get(ParamConstant.LOG_IN))) {
             errorMessageMap.put(LOGIN_BUSY,LOGIN_BUSY);
@@ -103,8 +93,6 @@ public class Validator {
                 parameterMap.get(ParamConstant.SECOND_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT))){
             errorMessageMap.put(ParamConstant.SUBJECTS,ParamConstant.SUBJECTS);
         }
-
-
             return errorMessageMap;
     }
 }

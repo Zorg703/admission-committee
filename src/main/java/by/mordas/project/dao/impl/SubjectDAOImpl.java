@@ -21,9 +21,8 @@ public class SubjectDAOImpl implements SubjectDAO {
 
     @Override
     public List<Subject> findAllEntity() {
-        DBConnection connection= ConnectionPool.getConnection();
         List<Subject> subjects=new ArrayList<>();
-        try(Statement statement=connection.createStatement();
+        try(DBConnection connection= ConnectionPool.getInstance().getConnection();Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_SUBJECT)){
             if (rs != null) {
                 while (rs.next()) {
@@ -36,82 +35,65 @@ public class SubjectDAOImpl implements SubjectDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
-            ConnectionPool.closeConnection(connection);
 
-        }
         return subjects;
     }
 
     @Override
     public Subject findEntityById(int id) {
-        DBConnection conn= ConnectionPool.getConnection();
+
         Subject subject=new Subject();
-        try(PreparedStatement pStatement=conn.prepareStatement(FIND_SUBJECT_BY_ID);
+        try( DBConnection conn= ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=conn.prepareStatement(FIND_SUBJECT_BY_ID)
            ) {
             pStatement.setInt(1,id);
-
             ResultSet rs=pStatement.executeQuery();
             if(rs.next()){
                 subject.setSubjectId(rs.getInt("ID"));
                 subject.setSubjectName(rs.getString("SUBJECT_NAME"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
-        finally {
-            ConnectionPool.closeConnection(conn);
-        }
+
         return subject;
     }
 
     @Override
     public boolean delete(int id) {
-        DBConnection connection = ConnectionPool.getConnection();
-        try (PreparedStatement pStatement = connection.prepareStatement(DELETE_SUBJECT)) {
+
+        try (DBConnection connection = ConnectionPool.getInstance().getConnection();PreparedStatement pStatement = connection.prepareStatement(DELETE_SUBJECT)) {
             pStatement.setInt(1,id);
             return pStatement.executeUpdate()==2;
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            ConnectionPool.closeConnection(connection);
+
         }
         return false;
     }
 
     @Override
     public void create(Subject subject) {
-        DBConnection connection=ConnectionPool.getConnection();
-        try(PreparedStatement pStatement=connection.prepareStatement(CREATE_SUBJECT)){
+
+        try( DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(CREATE_SUBJECT)){
             subject.setSubjectId(subject.getSubjectId());
             subject.setSubjectName(subject.getSubjectName());
             int result=pStatement.executeUpdate();
-
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
 
-            ConnectionPool.closeConnection(connection);
         }
 
     }
 
     @Override
     public Subject update(Subject subject) {
-        DBConnection connection=ConnectionPool.getConnection();
-        try(PreparedStatement pStatement=connection.prepareStatement(UPDATE_SUBJECT)){
+
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(UPDATE_SUBJECT)){
             pStatement.setInt(1,subject.getSubjectId());
             pStatement.setString(2,subject.getSubjectName());
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
 
-            ConnectionPool.closeConnection(connection);
         }
+
         return subject;
     }
 }
