@@ -18,7 +18,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     private static final String CREATE_SUBJECT="INSERT INTO SUBJECT(ID,SUBJECT_NAME) VALUES(?,?)";
     private static final String UPDATE_SUBJECT="UPDATE SUBJECT SET ID=? SUBJECT_NAME=?";
     private static final String DELETE_SUBJECT="DELETE FROM SUBJECT WHERE ID=?";
-    private static final String
+    private static final Stringо
 
     @Override
     public List<Subject> findAllEntity() {
