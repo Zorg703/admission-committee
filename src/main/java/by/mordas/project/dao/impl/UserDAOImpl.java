@@ -1,5 +1,6 @@
 package by.mordas.project.dao.impl;
 
+import by.mordas.project.dao.DAOException;
 import by.mordas.project.dao.UserDAO;
 import by.mordas.project.entity.Subject;
 import by.mordas.project.entity.User;
@@ -35,7 +36,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public List<User> findAllEntity() {
+    public List<User> findAllEntity() throws DAOException {
 
         List<User> users =new ArrayList<>();
         try(DBConnection conn= ConnectionPool.getInstance().getConnection();Statement statement=conn.createStatement();
@@ -47,14 +48,14 @@ public class UserDAOImpl implements UserDAO {
                 }
             }
         } catch (SQLException e) {
-
+            throw new DAOException();
         }
 
         return users;
     }
 
     @Override
-    public User findEntityById(int id) {
+    public User findEntityById(int id) throws DAOException {
 
         User user = new User();
 
@@ -65,7 +66,7 @@ public class UserDAOImpl implements UserDAO {
             if(rs!=null){
                user=getUser(rs);
             }
-            pStatement=conn.prepareStatement(FIND_SUBJECT_USER);
+            pStatement=connection.prepareStatement(FIND_SUBJECT_USER);
             rs=pStatement.executeQuery();
                 pStatement.setInt(1,id);
                 if(rs!=null) {
@@ -76,29 +77,27 @@ public class UserDAOImpl implements UserDAO {
                     }
                 }
         } catch (SQLException e) {
-            //TODO
+            throw new DAOException();
         }
 
         return user;
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean delete(int id) throws DAOException {
 
         DBConnection connection = ConnectionPool.getInstance().getConnection();
         try (PreparedStatement pStatement = connection.prepareStatement(DELETE_USER_BY_ID)) {
             pStatement.setInt(1,id);
             return pStatement.executeUpdate()==7;
         } catch (SQLException e) {
-            e.printStackTrace();
+           throw new DAOException();
         }
 
-        return false;
     }
 
         @Override
-    public void create(User user)
-    {
+    public void create(User user) throws DAOException {
         DBConnection connection=ConnectionPool.getInstance().getConnection();
         PreparedStatement pStatement=null;
 
@@ -131,16 +130,17 @@ public class UserDAOImpl implements UserDAO {
             try {
                 connection.rollback();
             } catch (SQLException e1) {
-                e1.printStackTrace();
+               throw new DAOException();
+
             }
-            e.printStackTrace();
+
         }
         finally {
             try {
                 connection.close();
                 pStatement.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+               throw new DAOException();
             }
 
         }
@@ -150,7 +150,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public User update(User user) {
+    public User update(User user) throws DAOException {
         DBConnection connection=ConnectionPool.getInstance().getConnection();
         try {
             PreparedStatement pStatement=connection.prepareStatement(UPDATE_USER);
@@ -172,13 +172,13 @@ public class UserDAOImpl implements UserDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException();
         }
 
         return user;
     }
 
-    public boolean findUserByLogin(String login){
+    public boolean findUserByLogin(String login) throws DAOException {
         DBConnection connection;
         connection=ConnectionPool.getInstance().getConnection();
         try{
@@ -187,14 +187,12 @@ public class UserDAOImpl implements UserDAO {
             ResultSet rs=pStetement.executeQuery();
             return !rs.next();
         } catch (SQLException e) {
-            e.printStackTrace();
-            //throw new DAOException
+           throw new DAOException();
         }
-        return false;//TODO
     }
 
 
-    public User findUserByPasswordAndLogin(String login,String password){
+    public User findUserByPasswordAndLogin(String login,String password) throws DAOException {
         DBConnection connection;
         User user=null;
         try{
@@ -209,7 +207,7 @@ public class UserDAOImpl implements UserDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException();
         }
        return user;
     }

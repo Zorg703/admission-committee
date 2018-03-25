@@ -15,13 +15,13 @@ public interface SubjectDAO extends AbstractDAO<Subject> {
 
     List<Subject> findAllEntity();
 
-    Subject findEntityById(int id);
+    Subject findEntityById(int id) throws DAOException;
 
-    boolean delete(int id);
+    boolean delete(int id) throws DAOException;
 
-    void create(Subject subject);
+    void create(Subject subject) throws DAOException;
 
-    Subject update(Subject subject);
+    Subject update(Subject subject) throws DAOException;
 
-    List<Subject> findSubjectByUserId(int id);
+    List<Subject> findSubjectByUserId(int id) throws DAOException;
 }
