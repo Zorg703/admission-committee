@@ -22,4 +22,6 @@ public interface SubjectDAO extends AbstractDAO<Subject> {
     void create(Subject subject);
 
     Subject update(Subject subject);
+
+    List<Subject> findSubjectByUserId(int id);
 }

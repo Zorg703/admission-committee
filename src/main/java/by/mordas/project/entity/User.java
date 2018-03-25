@@ -13,18 +13,18 @@ public class User extends Entity {
     private int certificateMark;
     private int specialityId;
     private Date birthday;
-    private Map<Subject,Integer> subjectMark;
+    private Map<Integer,Integer> subjectMark;
     private String email;
 
     public User() {
         subjectMark=new HashMap<>(3);
     }
 
-    public Map<Subject, Integer> getSubjectMark() {
+    public Map<Integer, Integer> getSubjectMark() {
         return subjectMark;
     }
 
-    public void setSubjectMark(Map<Subject, Integer> subjectMark) {
+    public void setSubjectMark(Map<Integer, Integer> subjectMark) {
         this.subjectMark = subjectMark;
     }
 
@@ -116,7 +116,7 @@ public class User extends Entity {
         this.birthday = birthday;
     }
 
-    public Integer put(Subject key, Integer value) {
+    public Integer put(Integer key, Integer value) {
         return subjectMark.put(key, value);
     }
 }

@@ -23,7 +23,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String INSERT_USER ="INSERT INTO USER(FIRST_NAME,LAST_NAME,BIRTHDAY," +
             "CERTIFICATE_MARK,LOGIN,PASSWORD,EMAIL) VALUES (?,?,?,?,?,?,?)";
     private static final String UPDATE_USER ="UPDATE USER SET ID=?,FIRST_NAME=?,LAST_NAME=?," +
-            "BIRTHDAY=?,CERTIFICATE_AVG=?,SPECIALITY_ID=?,LOGIN=?,PASSWORD=?,EMAIL=?";
+            "BIRTHDAY=?,CERTIFICATE_AVG=?,SPECIALITY_ID=?,PASSWORD=?,EMAIL=?";
     private static final String UPDATE_SUBJECT_USER="UPDATE USER_SUBJECT_MARK SET ID_USER=?, ID_SUBJECT=?,USER_MARK=?";
     private static final String DELETE_USER_BY_ID="DELETE FROM USER WHERE ID=?";
     private static final String INSERT_STUDENTS_SUBJECTS="INSERT INTO USER_SUBJECT_MARK(ID_USER,ID_SUBJECT," +
@@ -36,23 +36,18 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> findAllEntity() {
-        DBConnection conn= ConnectionPool.getInstance().getConnection();
+
         List<User> users =new ArrayList<>();
-        try(Statement statement=conn.createStatement();
+        try(DBConnection conn= ConnectionPool.getInstance().getConnection();Statement statement=conn.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_USER)) {
             if(rs!=null){
                 while (rs.next()) {
-                    User user =new User();
-                    user.setFirstName(rs.getString("FIRST_NAME"));
-                    user.setLastName(rs.getString("LAST_NAME"));
-                    user.setBirthday(rs.getDate("BIRTHDAY"));
-                    user.setCertificateMark(rs.getInt("CERTIFICATE_MARK"));
-                    user.setSpecialityId(rs.getInt("SPECIALITY_ID"));
+                    User user =getUser(rs);
                     users.add(user);
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
 
         return users;
@@ -60,66 +55,53 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User findEntityById(int id) {
-        DBConnection conn= ConnectionPool.getConnection();
+
         User user = new User();
 
-        try {
-            PreparedStatement pStatement=conn.prepareStatement(FIND_USER_BY_ID);
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection()) {
+            PreparedStatement pStatement=connection.prepareStatement(FIND_USER_BY_ID);
             ResultSet rs=pStatement.executeQuery();
             pStatement.setInt(1,id);
             if(rs!=null){
-                user.setUserId(rs.getInt("ID"));
-                user.setFirstName(rs.getString("FIRST_NAME"));
-                user.setLastName(rs.getString("LAST_NAME"));
-                user.setBirthday(rs.getDate("BIRTHDAY"));
-                user.setCertificateMark(rs.getInt("CERTIFICATE_AVG"));
-                user.setSpecialityId(rs.getInt("SPECIALITY_ID"));
-                user.setLogin(rs.getString("LOGIN"));
-                user.setPassword(rs.getString("PASSWORD"));
-                user.setEmail(rs.getString("EMAIL"));
+               user=getUser(rs);
             }
             pStatement=conn.prepareStatement(FIND_SUBJECT_USER);
-            rs=pStatement.executeQuery() ;
+            rs=pStatement.executeQuery();
                 pStatement.setInt(1,id);
                 if(rs!=null) {
                     while (rs.next()){
-                        Subject subject=new Subject();
-                        subject.setSubjectId(rs.getInt("SUBJECT_ID"));
+                        Integer subjectId=rs.getInt("SUBJECT_ID");
                         Integer mark=rs.getInt("USER_SUBJECT_MARK");
-                        user.put(subject,mark);
+                        user.put(subjectId,mark);
                     }
                 }
         } catch (SQLException e) {
-            e.printStackTrace();
+            //TODO
         }
-        finally {
-            ConnectionPool.closeConnection(conn);
-        }
+
         return user;
     }
 
     @Override
     public boolean delete(int id) {
 
-        DBConnection connection = ConnectionPool.getConnection();
+        DBConnection connection = ConnectionPool.getInstance().getConnection();
         try (PreparedStatement pStatement = connection.prepareStatement(DELETE_USER_BY_ID)) {
             pStatement.setInt(1,id);
             return pStatement.executeUpdate()==7;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
-            ConnectionPool.closeConnection(connection);
-        }
+
         return false;
     }
 
         @Override
     public void create(User user)
     {
-        DBConnection connection=ConnectionPool.getConnection();
+        DBConnection connection=ConnectionPool.getInstance().getConnection();
         PreparedStatement pStatement=null;
-        PreparedStatement pStatement2=null;
+
         try{
             connection.setAutoCommit(false);
             pStatement=connection.prepareStatement(INSERT_USER,Statement.RETURN_GENERATED_KEYS);
@@ -136,12 +118,12 @@ public class UserDAOImpl implements UserDAO {
                 user.setUserId(resultSet.getInt(1));
             }
 
-            for(Map.Entry<Subject,Integer> entry: user.getSubjectMark().entrySet()){
-                pStatement2=connection.prepareStatement(INSERT_STUDENTS_SUBJECTS);
-                pStatement2.setInt(1, user.getUserId());
-                pStatement2.setInt(2,entry.getKey().getSubjectId());
-                pStatement2.setInt(3,entry.getValue());
-                pStatement2.executeUpdate();
+            for(Map.Entry<Integer,Integer> entry: user.getSubjectMark().entrySet()){
+                pStatement=connection.prepareStatement(INSERT_STUDENTS_SUBJECTS);
+                pStatement.setInt(1, user.getUserId());
+                pStatement.setInt(2,entry.getKey());
+                pStatement.setInt(3,entry.getValue());
+                pStatement.executeUpdate();
 
             }
             connection.commit();
@@ -155,12 +137,12 @@ public class UserDAOImpl implements UserDAO {
         }
         finally {
             try {
-
+                connection.close();
                 pStatement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            ConnectionPool.closeConnection(connection);
+
         }
 
 
@@ -169,7 +151,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User update(User user) {
-        DBConnection connection=ConnectionPool.getConnection();
+        DBConnection connection=ConnectionPool.getInstance().getConnection();
         try {
             PreparedStatement pStatement=connection.prepareStatement(UPDATE_USER);
             pStatement.setInt(1, user.getUserId());
@@ -178,14 +160,13 @@ public class UserDAOImpl implements UserDAO {
             pStatement.setDate(4, user.getBirthday());
             pStatement.setInt(5, user.getCertificateMark());
             pStatement.setInt(6, user.getSpecialityId());
-            pStatement.setString(7,user.getLogin());
-            pStatement.setString(8,user.getPassword());
-            pStatement.setString(9,user.getEmail());
+            pStatement.setString(7,user.getPassword());
+            pStatement.setString(8,user.getEmail());
             pStatement.executeUpdate();
-            for(Map.Entry<Subject,Integer> entry: user.getSubjectMark().entrySet()){
+            for(Map.Entry<Integer,Integer> entry: user.getSubjectMark().entrySet()){
                 pStatement=connection.prepareStatement(UPDATE_SUBJECT_USER);
                 pStatement.setInt(1, user.getUserId());
-                pStatement.setInt(2,entry.getKey().getSubjectId());
+                pStatement.setInt(2,entry.getKey());
                 pStatement.setInt(3,entry.getValue());
                 pStatement.executeUpdate();
             }
@@ -193,15 +174,13 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
-          ConnectionPool.closeConnection(connection);
-        }
+
         return user;
     }
 
     public boolean findUserByLogin(String login){
         DBConnection connection;
-        connection=ConnectionPool.getConnection();
+        connection=ConnectionPool.getInstance().getConnection();
         try{
             PreparedStatement pStetement=connection.prepareStatement(FIND_USER_BY_LOGIN);
             pStetement.setString(1,login);
@@ -219,24 +198,35 @@ public class UserDAOImpl implements UserDAO {
         DBConnection connection;
         User user=null;
         try{
-            connection=ConnectionPool.getConnection();
-            PreparedStatement pStetement=connection.prepareStatement(FIND_USER_BY_PASSWORD_AND_LOGIN);
+            connection=ConnectionPool.getInstance().getConnection();
+            PreparedStatement pStatement=connection.prepareStatement(FIND_USER_BY_PASSWORD_AND_LOGIN);
 
-            pStetement.setString(1,login);
-            pStetement.setString(2,password);
-            ResultSet rs=pStetement.executeQuery();
-            if(rs.next()){
-                user=new User();
-                user.setFirstName(rs.getString("FIRST_NAME"));
-
-
+            pStatement.setString(1,login);
+            pStatement.setString(2,password);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs.next()) {
+                user=getUser(rs);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+       return user;
+    }
 
-        return user;
+    private User getUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setUserId(rs.getInt("ID"));
+        user.setFirstName(rs.getString("FIRST_NAME"));
+        user.setLastName(rs.getString("LAST_NAME"));
+        user.setBirthday(rs.getDate("BIRTHDAY"));
+        user.setCertificateMark(rs.getInt("CERTIFICATE_AVG"));
+        user.setSpecialityId(rs.getInt("SPECIALITY_ID"));
+        user.setLogin(rs.getString("LOGIN"));
+        user.setPassword(rs.getString("PASSWORD"));
+        user.setEmail(rs.getString("EMAIL"));
+
+    return user;
     }
 
 

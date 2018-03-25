@@ -32,9 +32,9 @@ public class RegistrationNewUserCommand implements Command {
             user.setEmail(parameters.get(ParamConstant.EMAIL));
             user.setPassword(parameters.get(ParamConstant.PASSWORD_ONE));
             user.setLogin(parameters.get(ParamConstant.LOG_IN));
-            user.put(userLogic.findSubject(Integer.valueOf(parameters.get(ParamConstant.FIRST_SUBJECT))), Integer.valueOf(parameters.get(ParamConstant.FIRST_SUBJECT_MARK)));
-            user.put(userLogic.findSubject(Integer.valueOf(parameters.get(ParamConstant.SECOND_SUBJECT))), Integer.valueOf(parameters.get(ParamConstant.SECOND_SUBJECT_MARK)));
-            user.put(userLogic.findSubject(Integer.valueOf(parameters.get(ParamConstant.THIRD_SUBJECT))), Integer.valueOf(parameters.get(ParamConstant.THIRD_SUBJECT_MARK)));
+            user.put(Integer.valueOf(parameters.get(ParamConstant.FIRST_SUBJECT)), Integer.valueOf(parameters.get(ParamConstant.FIRST_SUBJECT_MARK)));
+            user.put(Integer.valueOf(parameters.get(ParamConstant.SECOND_SUBJECT)),Integer.valueOf(parameters.get(ParamConstant.SECOND_SUBJECT_MARK)));
+            user.put(Integer.valueOf(parameters.get(ParamConstant.THIRD_SUBJECT)), Integer.valueOf(parameters.get(ParamConstant.THIRD_SUBJECT_MARK)));
             userLogic.registerUser(user);
             content.setSessionAttribute(ParamConstant.USER,user);
             router.setRouter(Router.RouteType.REDIRECT);

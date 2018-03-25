@@ -21,20 +21,18 @@ public class Validator {
     private static final String SUBJECT_ID="[1-9]";
     private static final String LOGIN_BUSY ="login_busy";
 
-    public boolean checkLogin(String login){
+    private static boolean checkLogin(String login){
         UserLogic userLogic=new UserLogic();
         boolean isLoginFree=false;
         isLoginFree=userLogic.findUserByLogin(login);
         return isLoginFree;
     }
 
-    public boolean checkPassword(String password){
-        Pattern loginPattern=Pattern.compile(PASSWORD_REGEX);
-        Matcher matcher=loginPattern.matcher(password);
-        return matcher.matches();
+    public static boolean checkLoginPassword(String login,String password){
+        return checkData(LOGIN_REGEX,login) && checkData(PASSWORD_REGEX,password);
     }
 
-    private boolean checkData(final String REGEX, String date){
+    private static boolean checkData(final String REGEX, String date){
         Pattern loginPattern=Pattern.compile(REGEX);
         Matcher matcher=loginPattern.matcher(date);
         return matcher.matches();
@@ -82,10 +80,10 @@ public class Validator {
         if(!checkData(EMAIL_REGEX,parameterMap.get(ParamConstant.EMAIL))){
             errorMessageMap.put(ParamConstant.EMAIL,parameterMap.get(ParamConstant.EMAIL));
         }
-        if(!checkPassword(parameterMap.get(ParamConstant.PASSWORD_ONE))){
+        if(!checkData(PASSWORD_REGEX,parameterMap.get(ParamConstant.PASSWORD_ONE))){
             errorMessageMap.put(ParamConstant.PASSWORD_ONE,parameterMap.get(ParamConstant.PASSWORD_ONE));
         }
-        if(checkPassword(parameterMap.get(ParamConstant.PASSWORD_ONE)) &&!parameterMap.get(ParamConstant.PASSWORD_ONE).equals(parameterMap.get(ParamConstant.PASSWORD_TWO))){
+        if(checkData(PASSWORD_REGEX,parameterMap.get(ParamConstant.PASSWORD_ONE)) &&!parameterMap.get(ParamConstant.PASSWORD_ONE).equals(parameterMap.get(ParamConstant.PASSWORD_TWO))){
             errorMessageMap.put(ParamConstant.PASSWORD_TWO,parameterMap.get(ParamConstant.PASSWORD_TWO));
         }
         if(parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.SECOND_SUBJECT)) ||
