@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String FIND_USER_BY_PASSWORD_AND_LOGIN="SELECT * FROM USER WHERE LOGIN=? and PASSWORD=?";
     private static final String FIND_SUBJECT_USER="SELECT * FROM USER_SUBJECT_MARK WHERE ID=?";
     private static final String FIND_USER_BY_LOGIN="SELECT * FROM USER WHERE LOGIN=?";
-
+    private static final String FIND_USER_SUBJECTS_AND_SCORE="SELECT SUBJECT.ID,SUBJECT.SUBJECT_NAME,USER_MARK FROM SUBJECT INNER JOIN USER_SUBJECT_MARK AS S ON SUBJECT.ID = S.ID_SUBJECT AND ID_USER=?";
 
 
     @Override
@@ -227,5 +228,26 @@ public class UserDAOImpl implements UserDAO {
     return user;
     }
 
+    @Override
+    public Map<Subject, Integer> findUserSubjectsAndScores(int id) throws DAOException {
+        Map<Subject,Integer> subjects=new HashMap<>();
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
+        PreparedStatement pStatement=connection.prepareStatement(FIND_USER_SUBJECTS_AND_SCORE)){
+            pStatement.setInt(1,id);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs!=null){
+                while (rs.next()){
+                    Subject subject=new Subject();
+                    subject.setSubjectId(rs.getInt("ID"));
+                    subject.setSubjectName("SUBJECT_NAME");
+                    int score=rs.getInt("USER_MARK");
+                    subjects.put(subject,score);
+                }
+            }
 
+        } catch (SQLException e) {
+            throw new DAOException();
+        }
+        return subjects;
+    }
 }

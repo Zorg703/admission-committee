@@ -12,30 +12,63 @@ import by.mordas.project.entity.User;
 import by.mordas.project.util.PasswordEncoder;
 
 import java.util.List;
+import java.util.Map;
 
 public class UserLogic implements Logic{
 public List<Faculty> findAllFaculties(){
     List<Faculty> list
-            =new FacultyDAOImpl().findAllEntity();
+            = null;
+    try {
+        list = new FacultyDAOImpl().findAllEntity();
+    } catch (DAOException e) {
+        e.printStackTrace();
+    }
     return list;
 }
 public List<Speciality> findSpecialitiesByFacultyId(int id){
-    List<Speciality> specialities=new SpecialityDAOImpl().findSpecialitiesByFacultyID(id);
+    List<Speciality> specialities= null;
+    try {
+        specialities = new SpecialityDAOImpl().findSpecialitiesByFacultyID(id);
+    } catch (DAOException e) {
+        e.printStackTrace();
+    }
     return specialities;
 }
 
 public void registerUser(User user) {
     user.setPassword(PasswordEncoder.encodePassword(user.getPassword()));
+    try {
         new UserDAOImpl().create(user);
+    } catch (DAOException e) {
+        e.printStackTrace();
+    }
 
 }
 public boolean findUserByLogin(String login){
-return new UserDAOImpl().findUserByLogin(login);
+    try {
+        return new UserDAOImpl().findUserByLogin(login);
+    } catch (DAOException e) {
+        e.printStackTrace();
+    }
+    return false;
 }
 
 public Subject findSubject(Integer id){
-    Subject subject;
-    subject=new SubjectDAOImpl().findEntityById(id);
+    Subject subject=null;
+    try {
+        subject=new SubjectDAOImpl().findEntityById(id);
+    } catch (DAOException e) {
+        e.printStackTrace();
+    }
     return subject;
+}
+public Map<Subject,Integer> findSubjects(Integer id){
+        Map<Subject,Integer> subjects=null;
+    try {
+        subjects=new UserDAOImpl().findUserSubjectsAndScores(id);
+    } catch (DAOException e) {
+        e.printStackTrace();
+    }
+    return subjects;
 }
 }

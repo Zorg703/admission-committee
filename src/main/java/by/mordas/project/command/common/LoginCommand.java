@@ -7,6 +7,7 @@ import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.User;
 import by.mordas.project.logic.CommonLogic;
+import by.mordas.project.logic.LogicException;
 import by.mordas.project.util.PasswordEncoder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +18,14 @@ public class LoginCommand implements Command {
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
-        User user;
+        User user=null;
         String login=content.getRequestParameter(ParamConstant.LOG_IN);
         String password= content.getRequestParameter(ParamConstant.PASSWORD);
-        user=commonLogic.findUserLoginAndPassword(login,password);
+        try {
+            user=commonLogic.findUserLoginAndPassword(login,password);
+        } catch (LogicException e) {
+            e.printStackTrace();
+        }
         if(user!=null){
 
             content.setSessionAttribute(ParamConstant.USER,user);

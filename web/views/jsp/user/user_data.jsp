@@ -13,9 +13,13 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
 <head>
-    <title>Title</title>
+    <title><fmt:message key="user.data.title"/></title>
 </head>
 <body>
-
+<fmt:message key="user.data.first_name"/>: ${user.firstName}
+<fmt:message key="user.data.last_name"/>: ${user.lastName}
+<fmt:message key="user.data.birthday"/>: ${user.birthday}
+<fmt:message key="user.data.certificate"/> ${user.certificateMark}
+<fmt:message key="user.data.email"/> ${user.email}
 </body>
 </html>

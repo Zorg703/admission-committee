@@ -62,7 +62,6 @@ public class Controller extends HttpServlet {
             break;
             case REDIRECT:response.sendRedirect(router.getPagePath());
             break;
-
         }
 
 

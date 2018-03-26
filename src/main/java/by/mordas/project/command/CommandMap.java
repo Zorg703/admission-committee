@@ -6,6 +6,7 @@ import by.mordas.project.command.common.UpdateLocaleCommand;
 import by.mordas.project.command.user.RegistrationNewUserCommand;
 import by.mordas.project.command.user.ShowFacultyCommand;
 import by.mordas.project.command.user.ShowSpecialitiesCommand;
+import by.mordas.project.command.user.ShowUserSubjectsCommand;
 
 import java.util.EnumMap;
 
@@ -17,6 +18,7 @@ public class CommandMap {
         this.put(CommandType.SHOW_ALL_FACULTY,new ShowFacultyCommand());
         this.put(CommandType.FIND_SPECIALITY,new ShowSpecialitiesCommand());
         this.put(CommandType.USER_REGISTRATION,new RegistrationNewUserCommand());
+        this.put(CommandType.FIND_USER_SUBJECTS,new ShowUserSubjectsCommand());
 
     }
 

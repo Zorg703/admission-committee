@@ -26,5 +26,6 @@ public interface UserDAO extends AbstractDAO<User> {
 
     User findUserByPasswordAndLogin(String login,String password) throws DAOException;
 
+    Map<Subject,Integer> findUserSubjectsAndScores(int id) throws DAOException;
 
 }

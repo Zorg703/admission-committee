@@ -103,14 +103,7 @@
     </tr>
     </table>
     <h3><fmt:message key="user.registration.date"/></h3>
-    <label><fmt:message key="user.registration.login"/>:<br>
-        <input type="text" name="login" required pattern="^[a-zA-Z][a-zA-Z0-9-_]{4,30}" value="${user_params.login}"></label>
-    <c:if test="${not empty messages.login}">
-        <fmt:message key="user.registration.message.login"/>
-    </c:if>
-    <c:if test="${not empty messages.login_busy}">
-        <fmt:message key="user.registration.message.login_busy"/>
-    </c:if>
+
     <br>
 
     <label><fmt:message key="user.registration.password"/>:<br>
@@ -133,10 +126,8 @@
     <br>
     <input class="button" type="submit"value=<fmt:message key="user.registration.confirm"/>>
     <input class="button" type="reset" value=<fmt:message key="user.registration.cancel"/>>
-    <c:set var="count" value="0" scope="page"/>
-    <c:if test="${count!=0}">
-        <fmt:message key="user.registration.empty_field" />
-    </c:if>
+
+
 </form>
 ${messages=null}
 ${user_params=null}

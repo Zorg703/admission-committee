@@ -28,5 +28,6 @@ public class Subject extends Entity {
                 ", subjectName='" + subjectName + '\'' +
                 "} " + super.toString();
     }
+
 }
 
