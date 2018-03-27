@@ -168,8 +168,8 @@ public class SpecialityDAOImpl implements SpecialityDAO {
 
     public List<User> findUserOnSpeciality(int id) throws DAOException {
         List<User> users =new ArrayList<>();
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_USERS_ON_SPECIALITY_BY_ID)
-        ){
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
+            PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_USERS_ON_SPECIALITY_BY_ID)){
             pStatement.setInt(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){

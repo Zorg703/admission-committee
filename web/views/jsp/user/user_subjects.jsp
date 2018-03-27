@@ -17,8 +17,7 @@
 </head>
 <body>
 <c:forEach var="subject" items="${subjects}">
-    <fmt:message key="user.subjects.name"/> <c:out value="${subject.key.subjectName}"/>
-    <fmt:message key="user.subjects.score"/> <c:out value="${subject.value}"/>
+    <fmt:message key="user.subjects.name"/> <c:out value="${subject.key.subjectName}"/><fmt:message key="user.subjects.score"/> <c:out value="${subject.value}"/>
 </c:forEach>
 </body>
 </html>
