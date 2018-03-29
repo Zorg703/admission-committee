@@ -28,4 +28,5 @@ public interface UserDAO extends AbstractDAO<User> {
 
     Map<Subject,Integer> findUserSubjectsAndScores(int id) throws DAOException;
 
+    void changeUserPassword(Integer userId,String password) throws DAOException;
 }

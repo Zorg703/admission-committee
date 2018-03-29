@@ -93,4 +93,14 @@ public class Validator {
         }
             return errorMessageMap;
     }
+    public HashMap<String,String> checkChangedPassword(String password1,String password2){
+        HashMap<String,String> errorMap=new HashMap<>();
+        if(!checkData(PASSWORD_REGEX,password1)){
+            errorMap.put(ParamConstant.PASSWORD_ONE,password1);
+        }
+        if(checkData(PASSWORD_REGEX,password1) &&!password1.equals(password2)){
+            errorMap.put(ParamConstant.PASSWORD_TWO,password2);
+        }
+        return errorMap;
+    }
 }

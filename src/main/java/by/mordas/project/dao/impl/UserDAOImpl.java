@@ -34,7 +34,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String FIND_SUBJECT_USER="SELECT * FROM USER_SUBJECT_MARK WHERE ID=?";
     private static final String FIND_USER_BY_LOGIN="SELECT * FROM USER WHERE LOGIN=?";
     private static final String FIND_USER_SUBJECTS_AND_SCORE="SELECT SUBJECT.ID,SUBJECT.SUBJECT_NAME,USER_MARK FROM SUBJECT INNER JOIN USER_SUBJECT_MARK AS S ON SUBJECT.ID = S.ID_SUBJECT AND ID_USER=?";
-
+    private static final String CHANGE_USER_PASSWORD="UPDATE USER SET PASSWORD=? WHERE ID=?";
 
     @Override
     public List<User> findAllEntity() throws DAOException {
@@ -249,5 +249,17 @@ public class UserDAOImpl implements UserDAO {
             throw new DAOException();
         }
         return subjects;
+    }
+
+    @Override
+    public void changeUserPassword(Integer userId, String password) throws DAOException {
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
+            PreparedStatement pStatement=connection.prepareStatement(CHANGE_USER_PASSWORD)){
+            pStatement.setString(1,password);
+            pStatement.setInt(1,userId);
+            pStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException();
+        }
     }
 }

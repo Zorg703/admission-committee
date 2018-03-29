@@ -3,10 +3,7 @@ package by.mordas.project.command;
 import by.mordas.project.command.admin.ShowAllUserCommand;
 import by.mordas.project.command.common.LoginCommand;
 import by.mordas.project.command.common.UpdateLocaleCommand;
-import by.mordas.project.command.user.RegistrationNewUserCommand;
-import by.mordas.project.command.user.ShowFacultyCommand;
-import by.mordas.project.command.user.ShowSpecialitiesCommand;
-import by.mordas.project.command.user.ShowUserSubjectsCommand;
+import by.mordas.project.command.user.*;
 
 import java.util.EnumMap;
 
@@ -19,7 +16,7 @@ public class CommandMap {
         this.put(CommandType.FIND_SPECIALITY,new ShowSpecialitiesCommand());
         this.put(CommandType.USER_REGISTRATION,new RegistrationNewUserCommand());
         this.put(CommandType.FIND_USER_SUBJECTS,new ShowUserSubjectsCommand());
-
+        this.put(CommandType.CHANGE_USER_PASSWORD,new ChangePasswordCommand());
     }
 
     };
