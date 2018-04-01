@@ -8,6 +8,7 @@ public class PageConstant {
     public static final String PAGE_SHOW_SPECIALITIES="views/jsp/user/show_specialities.jsp";
     public static final String PAGE_REGISTRATION="views/jsp/user/registration.jsp";
     public static final String PAGE_USER_SUBJECTS="views/jsp/user/user_subjects.jsp";
-    public static final String PAGE_USER_SUCCESS="views/jsp/user/password_success_change.jsp";
+    public static final String PAGE_USER_SUCCESS="views/jsp/user/password_success_changed.jsp";
     public static final String PAGE_CHANGE_PASSWORD="views/jsp/user/change_user_password.jsp";
+    public static final String PAGE_REGISTER_ON_FACULTY="views/jsp/user/register_on_faculty.jsp";
 }

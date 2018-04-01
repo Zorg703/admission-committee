@@ -33,11 +33,13 @@
     <br>
     <input class="button" type="submit"value=<fmt:message key="user.registration.confirm"/>>
     <input class="button" type="reset" value=<fmt:message key="user.registration.cancel"/>>
-
-
+    <c:if test="${not empty changed}">
+        <fmt:message key="user.success.changed"/>
+    </c:if>
 </form>
 ${messages=null}
 ${user_params=null}
+${changed=null}
 <script type="text/javascript">
     window.onload = function () {
         document.getElementById("password1").onchange = validatePassword;

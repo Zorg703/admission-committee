@@ -28,6 +28,7 @@ public interface SpecialityDAO extends AbstractDAO<Speciality> {
     Speciality update(Speciality specialty) throws DAOException;
 
     List<User> findUserOnSpeciality(int id) throws DAOException;
+    List<Speciality> findSpecialityForCurrentUserByFacultyId(int userId,int facultyId);
 
 
 

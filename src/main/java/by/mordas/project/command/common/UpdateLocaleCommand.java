@@ -15,11 +15,10 @@ public class UpdateLocaleCommand implements Command {
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         String locale = content.getRequestParameter(ParamConstant.LOCALE);
-        String pagePath=(String)content.getSessionAttribute(ParamConstant.CURRENT_URL);
-        String url=content.getHeader("Referer");
+        String url=content.getHeader(ParamConstant.REFERER);
         router.setRouter(Router.RouteType.REDIRECT);
         content.setSessionAttribute(ParamConstant.LOCALE, locale);
-        router.setPagePath(pagePath);
+        router.setPagePath(url);
         return router;
     }
 }

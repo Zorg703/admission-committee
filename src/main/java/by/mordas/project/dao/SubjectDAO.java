@@ -24,4 +24,6 @@ public interface SubjectDAO extends AbstractDAO<Subject> {
     Subject update(Subject subject) throws DAOException;
 
     List<Subject> findSubjectByUserId(int id) throws DAOException;
+    List<Subject> findSubjectsBySpecialityId(int id) throws DAOException;
+
 }

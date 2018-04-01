@@ -54,4 +54,15 @@ public class Speciality extends Entity {
     public void setRecruitmentPlan(int recruitmentPlan) {
         this.recruitmentPlan = recruitmentPlan;
     }
+
+    @Override
+    public String toString() {
+        return "Speciality{" +
+                "specialityId=" + specialityId +
+                ", specialityName='" + specialityName + '\'' +
+                ", recruitmentPlan=" + recruitmentPlan +
+                ", facultyId=" + facultyId +
+                ", subjects=" + subjects +
+                "} " + super.toString();
+    }
 }

@@ -22,6 +22,7 @@ public class RegistrationNewUserCommand implements Command {
         Router router=new Router();
 
         HashMap<String,String> parameters=content.getRequestParameters();
+
         HashMap<String,String> errorMessages=new Validator().checkUserDate(parameters);
         if(errorMessages.isEmpty()) {
             User user=new User();

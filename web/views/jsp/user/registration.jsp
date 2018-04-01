@@ -50,21 +50,22 @@
     <table>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
         <td>
-            <input list="subject" required name="first_subject" value="${user_params.first_subject}">
+            <select required name="first_subject" value="${user_params.first_subject}">
+                <option disabled selected>Выберите предмет</option>
+                <option value="1"><fmt:message key="user.registration.maths"/></option>
+                <option value="2"><fmt:message key="user.registration.physic"/></option>
+                <option value="3"><fmt:message key="user.registration.chemistry"/></option>
+                <option value="4"><fmt:message key="user.registration.russian"/></option>
+                <option value="5"><fmt:message key="user.registration.belarusian"/></option>
+                <option value="6"><fmt:message key="user.registration.english"/></option>
+                <option value="7"><fmt:message key="user.registration.biology"/></option>
+                <option value="8"><fmt:message key="user.registration.history"/></option>
+                <option value="9"><fmt:message key="user.registration.geography"/></option>
+            </select>
+
             <c:if test="${not empty messages.first_subject}">
                 <fmt:message key="user.registration.message.subject"/>
             </c:if>
-            <datalist id="subject">
-                <option value="1"><fmt:message key="user.registration.maths"/>
-                <option value="2"><fmt:message key="user.registration.physic"/>
-                <option value="3"><fmt:message key="user.registration.chemistry"/>
-                <option value="4"><fmt:message key="user.registration.russian"/>
-                <option value="5"><fmt:message key="user.registration.belarusian"/>
-                <option value="6"><fmt:message key="user.registration.english"/>
-                <option value="7"><fmt:message key="user.registration.biology"/>
-                <option value="8"><fmt:message key="user.registration.history"/>
-                <option value="9"><fmt:message key="user.registration.geography"/>
-            </datalist>
 
         </td>
 
@@ -77,12 +78,25 @@
     </tr>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
         <td>
-            <input list="subject" required name="second_subject" value="${user_params.second_subject}">
+            <select required name="second_subject" value="${user_params.second_subject}">
+                <option disabled selected>Выберите предмет</option>
+                <option value="1"><fmt:message key="user.registration.maths"/></option>
+                <option value="2"><fmt:message key="user.registration.physic"/></option>
+                <option value="3"><fmt:message key="user.registration.chemistry"/></option>
+                <option value="4"><fmt:message key="user.registration.russian"/></option>
+                <option value="5"><fmt:message key="user.registration.belarusian"/></option>
+                <option value="6"><fmt:message key="user.registration.english"/></option>
+                <option value="7"><fmt:message key="user.registration.biology"/></option>
+                <option value="8"><fmt:message key="user.registration.history"/></option>
+                <option value="9"><fmt:message key="user.registration.geography"/></option>
+            </select>
+
             <c:if test="${not empty messages.second_subject}">
                 <fmt:message key="user.registration.message.subject"/>
             </c:if>
         </td>
         <td>
+
             <input type="number" required min="0" max="100" name="mark2" value="${user_params.mark2}"><br>
             <c:if test="${not empty messages.mark2}">
                 <fmt:message key="user.registration.message.mark"/>
@@ -91,7 +105,20 @@
     </tr>
         <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
         <td>
-            <input list="subject"required name="third_subject" value="${user_params.third_subject}">
+            <label >
+                <select required name="third_subject" >
+                    <option disabled selected>Выберите предмет</option>
+                    <option value="1"><fmt:message key="user.registration.maths"/></option>
+                    <option value="2"><fmt:message key="user.registration.physic"/></option>
+                    <option value="3"><fmt:message key="user.registration.chemistry"/></option>
+                    <option value="4"><fmt:message key="user.registration.russian"/></option>
+                    <option value="5"><fmt:message key="user.registration.belarusian"/></option>
+                    <option value="6"><fmt:message key="user.registration.english"/></option>
+                    <option value="7"><fmt:message key="user.registration.biology"/></option>
+                    <option value="8"><fmt:message key="user.registration.history"/></option>
+                    <option value="9"><fmt:message key="user.registration.geography"/></option>
+                </select>
+            </label>
             <c:if test="${not empty messages.third_subject}">
                 <fmt:message key="user.registration.message.subject"/>
             </c:if>
@@ -100,6 +127,11 @@
             <input type="number"required min="0" max="100" name="mark3" value="${user_params.mark3}"><br>
             <c:if test="${not empty messages.mark3}">
                 <fmt:message key="user.registration.message.mark"/>
+            </c:if>
+        </td>
+        <td>
+            <c:if test="${not empty messages.subjects}">
+                <fmt:message key="user.registration.message.subjects"/>
             </c:if>
         </td>
     </tr>
@@ -145,6 +177,7 @@
 <fmt:message key="user.registration.empty_field" />
 </c:if>
 </form>
+
 ${messages=null}
 ${user_params=null}
 <script type="text/javascript">
