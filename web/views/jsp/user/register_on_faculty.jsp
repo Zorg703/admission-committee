@@ -18,18 +18,29 @@
 </head>
 
 <body>
+<fmt:message key="user.registration.mark"/>:
 <form name="subject_marks" method="post" action="${pageContext.request.contextPath}/controller">
 <input type="hidden" name="command" value="register_on_speciality">
+    <fmt:message key="user.registration.subjects_name"/>:
     <c:out value="${subjects[0].subjectName}"/>
     <input type="hidden" name="first_subject" value="${subjects[0].subjectId}">
-    <input type="number" required min="0" max="100" name="mark1" value="${user_params.mark1}"><br>
+    <fmt:message key="user.registration.mark"/>:
+    <input type="number" required min="0" max="100" name="mark1" value=""><br>
+    <fmt:message key="user.registration.subjects_name"/>:
     <c:out value="${subjects[1].subjectName}"/>
     <input type="hidden" name="second_subject" value="${subjects[1].subjectId}">
-    <input type="number" required min="0" max="100" name="mark2" value="${user_params.mark2}"><br>
+    <fmt:message key="user.registration.mark"/>:
+    <input type="number" required min="0" max="100" name="mark2" value=""><br>
+    <fmt:message key="user.registration.subjects_name"/>:
     <c:out value="${subjects[2].subjectName}"/>
     <input type="hidden" name="third_subject" value="${subjects[2].subjectId}">
-    <input type="number" required min="0" max="100" name="mark3" value="${user_params.mark3}"><br>
+    <fmt:message key="user.registration.mark"/>:
+    <input type="number" required min="0" max="100" name="mark3" value=""><br>
+    <c:if test="${not empty message}">
+        <fmt:message key="user.registration.message.mark"/>
+    </c:if>
     <input class="button" type="submit">
 </form>
+
 </body>
 </html>

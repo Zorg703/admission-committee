@@ -22,6 +22,8 @@ public class ShowSpecialitySubjectsCommand implements Command {
             List<Subject> subjects=userLogic.findSubjectsForSpeciality(specialityId);
             router.setPagePath(PageConstant.PAGE_REGISTER_ON_FACULTY);
             content.setRequestAttribute(ParamConstant.SUBJECTS,subjects);
+            content.setSessionAttribute(ParamConstant.SPECIALITY,specialityId);
+
         } catch (LogicException e) {
             e.printStackTrace();
         }

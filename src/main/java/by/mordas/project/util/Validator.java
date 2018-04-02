@@ -4,6 +4,7 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.logic.UserLogic;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,7 +63,7 @@ public class Validator {
         if(!checkData(DATE_REGEX,parameterMap.get(ParamConstant.BIRTHDAY))){
             errorMessageMap.put(ParamConstant.BIRTHDAY,parameterMap.get(ParamConstant.BIRTHDAY));
         }
-        if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.CERTIFICATE_AVG))){
+        /*if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.CERTIFICATE_AVG))){
             errorMessageMap.put(ParamConstant.CERTIFICATE_AVG,parameterMap.get(ParamConstant.CERTIFICATE_AVG));
         }
         if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.FIRST_SUBJECT_MARK))){
@@ -74,6 +75,7 @@ public class Validator {
         if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.THIRD_SUBJECT_MARK))){
             errorMessageMap.put(ParamConstant.THIRD_SUBJECT_MARK,parameterMap.get(ParamConstant.THIRD_SUBJECT_MARK));
         }
+
         if(!checkData(SUBJECT_ID,parameterMap.get(ParamConstant.FIRST_SUBJECT))){
             errorMessageMap.put(ParamConstant.FIRST_SUBJECT,parameterMap.get(ParamConstant.FIRST_SUBJECT));
         }
@@ -82,7 +84,15 @@ public class Validator {
         }
         if(!checkData(SUBJECT_ID,parameterMap.get(ParamConstant.THIRD_SUBJECT))){
             errorMessageMap.put(ParamConstant.THIRD_SUBJECT,parameterMap.get(ParamConstant.THIRD_SUBJECT));
+
         }
+        if(parameterMap.get(ParamConstant.SECOND_SUBJECT)!=null && parameterMap.get(ParamConstant.THIRD_SUBJECT)!=null) {
+            if (parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.SECOND_SUBJECT)) ||
+                    parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT)) ||
+                    parameterMap.get(ParamConstant.SECOND_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT))) {
+                errorMessageMap.put(ParamConstant.SUBJECTS, ParamConstant.SUBJECTS);
+            }
+        }*/
         if(!checkData(EMAIL_REGEX,parameterMap.get(ParamConstant.EMAIL))){
             errorMessageMap.put(ParamConstant.EMAIL,parameterMap.get(ParamConstant.EMAIL));
         }
@@ -92,14 +102,7 @@ public class Validator {
         if(checkData(PASSWORD_REGEX,parameterMap.get(ParamConstant.PASSWORD_ONE)) &&!parameterMap.get(ParamConstant.PASSWORD_ONE).equals(parameterMap.get(ParamConstant.PASSWORD_TWO))){
             errorMessageMap.put(ParamConstant.PASSWORD_TWO,parameterMap.get(ParamConstant.PASSWORD_TWO));
         }
-        if(parameterMap.get(ParamConstant.SECOND_SUBJECT)!=null && parameterMap.get(ParamConstant.THIRD_SUBJECT)!=null) {
-            if (parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.SECOND_SUBJECT)) ||
-                    parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT)) ||
-                    parameterMap.get(ParamConstant.SECOND_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT))) {
-                errorMessageMap.put(ParamConstant.SUBJECTS, ParamConstant.SUBJECTS);
-            }
-        }
-            return errorMessageMap;
+        return errorMessageMap;
     }
     public HashMap<String,String> checkChangedPassword(String password1,String password2){
         HashMap<String,String> errorMap=new HashMap<>();
@@ -111,4 +114,9 @@ public class Validator {
         }
         return errorMap;
     }
+    public boolean validateUserMarks(String first, String second, String third) {
+        return checkData(MARK_REGEX, first) && !checkData(MARK_REGEX, second) && checkData(MARK_REGEX, third);
+
+    }
+
 }

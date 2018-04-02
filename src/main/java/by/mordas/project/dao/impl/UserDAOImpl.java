@@ -35,6 +35,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String FIND_USER_BY_LOGIN="SELECT * FROM USER WHERE LOGIN=?";
     private static final String FIND_USER_SUBJECTS_AND_SCORE="SELECT SUBJECT.ID,SUBJECT.SUBJECT_NAME,USER_MARK FROM SUBJECT INNER JOIN USER_SUBJECT_MARK AS S ON SUBJECT.ID = S.ID_SUBJECT AND ID_USER=?";
     private static final String CHANGE_USER_PASSWORD="UPDATE USER SET PASSWORD=? WHERE ID=?";
+    private static final String UPDATE_USER_SPECIALITY="UPDATE USER SET SPECIALITY=? WHERE ID=?";
 
     @Override
     public List<User> findAllEntity() throws DAOException {
@@ -259,5 +260,45 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException();
         }
+    }
+
+    @Override
+    public void updateUserSpeciality(User user) throws DAOException {
+        DBConnection connection=ConnectionPool.getInstance().getConnection();
+        PreparedStatement pStatement=null;
+        try{
+            connection.setAutoCommit(false);
+            pStatement=connection.prepareStatement(UPDATE_USER_SPECIALITY);
+            pStatement.setInt(1,user.getSpecialityId());
+            pStatement.setInt(2,user.getUserId());
+            pStatement.executeUpdate();
+            for(Map.Entry<Integer,Integer> entry: user.getSubjectMark().entrySet()){
+                pStatement=connection.prepareStatement(UPDATE_SUBJECT_USER);
+                pStatement.setInt(1, user.getUserId());
+                pStatement.setInt(2,entry.getKey());
+                pStatement.setInt(3,entry.getValue());
+                pStatement.executeUpdate();
+                connection.commit();
+            }
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException();
+
+            }
+
+        }
+        finally {
+            try {
+                connection.setAutoCommit(true);
+                connection.close();
+                pStatement.close();
+            } catch (SQLException e) {
+                throw new DAOException();
+            }
+
+        }
+
     }
 }

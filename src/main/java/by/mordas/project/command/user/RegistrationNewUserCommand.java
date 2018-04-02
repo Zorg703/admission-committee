@@ -17,12 +17,8 @@ public class RegistrationNewUserCommand implements Command {
     private UserLogic userLogic=new UserLogic();
     @Override
     public Router execute(SessionRequestContent content) {
-
-
         Router router=new Router();
-
         HashMap<String,String> parameters=content.getRequestParameters();
-
         HashMap<String,String> errorMessages=new Validator().checkUserDate(parameters);
         if(errorMessages.isEmpty()) {
             User user=new User();

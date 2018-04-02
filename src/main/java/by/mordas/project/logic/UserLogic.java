@@ -92,4 +92,12 @@ public class UserLogic implements Logic{
         return subjects;
     }
 
+    public void setUserSpeciality(User user) throws LogicException {
+        try {
+            new UserDAOImpl().updateUserSpeciality(user);
+        } catch (DAOException e) {
+            throw new LogicException();
+        }
+    }
+
 }
