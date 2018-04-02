@@ -21,6 +21,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     private static final String DELETE_SUBJECT="DELETE FROM SUBJECT WHERE ID=?";
     private static final String FIND_USER_SUBJECTS="SELECT SUBJECT.SUBJECT_NAME,USER_MARK FROM SUBJECT INNER JOIN " +
             "USER_SUBJECT_MARK as USER ON SUBJECT.ID = USER.id_subject AND ID_USER=?";
+    private static final String FIND_SUBJECTS_FOR_SPECIALITY="SELECT SUBJECT_NAME,SUBJECT.ID from SUBJECT INNER JOIN SUBJECT_FOR_SPECIALITY S ON SUBJECT.ID = S.ID_SUBJECT WHERE ID_SPECIALITY=?";
 
     @Override
     public List<Subject> findAllEntity() {
@@ -111,6 +112,27 @@ public class SubjectDAOImpl implements SubjectDAO {
                 while (rs.next()){
                     Subject subject=new Subject();
 
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException();
+        }
+        return subjects;
+    }
+
+    @Override
+    public List<Subject> findSubjectsBySpecialityId(int id) throws DAOException {
+        List<Subject> subjects=new ArrayList<>();
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
+            PreparedStatement pStatement=connection.prepareStatement(FIND_SUBJECTS_FOR_SPECIALITY)) {
+            pStatement.setInt(1,id);
+            ResultSet resultSet=pStatement.executeQuery();
+            if(resultSet!=null){
+                while (resultSet.next()){
+                    Subject subject=new Subject();
+                    subject.setSubjectName(resultSet.getString("SUBJECT_NAME"));
+                    subject.setSubjectId(resultSet.getInt("ID"));
+                    subjects.add(subject);
                 }
             }
         } catch (SQLException e) {

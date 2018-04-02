@@ -26,4 +26,11 @@ public class Faculty extends Entity {
         this.facultyName = facultyName;
     }
 
+    @Override
+    public String toString() {
+        return "Faculty{" +
+                "facultyId=" + facultyId +
+                ", facultyName='" + facultyName + '\'' +
+                "} " + super.toString();
+    }
 }

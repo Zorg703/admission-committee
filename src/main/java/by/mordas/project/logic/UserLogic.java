@@ -82,5 +82,14 @@ public class UserLogic implements Logic{
         }
 
     }
+    public List<Subject> findSubjectsForSpeciality(int specialityId) throws LogicException {
+        List<Subject> subjects=null;
+        try {
+            subjects=new SubjectDAOImpl().findSubjectsBySpecialityId(specialityId);
+        } catch (DAOException e) {
+            throw new LogicException();
+        }
+        return subjects;
+    }
 
 }

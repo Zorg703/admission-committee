@@ -31,4 +31,6 @@ public final static String EMAIL="email";
 public final static String USER_PARAMS="user_params";
 public final static String ERROR_MESSAGES="messages";
 public final static String SUBJECTS="subjects";
+public final static String SPECIALITY="speciality";
+public final static String REFERER="referer";
 }

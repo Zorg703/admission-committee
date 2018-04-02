@@ -32,10 +32,16 @@ public class Validator {
         return checkData(LOGIN_REGEX,login) && checkData(PASSWORD_REGEX,password);
     }
 
-    private static boolean checkData(final String REGEX, String date){
-        Pattern loginPattern=Pattern.compile(REGEX);
-        Matcher matcher=loginPattern.matcher(date);
-        return matcher.matches();
+    private static boolean checkData(final String REGEX, String data){
+        if(data!=null) {
+            Pattern loginPattern = Pattern.compile(REGEX);
+            Matcher matcher = loginPattern.matcher(data);
+            return matcher.matches();
+        }
+        else
+        {
+            return false;
+        }
     }
 
 
@@ -86,10 +92,12 @@ public class Validator {
         if(checkData(PASSWORD_REGEX,parameterMap.get(ParamConstant.PASSWORD_ONE)) &&!parameterMap.get(ParamConstant.PASSWORD_ONE).equals(parameterMap.get(ParamConstant.PASSWORD_TWO))){
             errorMessageMap.put(ParamConstant.PASSWORD_TWO,parameterMap.get(ParamConstant.PASSWORD_TWO));
         }
-        if(parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.SECOND_SUBJECT)) ||
-                parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT)) ||
-                parameterMap.get(ParamConstant.SECOND_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT))){
-            errorMessageMap.put(ParamConstant.SUBJECTS,ParamConstant.SUBJECTS);
+        if(parameterMap.get(ParamConstant.SECOND_SUBJECT)!=null && parameterMap.get(ParamConstant.THIRD_SUBJECT)!=null) {
+            if (parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.SECOND_SUBJECT)) ||
+                    parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT)) ||
+                    parameterMap.get(ParamConstant.SECOND_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT))) {
+                errorMessageMap.put(ParamConstant.SUBJECTS, ParamConstant.SUBJECTS);
+            }
         }
             return errorMessageMap;
     }

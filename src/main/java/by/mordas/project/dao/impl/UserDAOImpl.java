@@ -19,9 +19,9 @@ import java.util.Map;
 
 public class UserDAOImpl implements UserDAO {
     private static final String FIND_USER_BY_ID ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
-            "SPECIALITY_ID,LOGIN,PASSWORD,EMAIL FROM USER WHERE ID=?";
+            "SPECIALITY_ID,LOGIN,EMAIL FROM USER WHERE ID=?";
     private static final String FIND_ALL_USER="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
-            "SPECIALITY_ID FROM USER ORDER BY LAST_NAME";
+            "SPECIALITY_ID,EMAIL FROM USER ORDER BY LAST_NAME";
     private static final String INSERT_USER ="INSERT INTO USER(FIRST_NAME,LAST_NAME,BIRTHDAY," +
             "CERTIFICATE_MARK,LOGIN,PASSWORD,EMAIL) VALUES (?,?,?,?,?,?,?)";
     private static final String UPDATE_USER ="UPDATE USER SET ID=?,FIRST_NAME=?,LAST_NAME=?," +
@@ -219,10 +219,8 @@ public class UserDAOImpl implements UserDAO {
         user.setFirstName(rs.getString("FIRST_NAME"));
         user.setLastName(rs.getString("LAST_NAME"));
         user.setBirthday(rs.getDate("BIRTHDAY"));
-        user.setCertificateMark(rs.getInt("CERTIFICATE_AVG"));
+        user.setCertificateMark(rs.getInt("CERTIFICATE_MARK"));
         user.setSpecialityId(rs.getInt("SPECIALITY_ID"));
-        user.setLogin(rs.getString("LOGIN"));
-        user.setPassword(rs.getString("PASSWORD"));
         user.setEmail(rs.getString("EMAIL"));
 
     return user;

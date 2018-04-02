@@ -26,7 +26,7 @@ public class SpecialityDAOImpl implements SpecialityDAO {
     private static final String UPDATE_SPECIALITY="UPDATE SPECIALITY SET ID=? SPECIALITY_NAME=?,RECRUITMENT_PLAN=?,FACULTY_ID=?";
     private static final String UPDATE_SPECIALITY_SUBJECT="UPDATE SUBJECT_FOR_SPECIALITY SET ID_SPECIALITY=?,ID_SUBJECT=?";
     private static final String DELETE_SPECIALITY="DELETE FROM SPECIALITY WHERE ID=?";
-    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, SPECIALITY.FACULTY_ID FROM SPECIALITY WHERE FACULTY_ID=?";
+    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, FACULTY_ID FROM SPECIALITY WHERE FACULTY_ID=?";
     private static final String FIND_ALL_USERS_ON_SPECIALITY_BY_ID ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_AVG," +
             "SPECIALITY_ID FROM USER  WHERE SPECIALITY ID=?";
     private static final String INSERT_SPECIALITY_SUBJECTS="INSERT INTO SUBJECT_FOR_SPECIALITY(ID_SPECIALITY,ID_SUBJECT)";
@@ -63,6 +63,7 @@ public class SpecialityDAOImpl implements SpecialityDAO {
             pStatement.setInt(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
+
                 setSpeciality(rs,speciality);
             }
         } catch (SQLException e) {
@@ -82,6 +83,7 @@ public class SpecialityDAOImpl implements SpecialityDAO {
                 while (rs.next()) {
                     Speciality speciality=new Speciality();
                     setSpeciality(rs,speciality);
+                    specialities.add(speciality);
                 }
                 }
         } catch (SQLException e) {
@@ -187,6 +189,11 @@ public class SpecialityDAOImpl implements SpecialityDAO {
             throw new DAOException();
         }
         return users;
+    }
+
+    @Override
+    public List<Speciality> findSpecialityForCurrentUserByFacultyId(int userId, int facultyId) {
+        return null;
     }
 
     private Speciality setSpeciality(ResultSet rs,Speciality specialty) throws SQLException {
