@@ -16,6 +16,8 @@
     <title><fmt:message key="admin.add_faculty.title"/> </title>
 </head>
 <body>
-
+<form>
+    <input type="text"/>
+</form>
 </body>
 </html>
