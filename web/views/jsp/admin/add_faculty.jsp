@@ -16,8 +16,14 @@
     <title><fmt:message key="admin.add_faculty.title"/> </title>
 </head>
 <body>
-<form>
-    <input type="text"/>
+<form name="add-faculty-form" method="post" action="${pageContext.request.contextPath}/controller">
+    <input type="hidden" name="command" value="add_faculty"/>
+    <fmt:message key="admin.add_faculty.name"/>
+    <input type="text" name="faculty" value="" required pattern="([А-Я]{1}([а-я]{2,50}(\s)?)+)|[A-Z]{1}([a-z]{2,50}(\s)?)+"/>
+    <input class="button" type="submit">
+    <c:if test="${not empty faculty_name}">
+        <fmt:message key="admin.add_faculty.incorrect_name"/>
+    </c:if>
 </form>
 </body>
 </html>

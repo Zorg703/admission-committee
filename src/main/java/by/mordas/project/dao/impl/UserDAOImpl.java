@@ -36,7 +36,12 @@ public class UserDAOImpl implements UserDAO {
     private static final String FIND_USER_SUBJECTS_AND_SCORE="SELECT SUBJECT.ID,SUBJECT.SUBJECT_NAME,USER_MARK FROM SUBJECT INNER JOIN USER_SUBJECT_MARK AS S ON SUBJECT.ID = S.ID_SUBJECT AND ID_USER=?";
     private static final String CHANGE_USER_PASSWORD="UPDATE USER SET PASSWORD=? WHERE ID=?";
     private static final String UPDATE_USER_SPECIALITY="UPDATE USER SET SPECIALITY=? WHERE ID=?";
-
+/*SELECT  q,r,recruitment_plan,speciality_name from speciality INNER JOIN
+(SELECT count(user.id) q,avg(m) r,speciality_id FROM user INNER JOIN
+(SELECT id u,avg(mark) m FROM (SELECT id, certificate_mark as mark from user
+UNION
+SELECT id_user, user_mark FROM user_subject_mark) as marks GROUP BY id) as s on id=u WHERE speciality_id=6) as w
+on speciality.id=w.speciality_id - просмотр среднего бала и кол-ва подонных заявлений*/
     @Override
     public List<User> findAllEntity() throws DAOException {
 

@@ -97,7 +97,7 @@
         </td>
         <td>
 
-            <input type="number" required min="0" max="100" name="mark2" value="${user_params.mark2}"><br>
+                <input type="number" required min="0" max="100" name="mark2" value="${user_params.mark2}"><br>
             <c:if test="${not empty messages.mark2}">
                 <fmt:message key="user.registration.message.mark"/>
             </c:if>

@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 public class Validator {
 
+    private static final String FACULTY_REGEX="([А-Я]{1}([а-я]{2,50}(\\s)?)+)|[A-Z]{1}([a-z]{2,50}(\\s)?)+";
 
     private static final String FIRST_NAME_REGEX="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}";
     private static final String LAST_NAME_REGEX="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}";
@@ -21,7 +22,10 @@ public class Validator {
     private static final String EMAIL_REGEX="^[\\w]+[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$";
     private static final String SUBJECT_ID="[1-9]";
     private static final String LOGIN_BUSY ="login_busy";
-
+    /*private void xc(String data){
+        Pattern loginPattern = Pattern.compile(f);
+        Matcher matcher = loginPattern.matcher(data);
+    }*/
     private static boolean checkLogin(String login){
         UserLogic userLogic=new UserLogic();
         boolean isLoginFree=false;
@@ -117,6 +121,10 @@ public class Validator {
     public boolean validateUserMarks(String first, String second, String third) {
         return checkData(MARK_REGEX, first) && !checkData(MARK_REGEX, second) && checkData(MARK_REGEX, third);
 
+    }
+
+    public boolean checkFacultyName(String facultyName){
+        return checkData(FACULTY_REGEX,facultyName);
     }
 
 }

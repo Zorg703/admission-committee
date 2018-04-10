@@ -17,7 +17,7 @@ import java.util.List;
 public class FacultyDAOImpl implements FacultyDAO {
     private static final String FIND_ALL_FACULTY="SELECT ID,FACULTY_NAME FROM FACULTY";
     private static final String FIND_FACULTY_BY_ID="SELECT ID,FACULTY_NAME WHERE ID=?";
-    private static final String CREATE_FACULTY="INSERT INTO FACULTY(FACULTY_NAME) VALUES(?,?)";
+    private static final String CREATE_FACULTY="INSERT INTO FACULTY(FACULTY_NAME) VALUES(?)";
     private static final String UPDATE_FACULTY="UPDATE FACULTY SET ID=? FACULTY_NAME=?";
     private static final String DELETE_FACULTY="DELETE FROM FACULTY WHERE ID=?";
     private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, FACULTY_ID FROM SPECIALITY" +
@@ -77,13 +77,15 @@ public class FacultyDAOImpl implements FacultyDAO {
 
     @Override
     public void create(Faculty faculty) throws DAOException {
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(CREATE_FACULTY)){
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(CREATE_FACULTY,Statement.RETURN_GENERATED_KEYS)){
             pStatement.setString(1,faculty.getFacultyName());
+            ResultSet resultSet=pStatement.getGeneratedKeys();
+            if(resultSet.next()){
+                faculty.setFacultyId(resultSet.getInt(1));
+            }
         } catch (SQLException e) {
            throw new DAOException();
         }
-
-
     }
 
     @Override
