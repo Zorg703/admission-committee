@@ -13,9 +13,15 @@
 <head>
     <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
     <fmt:setBundle basename="localization"/>
-    <title>Title</title>
+    <title><fmt:message key="admin.delete_faculty.title"/> </title>
 </head>
 <body>
-
+<form name="delete-faculty" method="post" action="${pageContext.request.contextPath}/controller">
+    <input type="hidden" name="command" value="delete_faculty">
+    <input type="text" name="facultyId" value="" required pattern="[1-9]\d*">
+    <c:if test="${not empty message}">
+        <fmt:message key="admin.delete_faculty.message"/>
+    </c:if>
+</form>
 </body>
 </html>

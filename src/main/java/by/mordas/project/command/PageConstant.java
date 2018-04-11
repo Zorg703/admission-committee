@@ -12,5 +12,7 @@ public class PageConstant {
     public static final String PAGE_CHANGE_PASSWORD="views/jsp/user/change_user_password.jsp";
     public static final String PAGE_REGISTER_ON_FACULTY="views/jsp/user/register_on_faculty.jsp";
     public static final String PAGE_ADD_FACULTY="views/jsp/admin/add_faculty.jsp";
+    public static final String PAGE_DELETE_FACULTY="views/jsp/admin/delete_faculty.jsp";
     public static final String PAGE_ADMIN_SUCCESSFUL="views/jsp/admin/admin_successful.jsp";
+
 }

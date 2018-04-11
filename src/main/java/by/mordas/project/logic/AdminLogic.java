@@ -31,4 +31,12 @@ public class AdminLogic implements Logic{
         return faculty;
     }
 
+    public boolean deleteFaculty(int id) throws LogicException {
+        try {
+            return new FacultyDAOImpl().delete(id);
+        } catch (DAOException e) {
+            throw new LogicException();
+        }
+    }
+
 }
