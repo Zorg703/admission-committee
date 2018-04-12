@@ -1,6 +1,7 @@
 package by.mordas.project.command;
 
 import by.mordas.project.command.admin.AddFacultyCommand;
+import by.mordas.project.command.admin.AddSpecialtyCommand;
 import by.mordas.project.command.admin.DeleteFacultyCommand;
 import by.mordas.project.command.admin.ShowAllUserCommand;
 import by.mordas.project.command.common.LoginCommand;
@@ -23,6 +24,7 @@ public class CommandMap {
         this.put(CommandType.REGISTER_ON_SPECIALITY,new RegisterOnSpecialityCommand());
         this.put(CommandType.ADD_FACULTY,new AddFacultyCommand());
         this.put(CommandType.DELETE_FACULTY,new DeleteFacultyCommand());
+        this.put(CommandType.ADD_SPECIALITY,new AddSpecialtyCommand());
     }
 
     };

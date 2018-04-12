@@ -113,7 +113,7 @@ public class SpecialityDAOImpl implements SpecialityDAO {
             pStatement.setInt(3,specialty.getRecruitmentPlan());
             pStatement.setInt(4,specialty.getFacultyId());
             ResultSet resultSet=pStatement.getGeneratedKeys();
-            while (resultSet.next()){
+            if (resultSet.next()){
                 specialty.setFacultyId(resultSet.getInt("ID"));
             }
             for(Subject subject:specialty.getSubjects()){

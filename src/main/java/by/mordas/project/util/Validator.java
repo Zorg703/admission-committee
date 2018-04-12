@@ -129,4 +129,8 @@ public class Validator {
 
     public boolean checkID(String id){return checkData(ID_REGEX,id);}
 
+    public boolean validateSpecialty(){
+
+        return false;
+    }
 }
