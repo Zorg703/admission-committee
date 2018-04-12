@@ -50,7 +50,7 @@ public class Validator {
     }
 
 
-    public HashMap<String,String> checkUserDate(HashMap<String,String> parameterMap){
+    public HashMap<String,String> checkUserData(HashMap<String,String> parameterMap){
         HashMap<String,String> errorMessageMap=new HashMap<>();
         if(!checkData(FIRST_NAME_REGEX,parameterMap.get(ParamConstant.FIRST_NAME))){
             errorMessageMap.put(ParamConstant.FIRST_NAME,parameterMap.get(ParamConstant.FIRST_NAME));
@@ -80,23 +80,7 @@ public class Validator {
             errorMessageMap.put(ParamConstant.THIRD_SUBJECT_MARK,parameterMap.get(ParamConstant.THIRD_SUBJECT_MARK));
         }
 
-        if(!checkData(SUBJECT_ID,parameterMap.get(ParamConstant.FIRST_SUBJECT))){
-            errorMessageMap.put(ParamConstant.FIRST_SUBJECT,parameterMap.get(ParamConstant.FIRST_SUBJECT));
-        }
-        if(!checkData(SUBJECT_ID,parameterMap.get(ParamConstant.SECOND_SUBJECT))){
-            errorMessageMap.put(ParamConstant.SECOND_SUBJECT,parameterMap.get(ParamConstant.SECOND_SUBJECT));
-        }
-        if(!checkData(SUBJECT_ID,parameterMap.get(ParamConstant.THIRD_SUBJECT))){
-            errorMessageMap.put(ParamConstant.THIRD_SUBJECT,parameterMap.get(ParamConstant.THIRD_SUBJECT));
-
-        }
-        if(parameterMap.get(ParamConstant.SECOND_SUBJECT)!=null && parameterMap.get(ParamConstant.THIRD_SUBJECT)!=null) {
-            if (parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.SECOND_SUBJECT)) ||
-                    parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT)) ||
-                    parameterMap.get(ParamConstant.SECOND_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT))) {
-                errorMessageMap.put(ParamConstant.SUBJECTS, ParamConstant.SUBJECTS);
-            }
-        }*/
+        */
         if(!checkData(EMAIL_REGEX,parameterMap.get(ParamConstant.EMAIL))){
             errorMessageMap.put(ParamConstant.EMAIL,parameterMap.get(ParamConstant.EMAIL));
         }
@@ -127,10 +111,31 @@ public class Validator {
         return checkData(FACULTY_REGEX,facultyName);
     }
 
-    public boolean checkID(String id){return checkData(ID_REGEX,id);}
+    public boolean checkId(String id){return checkData(ID_REGEX,id);}
 
-    public boolean validateSpecialty(){
+    public HashMap<String,String> checkSpecialtyData(HashMap<String,String> parameterMap){
+        HashMap<String,String> errorMessageMap=new HashMap<>();
 
-        return false;
+        if(!checkId(parameterMap.get(ParamConstant.FACULTY_ID))){
+            errorMessageMap.put(ParamConstant.FACULTY_ID,parameterMap.get(ParamConstant.FACULTY_ID));
+        }
+        if(!checkData(SUBJECT_ID,parameterMap.get(ParamConstant.FIRST_SUBJECT))){
+            errorMessageMap.put(ParamConstant.FIRST_SUBJECT,parameterMap.get(ParamConstant.FIRST_SUBJECT));
+        }
+        if(!checkData(SUBJECT_ID,parameterMap.get(ParamConstant.SECOND_SUBJECT))){
+            errorMessageMap.put(ParamConstant.SECOND_SUBJECT,parameterMap.get(ParamConstant.SECOND_SUBJECT));
+        }
+        if(!checkData(SUBJECT_ID,parameterMap.get(ParamConstant.THIRD_SUBJECT))){
+            errorMessageMap.put(ParamConstant.THIRD_SUBJECT,parameterMap.get(ParamConstant.THIRD_SUBJECT));
+
+        }
+        if(parameterMap.get(ParamConstant.SECOND_SUBJECT)!=null && parameterMap.get(ParamConstant.THIRD_SUBJECT)!=null) {
+            if (parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.SECOND_SUBJECT)) ||
+                    parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT)) ||
+                    parameterMap.get(ParamConstant.SECOND_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT))) {
+                errorMessageMap.put(ParamConstant.SUBJECTS, ParamConstant.SUBJECTS);
+            }
+        }
+        return null;
     }
 }

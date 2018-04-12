@@ -19,7 +19,7 @@ public class RegistrationNewUserCommand implements Command {
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         HashMap<String,String> parameters=content.getRequestParameters();
-        HashMap<String,String> errorMessages=new Validator().checkUserDate(parameters);
+        HashMap<String,String> errorMessages=new Validator().checkUserData(parameters);
         if(errorMessages.isEmpty()) {
             User user=new User();
             user.setFirstName(parameters.get(ParamConstant.FIRST_NAME));

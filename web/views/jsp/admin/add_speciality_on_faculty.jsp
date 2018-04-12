@@ -23,7 +23,7 @@
     <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
     <td>
         <label>
-            <select required name="second_subject" value="${user_params.second_subject}">
+            <select required name="second_subject" value="${user_params.second_subject}" >
                 <option disabled selected>Выберите предмет</option>
                 <option value="1"><fmt:message key="user.registration.maths"/></option>
                 <option value="2"><fmt:message key="user.registration.physic"/></option>
