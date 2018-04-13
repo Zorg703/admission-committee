@@ -15,6 +15,7 @@ public class PageConstant {
     public static final String PAGE_DELETE_FACULTY="views/jsp/admin/delete_faculty.jsp";
     public static final String PAGE_ADMIN_SUCCESSFUL="views/jsp/admin/admin_successful.jsp";
     public static final String PAGE_ADD_SPECIALITY="views/jsp/admin/add_speciality_on_faculty.jsp";
+    public static final String FIND_USER_BY_ID="views/jsp/admin/find_user_by_id.jsp";
 
 }
 

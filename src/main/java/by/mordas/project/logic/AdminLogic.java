@@ -51,8 +51,13 @@ public class AdminLogic implements Logic{
         return speciality;
     }
 
-    public void findUserById(String userId) {
-        Integer id=Integer
-        new UserDAOImpl().findEntityById()
+    public User findUserById(String userId) throws LogicException {
+        Integer id=Integer.valueOf(userId);
+        try {
+           User user= new UserDAOImpl().findEntityById(id);
+           return user;
+        } catch (DAOException e) {
+            throw new LogicException();
+        }
     }
 }

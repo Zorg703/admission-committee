@@ -16,10 +16,16 @@
     <title><fmt:message key="admin.find_user_by_id.title"/> </title>
 </head>
 <body>
-<form name="find-user" action="${pageContext.servletContext.contextPath}/controller">
+<form name="find-user" action="${pageContext.servletContext.contextPath}/controller" method="get">
     <input type="hidden" name="controller" value="find_user_by_id"/>
     <input type="text" name="user_id" value=""/>
     <input type="submit" class="button">
 </form>
+<c:if test="${not empty message}">
+
+</c:if>
+<c:if test="${not empty user}">
+
+</c:if>
 </body>
 </html>
