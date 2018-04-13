@@ -55,6 +55,10 @@ public class Speciality extends Entity {
         this.recruitmentPlan = recruitmentPlan;
     }
 
+    public boolean add(Subject subject) {
+        return subjects.add(subject);
+    }
+
     @Override
     public String toString() {
         return "Speciality{" +

@@ -36,4 +36,6 @@ public final static String REFERER="referer";
 public final static String FACULTY_NAME="faculty_name";
 public final static String FACULTY="faculty";
 public final static String FACULTY_ID="faculty_id";
+public final static String SPECIALITY_NAME="speciality_name";
+public final static String USER_ID="user_id";
 }

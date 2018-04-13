@@ -17,7 +17,7 @@ public class DeleteFacultyCommand implements Command {
         Router router=new Router();
         String id=content.getRequestParameter(ParamConstant.FACULTY_ID);
         try {
-            if(new Validator().checkid(id) && adminLogic.deleteFaculty(Integer.valueOf(id))){
+            if(new Validator().checkId(id) && adminLogic.deleteFaculty(Integer.valueOf(id))){
                router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
 
             }

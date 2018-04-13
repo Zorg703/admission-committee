@@ -50,4 +50,9 @@ public class AdminLogic implements Logic{
         }
         return speciality;
     }
+
+    public void findUserById(String userId) {
+        Integer id=Integer
+        new UserDAOImpl().findEntityById()
+    }
 }

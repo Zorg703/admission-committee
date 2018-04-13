@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class Validator {
 
-    private static final String FACULTY_REGEX="([А-Я]{1}([а-я]{2,50}(\\s)?)+)|[A-Z]{1}([a-z]{2,50}(\\s)?)+";
+    private static final String FACULTY_SPECIALITY_NAME_REGEX="([А-Я]{1}([а-я]{2,50}(\\s)?)+)|[A-Z]{1}([a-z]{2,50}(\\s)?)+";
     private static final String ID_REGEX="[1-9]\\d*";
     private static final String FIRST_NAME_REGEX="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}";
     private static final String LAST_NAME_REGEX="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}";
@@ -48,7 +48,6 @@ public class Validator {
             return false;
         }
     }
-
 
     public HashMap<String,String> checkUserData(HashMap<String,String> parameterMap){
         HashMap<String,String> errorMessageMap=new HashMap<>();
@@ -107,9 +106,10 @@ public class Validator {
 
     }
 
-    public boolean checkFacultyName(String facultyName){
-        return checkData(FACULTY_REGEX,facultyName);
+    public boolean checkFacultyOrSpecialityName(String name){
+        return checkData(FACULTY_SPECIALITY_NAME_REGEX,name);
     }
+
 
     public boolean checkId(String id){return checkData(ID_REGEX,id);}
 
@@ -119,6 +119,9 @@ public class Validator {
         if(!checkId(parameterMap.get(ParamConstant.FACULTY_ID))){
             errorMessageMap.put(ParamConstant.FACULTY_ID,parameterMap.get(ParamConstant.FACULTY_ID));
         }
+        if(!checkFacultyOrSpecialityName(parameterMap.get(ParamConstant.SPECIALITY_NAME))){
+            errorMessageMap.put(ParamConstant.SPECIALITY_NAME,parameterMap.get(ParamConstant.SPECIALITY_NAME));
+        }
         if(!checkData(SUBJECT_ID,parameterMap.get(ParamConstant.FIRST_SUBJECT))){
             errorMessageMap.put(ParamConstant.FIRST_SUBJECT,parameterMap.get(ParamConstant.FIRST_SUBJECT));
         }
@@ -127,7 +130,6 @@ public class Validator {
         }
         if(!checkData(SUBJECT_ID,parameterMap.get(ParamConstant.THIRD_SUBJECT))){
             errorMessageMap.put(ParamConstant.THIRD_SUBJECT,parameterMap.get(ParamConstant.THIRD_SUBJECT));
-
         }
         if(parameterMap.get(ParamConstant.SECOND_SUBJECT)!=null && parameterMap.get(ParamConstant.THIRD_SUBJECT)!=null) {
             if (parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.SECOND_SUBJECT)) ||
@@ -136,6 +138,6 @@ public class Validator {
                 errorMessageMap.put(ParamConstant.SUBJECTS, ParamConstant.SUBJECTS);
             }
         }
-        return null;
+        return errorMessageMap;
     }
 }
