@@ -1,4 +1,4 @@
-package by.mordas.project.dao.impl;
+package by.mordas.project.dao.mysqlimpl;
 
 import by.mordas.project.dao.DAOException;
 import by.mordas.project.dao.SpecialityDAO;
@@ -18,7 +18,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpecialityDAOImpl implements SpecialityDAO {
+public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     private static final Logger logger= LogManager.getRootLogger();
     private static final String FIND_ALL_SPECIALITY="SELECT ID,SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID FROM SPECIALITY";
     private static final String FIND_SPECIALITY_BY_ID="SELECT ID,SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID FROM SPECIALITY WHERE ID=?";
@@ -47,7 +47,7 @@ public class SpecialityDAOImpl implements SpecialityDAO {
                 }
             }
         } catch (SQLException e) {
-           throw new DAOException();
+           throw new DAOException("Exception in delete method",e);
         }
 
         return specialties;
@@ -55,29 +55,29 @@ public class SpecialityDAOImpl implements SpecialityDAO {
     }
 
     @Override
-    public Speciality findEntityById(int id) throws DAOException {
+    public Speciality findEntityById(long id) throws DAOException {
 
         Speciality speciality =new Speciality();
         try(DBConnection conn= ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=conn.prepareStatement(FIND_SPECIALITY_BY_ID);
             ) {
-            pStatement.setInt(1,id);
+            pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
 
                 setSpeciality(rs,speciality);
             }
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in findAllEntity method",e);
         }
         return speciality;
     }
 
-    public List<Speciality> findSpecialitiesByFacultyID(int id) throws DAOException {
+    public List<Speciality> findSpecialitiesByFacultyID(long id) throws DAOException {
 
         List<Speciality> specialities=new ArrayList<>();
         try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_SPECIALITY_BY_FACULTY_ID);
         ) {
-            pStatement.setInt(1,id);
+            pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
                 while (rs.next()) {
@@ -87,19 +87,19 @@ public class SpecialityDAOImpl implements SpecialityDAO {
                 }
                 }
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in findSpecialitesByFacultyId method",e);
         }
 
         return specialities;
     }
 
     @Override
-    public boolean delete(int id) throws DAOException {
+    public boolean delete(long id) throws DAOException {
         try (DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement = connection.prepareStatement(DELETE_SPECIALITY)) {
-            pStatement.setInt(1,id);
+            pStatement.setLong(1,id);
             return pStatement.executeUpdate()==4;
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in delete method",e);
         }
 
     }
@@ -111,18 +111,18 @@ public class SpecialityDAOImpl implements SpecialityDAO {
             pStatement=connection.prepareStatement(CREATE_SPECIALITY);
             pStatement.setString(2,specialty.getSpecialityName());
             pStatement.setInt(3,specialty.getRecruitmentPlan());
-            pStatement.setInt(4,specialty.getFacultyId());
+            pStatement.setLong(4,specialty.getFacultyId());
             ResultSet resultSet=pStatement.getGeneratedKeys();
             if (resultSet.next()){
                 specialty.setFacultyId(resultSet.getInt("ID"));
             }
             for(Subject subject:specialty.getSubjects()){
                 pStatement=connection.prepareStatement(INSERT_SPECIALITY_SUBJECTS);
-                pStatement.setInt(1,specialty.getSpecialityId());
-                pStatement.setInt(2,subject.getSubjectId());
+                pStatement.setLong(1,specialty.getSpecialityId());
+                pStatement.setLong(2,subject.getSubjectId());
             }
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in create method",e);
         }
         finally {
             try {if(pStatement!=null)
@@ -139,20 +139,20 @@ public class SpecialityDAOImpl implements SpecialityDAO {
         PreparedStatement pStatement=null;
         try(DBConnection connection=ConnectionPool.getInstance().getConnection()){
             pStatement=connection.prepareStatement(UPDATE_SPECIALITY);
-            pStatement.setInt(1,specialty.getSpecialityId());
+            pStatement.setLong(1,specialty.getSpecialityId());
             pStatement.setString(2,specialty.getSpecialityName());
-            pStatement.setInt(3,specialty.getRecruitmentPlan());
-            pStatement.setInt(4,specialty.getFacultyId());
+            pStatement.setLong(3,specialty.getRecruitmentPlan());
+            pStatement.setLong(4,specialty.getFacultyId());
             pStatement.executeUpdate();
             for(Subject subject:specialty.getSubjects()){
                 pStatement=connection.prepareStatement(UPDATE_SPECIALITY_SUBJECT);
-                pStatement.setInt(1,specialty.getSpecialityId());
-                pStatement.setInt(2,subject.getSubjectId());
+                pStatement.setLong(1,specialty.getSpecialityId());
+                pStatement.setLong(2,subject.getSubjectId());
                 pStatement.executeUpdate();
             }
 
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in update method:",e);
         }
         finally {
             if(pStatement!=null){
@@ -168,11 +168,11 @@ public class SpecialityDAOImpl implements SpecialityDAO {
     }
 
 
-    public List<User> findUserOnSpeciality(int id) throws DAOException {
+    public List<User> findUserOnSpeciality(long id) throws DAOException {
         List<User> users =new ArrayList<>();
         try(DBConnection connection=ConnectionPool.getInstance().getConnection();
             PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_USERS_ON_SPECIALITY_BY_ID)){
-            pStatement.setInt(1,id);
+            pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
                 while (rs.next()){
@@ -186,14 +186,9 @@ public class SpecialityDAOImpl implements SpecialityDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in findUserOnSpeciality method",e);
         }
         return users;
-    }
-
-    @Override
-    public List<Speciality> findSpecialityForCurrentUserByFacultyId(int userId, int facultyId) {
-        return null;
     }
 
     private Speciality setSpeciality(ResultSet rs,Speciality specialty) throws SQLException {

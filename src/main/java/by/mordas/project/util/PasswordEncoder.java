@@ -1,5 +1,9 @@
 package by.mordas.project.util;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -9,6 +13,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 public class PasswordEncoder {
+    private static Logger logger= LogManager.getRootLogger();
     private static final String SECRET_KEY="1234SECURITY@key";
 
     public static String encodePassword(String password){
@@ -21,8 +26,8 @@ public class PasswordEncoder {
             for (byte b:code) {
                 secretPassword.append(b);
             }
-        } catch (Exception e) {
-           //TODO
+        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+            logger.log(Level.WARN,"Problems with password encryption");
         }
         return secretPassword.toString();
     }

@@ -7,13 +7,13 @@ import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.User;
 import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.UserLogic;
+import by.mordas.project.logic.impl.UserLogicImpl;
 import by.mordas.project.util.Validator;
 
 import java.util.HashMap;
 
 public class ChangePasswordCommand implements Command {
-    private UserLogic userLogic=new UserLogic();
+    private UserLogicImpl userLogicImpl =new UserLogicImpl();
     private String SUCCESS_CHANGED="changed";
     @Override
     public Router execute(SessionRequestContent content) {
@@ -22,9 +22,9 @@ public class ChangePasswordCommand implements Command {
         String password2=content.getRequestParameter(ParamConstant.PASSWORD_TWO);
         HashMap<String,String> errorMap=new Validator().checkChangedPassword(password1,password2);
         if(errorMap.isEmpty()){
-            Integer userID=((User)content.getSessionAttribute(ParamConstant.USER)).getUserId();
+            Long userID=((User)content.getSessionAttribute(ParamConstant.USER)).getUserId();
             try {
-                userLogic.changePassword(userID,password1);
+                userLogicImpl.changePassword(userID,password1);
                 router.setPagePath(PageConstant.PAGE_CHANGE_PASSWORD);
                 router.setRouter(Router.RouteType.REDIRECT);
                 content.setSessionAttribute(SUCCESS_CHANGED,SUCCESS_CHANGED);

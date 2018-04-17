@@ -3,18 +3,18 @@ package by.mordas.project.entity;
 import java.util.ArrayList;
 
 public class Faculty extends Entity {
-    private int facultyId;
+    private long facultyId;
     private String facultyName;
 
 
     public Faculty() {
 
     }
-    public int getFacultyId() {
+    public long getFacultyId() {
         return facultyId;
     }
 
-    public void setFacultyId(int facultyId) {
+    public void setFacultyId(long facultyId) {
         this.facultyId = facultyId;
     }
 

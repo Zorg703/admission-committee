@@ -14,9 +14,9 @@ public interface UserDAO extends AbstractDAO<User> {
 
     List<User> findAllEntity() throws DAOException;
 
-    User findEntityById(int id) throws DAOException;
+    User findEntityById(long id) throws DAOException;
 
-    boolean delete(int id) throws DAOException;
+    boolean delete(long id) throws DAOException;
 
     void create(User user) throws DAOException;
 
@@ -26,9 +26,9 @@ public interface UserDAO extends AbstractDAO<User> {
 
     User findUserByPasswordAndLogin(String login,String password) throws DAOException;
 
-    Map<Subject,Integer> findUserSubjectsAndScores(int id) throws DAOException;
+    Map<Subject,Integer> findUserSubjectsAndScores(long id) throws DAOException;
 
-    void changeUserPassword(Integer userId,String password) throws DAOException;
+    void changeUserPassword(Long userId,String password) throws DAOException;
 
     void updateUserSpeciality(User user) throws DAOException;
 }

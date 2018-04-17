@@ -53,7 +53,7 @@ public class DBConnection implements Connection, AutoCloseable {
     }
 
     @Override
-    public void close() throws SQLException {
+    public void close() {
         ConnectionPool.getInstance().closeConnection(this);
     }
 

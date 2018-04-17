@@ -1,4 +1,4 @@
-package by.mordas.project.dao.impl;
+package by.mordas.project.dao.mysqlimpl;
 
 import by.mordas.project.dao.DAOException;
 import by.mordas.project.dao.UserDAO;
@@ -6,6 +6,9 @@ import by.mordas.project.entity.Subject;
 import by.mordas.project.entity.User;
 import by.mordas.project.pool.ConnectionPool;
 import by.mordas.project.pool.DBConnection;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 
-public class UserDAOImpl implements UserDAO {
+public class MySQLUserDAOImpl implements UserDAO {
+    Logger logger= LogManager.getRootLogger();
+
     private static final String FIND_USER_BY_ID ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
             "SPECIALITY_ID,LOGIN,EMAIL FROM USER WHERE ID=?";
     private static final String FIND_ALL_USER="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
@@ -55,27 +60,27 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in findAllEntity method",e);
         }
 
         return users;
     }
 
     @Override
-    public User findEntityById(int id) throws DAOException {
+    public User findEntityById(long id) throws DAOException {
 
         User user = new User();
 
         try(DBConnection connection=ConnectionPool.getInstance().getConnection()) {
             PreparedStatement pStatement=connection.prepareStatement(FIND_USER_BY_ID);
             ResultSet rs=pStatement.executeQuery();
-            pStatement.setInt(1,id);
+            pStatement.setLong(1,id);
             if(rs!=null){
                user=getUser(rs);
             }
             pStatement=connection.prepareStatement(FIND_SUBJECT_USER);
             rs=pStatement.executeQuery();
-                pStatement.setInt(1,id);
+                pStatement.setLong(1,id);
                 if(rs!=null) {
                     while (rs.next()){
                         Integer subjectId=rs.getInt("SUBJECT_ID");
@@ -84,21 +89,21 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
                     }
                 }
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in findEntityById method",e);
         }
 
         return user;
     }
 
     @Override
-    public boolean delete(int id) throws DAOException {
+    public boolean delete(long id) throws DAOException {
 
         DBConnection connection = ConnectionPool.getInstance().getConnection();
         try (PreparedStatement pStatement = connection.prepareStatement(DELETE_USER_BY_ID)) {
-            pStatement.setInt(1,id);
+            pStatement.setLong(1,id);
             return pStatement.executeUpdate()==7;
         } catch (SQLException e) {
-           throw new DAOException();
+           throw new DAOException("Exception in delete method",e);
         }
 
     }
@@ -126,7 +131,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
             for(Map.Entry<Integer,Integer> entry: user.getSubjectMark().entrySet()){
                 pStatement=connection.prepareStatement(INSERT_STUDENTS_SUBJECTS);
-                pStatement.setInt(1, user.getUserId());
+                pStatement.setLong(1, user.getUserId());
                 pStatement.setInt(2,entry.getKey());
                 pStatement.setInt(3,entry.getValue());
                 pStatement.executeUpdate();
@@ -137,17 +142,24 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
             try {
                 connection.rollback();
             } catch (SQLException e1) {
-               throw new DAOException();
+               throw new DAOException("Exception in crate method",e);
 
             }
+            throw new DAOException("Exception in crate method",e);
 
         }
         finally {
             try {
-                connection.close();
-                pStatement.close();
+                if(connection!=null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
+                if(pStatement!=null){
+                    pStatement.close();
+                }
+
             } catch (SQLException e) {
-               throw new DAOException();
+                logger.log(Level.ERROR, e.getMessage());
             }
 
         }
@@ -161,25 +173,25 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
         DBConnection connection=ConnectionPool.getInstance().getConnection();
         try {
             PreparedStatement pStatement=connection.prepareStatement(UPDATE_USER);
-            pStatement.setInt(1, user.getUserId());
+            pStatement.setLong(1, user.getUserId());
             pStatement.setString(2, user.getFirstName());
             pStatement.setString(3, user.getLastName());
             pStatement.setDate(4, user.getBirthday());
             pStatement.setInt(5, user.getCertificateMark());
-            pStatement.setInt(6, user.getSpecialityId());
+            pStatement.setLong(6, user.getSpecialityId());
             pStatement.setString(7,user.getPassword());
             pStatement.setString(8,user.getEmail());
             pStatement.executeUpdate();
             for(Map.Entry<Integer,Integer> entry: user.getSubjectMark().entrySet()){
                 pStatement=connection.prepareStatement(UPDATE_SUBJECT_USER);
-                pStatement.setInt(1, user.getUserId());
+                pStatement.setLong(1, user.getUserId());
                 pStatement.setInt(2,entry.getKey());
                 pStatement.setInt(3,entry.getValue());
                 pStatement.executeUpdate();
             }
 
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in update method",e);
         }
 
         return user;
@@ -194,7 +206,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
             ResultSet rs=pStetement.executeQuery();
             return !rs.next();
         } catch (SQLException e) {
-           throw new DAOException();
+           throw new DAOException("Exception in findUserByLogin method",e);
         }
     }
 
@@ -214,35 +226,35 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
             }
 
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in findUserByPasswordAndLogin",e);
         }
        return user;
     }
 
     private User getUser(ResultSet rs) throws SQLException {
         User user = new User();
-        user.setUserId(rs.getInt("ID"));
+        user.setUserId(rs.getLong("ID"));
         user.setFirstName(rs.getString("FIRST_NAME"));
         user.setLastName(rs.getString("LAST_NAME"));
         user.setBirthday(rs.getDate("BIRTHDAY"));
         user.setCertificateMark(rs.getInt("CERTIFICATE_MARK"));
-        user.setSpecialityId(rs.getInt("SPECIALITY_ID"));
+        user.setSpecialityId(rs.getLong("SPECIALITY_ID"));
         user.setEmail(rs.getString("EMAIL"));
 
     return user;
     }
 
     @Override
-    public Map<Subject, Integer> findUserSubjectsAndScores(int id) throws DAOException {
+    public Map<Subject, Integer> findUserSubjectsAndScores(long id) throws DAOException {
         Map<Subject,Integer> subjects=new HashMap<>();
         try(DBConnection connection=ConnectionPool.getInstance().getConnection();
         PreparedStatement pStatement=connection.prepareStatement(FIND_USER_SUBJECTS_AND_SCORE)){
-            pStatement.setInt(1,id);
+            pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
                 while (rs.next()){
                     Subject subject=new Subject();
-                    subject.setSubjectId(rs.getInt("ID"));
+                    subject.setSubjectId(rs.getLong("ID"));
                     subject.setSubjectName("SUBJECT_NAME");
                     int score=rs.getInt("USER_MARK");
                     subjects.put(subject,score);
@@ -250,20 +262,20 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
             }
 
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in findUserSubjectsAndScores method",e);
         }
         return subjects;
     }
 
     @Override
-    public void changeUserPassword(Integer userId, String password) throws DAOException {
+    public void changeUserPassword(Long userId, String password) throws DAOException {
         try(DBConnection connection=ConnectionPool.getInstance().getConnection();
             PreparedStatement pStatement=connection.prepareStatement(CHANGE_USER_PASSWORD)){
             pStatement.setString(1,password);
-            pStatement.setInt(1,userId);
+            pStatement.setLong(1,userId);
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in changeUserPassword method",e);
         }
     }
 
@@ -274,12 +286,12 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
         try{
             connection.setAutoCommit(false);
             pStatement=connection.prepareStatement(UPDATE_USER_SPECIALITY);
-            pStatement.setInt(1,user.getSpecialityId());
-            pStatement.setInt(2,user.getUserId());
+            pStatement.setLong(1,user.getSpecialityId());
+            pStatement.setLong(2,user.getUserId());
             pStatement.executeUpdate();
             for(Map.Entry<Integer,Integer> entry: user.getSubjectMark().entrySet()){
                 pStatement=connection.prepareStatement(UPDATE_SUBJECT_USER);
-                pStatement.setInt(1, user.getUserId());
+                pStatement.setLong(1, user.getUserId());
                 pStatement.setInt(2,entry.getKey());
                 pStatement.setInt(3,entry.getValue());
                 pStatement.executeUpdate();
@@ -289,21 +301,26 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
             try {
                 connection.rollback();
             } catch (SQLException e1) {
-                throw new DAOException();
-
+                throw new DAOException("Exception in updateUserSpeciality method",e);
             }
+            throw new DAOException("Exception in updateUserSpeciality method",e);
 
         }
         finally {
             try {
-                connection.setAutoCommit(true);
-                connection.close();
-                pStatement.close();
+                if(connection!=null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
+                if(pStatement!=null) {
+                    pStatement.close();
+                }
             } catch (SQLException e) {
-                throw new DAOException();
+                logger.log(Level.ERROR, e.getMessage());
             }
 
         }
 
     }
+
 }

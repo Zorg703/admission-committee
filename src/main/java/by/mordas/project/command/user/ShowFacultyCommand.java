@@ -6,18 +6,17 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Faculty;
-import by.mordas.project.logic.UserLogic;
+import by.mordas.project.logic.impl.UserLogicImpl;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class ShowFacultyCommand implements Command {
-    private UserLogic userLogic=new UserLogic();
+    private UserLogicImpl userLogicImpl =new UserLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         List<Faculty> faculties;
-        faculties=userLogic.findAllFaculties();
+        faculties= userLogicImpl.findAllFaculties();
         content.setRequestAttribute(ParamConstant.FACULTY_LIST,faculties);
         router.setPagePath(PageConstant.PAGE_FIND_ALL_FACULTY);
         return router;

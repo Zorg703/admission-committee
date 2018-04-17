@@ -9,26 +9,26 @@ import by.mordas.project.logic.impl.AdminLogicImpl;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.util.Validator;
 
-public class DeleteFacultyCommand implements Command {
-
-    AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
+public class DeleteSpecialityCommand implements Command{
+    private AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
-        String id=content.getRequestParameter(ParamConstant.FACULTY_ID);
+        String specialityId=content.getRequestParameter(ParamConstant.SPECIALITY_ID);
         try {
-            if(new Validator().checkId(id) && adminLogicImpl.deleteFaculty(Integer.valueOf(id))){
-               router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
+            if(new Validator().checkId(specialityId) && adminLogicImpl.deleteSpeciality(specialityId)){
+              router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
 
             }
             else {
-                router.setRouter(Router.RouteType.REDIRECT);
-                router.setPagePath(PageConstant.PAGE_DELETE_FACULTY);
+
+                router.setPagePath(PageConstant.PAGE_DELETE_SPECIALITY);
                 content.setSessionAttribute(ParamConstant.MESSAGE,ParamConstant.MESSAGE);
             }
         } catch (LogicException e) {
             e.printStackTrace();
         }
+
         return router;
     }
 }

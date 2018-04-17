@@ -2,14 +2,14 @@ package by.mordas.project.entity;
 
 
 public class Subject extends Entity {
-    private int subjectId;
+    private long subjectId;
     private String subjectName;
 
-    public int getSubjectId() {
+    public long getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(int subjectId) {
+    public void setSubjectId(long subjectId) {
         this.subjectId = subjectId;
     }
 

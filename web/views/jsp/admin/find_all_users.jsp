@@ -14,13 +14,17 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
 <head>
-    <title><fmt:message key="admin.action.title"/></title>
+    <title><fmt:message key="admin.find_all_user.title"/></title>
 </head>
 <body>
 <a href="${pageContext.request.contextPath}/controller?command=show_all_users"><fmt:message key="admin.action.show"/></a>
 <c:if test="${not empty user_list}">
     <table>
-        <tr><td>Фамилия</td><td>Имя</td><td>Отчество</td></tr>
+        <tr><td><fmt:message key="admin.find_user_by_id.id"/></td>
+            <td><fmt:message key="admin.find_user_by_id.first_name"/> </td>
+            <td><fmt:message key="admin.find_user_by_id.last_name"/></td>
+            <td><fmt:message key="admin.find_user_by_id.login"/></td>
+        </tr>
         <c:forEach var="user" items="${user_list}" varStatus="status">
             <tr>
                 <td><c:out value="${user.lastName}"/></td>

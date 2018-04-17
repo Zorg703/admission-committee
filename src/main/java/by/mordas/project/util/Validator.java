@@ -1,11 +1,9 @@
 package by.mordas.project.util;
 
 import by.mordas.project.command.ParamConstant;
-import by.mordas.project.logic.UserLogic;
+import by.mordas.project.logic.impl.UserLogicImpl;
 
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,9 +25,9 @@ public class Validator {
         Matcher matcher = loginPattern.matcher(data);
     }*/
     private static boolean checkLogin(String login){
-        UserLogic userLogic=new UserLogic();
+        UserLogicImpl userLogicImpl =new UserLogicImpl();
         boolean isLoginFree=false;
-        isLoginFree=userLogic.findUserByLogin(login);
+        isLoginFree= userLogicImpl.findUserByLogin(login);
         return isLoginFree;
     }
 

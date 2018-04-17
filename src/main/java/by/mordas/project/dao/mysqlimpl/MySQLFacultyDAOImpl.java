@@ -1,4 +1,4 @@
-package by.mordas.project.dao.impl;
+package by.mordas.project.dao.mysqlimpl;
 
 import by.mordas.project.dao.DAOException;
 import by.mordas.project.dao.FacultyDAO;
@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FacultyDAOImpl implements FacultyDAO {
+public class MySQLFacultyDAOImpl implements FacultyDAO {
     private static final String FIND_ALL_FACULTY="SELECT ID,FACULTY_NAME FROM FACULTY";
     private static final String FIND_FACULTY_BY_ID="SELECT ID,FACULTY_NAME WHERE ID=?";
     private static final String CREATE_FACULTY="INSERT INTO FACULTY(FACULTY_NAME) VALUES(?)";
@@ -39,18 +39,18 @@ public class FacultyDAOImpl implements FacultyDAO {
                 }
             }
         } catch (SQLException e) {
-           throw new DAOException();
+           throw new DAOException("Exception in findAllEntity method:",e);
         }
 
         return faculties;
     }
 
     @Override
-    public Faculty findEntityById(int id) throws DAOException {
+    public Faculty findEntityById(long id) throws DAOException {
         Faculty faculty=new Faculty();
         try(DBConnection conn= ConnectionPool.getInstance().getConnection();
             PreparedStatement pStatement=conn.prepareStatement(FIND_FACULTY_BY_ID)) {
-            pStatement.setInt(1,id);
+            pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
                 faculty.setFacultyId(rs.getInt("ID"));
@@ -58,20 +58,20 @@ public class FacultyDAOImpl implements FacultyDAO {
 
             }
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in findEntityById method",e);
         }
 
         return faculty;
     }
 
     @Override
-    public boolean delete(int id) throws DAOException {
+    public boolean delete(long id) throws DAOException {
 
         try (DBConnection connection = ConnectionPool.getInstance().getConnection();PreparedStatement pStatement = connection.prepareStatement(DELETE_FACULTY)) {
-            pStatement.setInt(1,id);
+            pStatement.setLong(1,id);
             return pStatement.executeUpdate()==2;
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in delete method",e);
         }
     }
 
@@ -84,7 +84,7 @@ public class FacultyDAOImpl implements FacultyDAO {
                 faculty.setFacultyId(resultSet.getInt(1));
             }
         } catch (SQLException e) {
-           throw new DAOException();
+           throw new DAOException("Exception in create method",e);
         }
     }
 
@@ -92,11 +92,11 @@ public class FacultyDAOImpl implements FacultyDAO {
     public Faculty update(Faculty faculty) throws DAOException {
 
         try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(UPDATE_FACULTY)){
-            pStatement.setInt(1,faculty.getFacultyId());
+            pStatement.setLong(1,faculty.getFacultyId());
             pStatement.setString(2,faculty.getFacultyName());
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in update method",e);
         }
 
         return faculty;
@@ -109,11 +109,15 @@ public class FacultyDAOImpl implements FacultyDAO {
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
                 while (rs.next()){
-
+                    Speciality speciality=new Speciality();
+                    speciality.setSpecialityId(rs.getLong("ID"));
+                    speciality.setSpecialityName(rs.getString("SPECIALITY_NAME"));
+                    speciality.setRecruitmentPlan(rs.getInt("recruitment_plan"));
+                    speciality.setFacultyId(rs.getLong("faculty_id"));
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in findSpecialityFromFaculty",e);
         }
         return specialties;
 

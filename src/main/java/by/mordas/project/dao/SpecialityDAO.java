@@ -17,18 +17,18 @@ public interface SpecialityDAO extends AbstractDAO<Speciality> {
 
     List<Speciality> findAllEntity() throws DAOException;
 
-    Speciality findEntityById(int id) throws DAOException;
+    Speciality findEntityById(long id) throws DAOException;
 
-    List<Speciality> findSpecialitiesByFacultyID(int id) throws DAOException;
+    List<Speciality> findSpecialitiesByFacultyID(long id) throws DAOException;
 
-    boolean delete(int id) throws DAOException;
+    boolean delete(long id) throws DAOException;
 
     void create(Speciality specialty) throws DAOException;
 
     Speciality update(Speciality specialty) throws DAOException;
 
-    List<User> findUserOnSpeciality(int id) throws DAOException;
-    List<Speciality> findSpecialityForCurrentUserByFacultyId(int userId,int facultyId);
+    List<User> findUserOnSpeciality(long id) throws DAOException;
+
 
 
 

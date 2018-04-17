@@ -7,14 +7,14 @@ import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Speciality;
 import by.mordas.project.entity.Subject;
-import by.mordas.project.logic.AdminLogic;
+import by.mordas.project.logic.impl.AdminLogicImpl;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.util.Validator;
 
 import java.util.HashMap;
 
 public class AddSpecialtyCommand implements Command {
-    AdminLogic adminLogic=new AdminLogic();
+    AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
@@ -33,7 +33,7 @@ public class AddSpecialtyCommand implements Command {
                 speciality.add(subject2);
                 Subject subject3=new Subject();
                 subject3.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.THIRD_SUBJECT)));
-                adminLogic.addSpeciality(speciality);
+                adminLogicImpl.addSpeciality(speciality);
                 router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
                 router.setRouter(Router.RouteType.REDIRECT);
             } catch (LogicException e) {

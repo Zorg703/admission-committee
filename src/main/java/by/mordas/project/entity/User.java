@@ -7,11 +7,11 @@ import java.util.Map;
 public class User extends Entity {
     private String login;
     private String password;
-    private int userId;
+    private long userId;
     private String firstName;
     private String lastName;
     private int certificateMark;
-    private int specialityId;
+    private long specialityId;
     private Date birthday;
     private Map<Integer,Integer> subjectMark;
     private String email;
@@ -68,11 +68,11 @@ public class User extends Entity {
                 "} " + super.toString();
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -100,11 +100,11 @@ public class User extends Entity {
         this.certificateMark = certificateMark;
     }
 
-    public int getSpecialityId() {
+    public long getSpecialityId() {
         return specialityId;
     }
 
-    public void setSpecialityId(int specialityId) {
+    public void setSpecialityId(long specialityId) {
         this.specialityId = specialityId;
     }
 

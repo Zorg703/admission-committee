@@ -14,5 +14,6 @@ public enum CommandType {
     ADD_FACULTY,
     DELETE_FACULTY,
     ADD_SPECIALITY,
-    FIND_USER_BY_ID
+    FIND_USER_BY_ID,
+    DELETE_SPECIALITY
 }

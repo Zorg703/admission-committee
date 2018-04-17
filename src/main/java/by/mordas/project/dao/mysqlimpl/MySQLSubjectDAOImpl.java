@@ -1,4 +1,4 @@
-package by.mordas.project.dao.impl;
+package by.mordas.project.dao.mysqlimpl;
 
 import by.mordas.project.dao.DAOException;
 import by.mordas.project.dao.SubjectDAO;
@@ -13,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubjectDAOImpl implements SubjectDAO {
+public class MySQLSubjectDAOImpl implements SubjectDAO {
     private static final String FIND_ALL_SUBJECT="SELECT ID,SUBJECT_NAME FROM SUBJECT";
     private static final String FIND_SUBJECT_BY_ID="SELECT ID,SUBJECT_NAME FROM SUBJECT WHERE ID=?";
     private static final String CREATE_SUBJECT="INSERT INTO SUBJECT(ID,SUBJECT_NAME) VALUES(?,?)";
@@ -24,52 +24,52 @@ public class SubjectDAOImpl implements SubjectDAO {
     private static final String FIND_SUBJECTS_FOR_SPECIALITY="SELECT SUBJECT_NAME,SUBJECT.ID from SUBJECT INNER JOIN SUBJECT_FOR_SPECIALITY S ON SUBJECT.ID = S.ID_SUBJECT WHERE ID_SPECIALITY=?";
 
     @Override
-    public List<Subject> findAllEntity() {
+    public List<Subject> findAllEntity() throws DAOException {
         List<Subject> subjects=new ArrayList<>();
         try(DBConnection connection= ConnectionPool.getInstance().getConnection();Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_SUBJECT)){
             if (rs != null) {
                 while (rs.next()) {
                     Subject subject=new Subject();
-                    subject.setSubjectId(rs.getInt("ID"));
+                    subject.setSubjectId(rs.getLong("ID"));
                     subject.setSubjectName(rs.getString("FACULTY_NAME"));
                     subjects.add(subject);
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Exception in findAllEntity method",e);
         }
 
         return subjects;
     }
 
     @Override
-    public Subject findEntityById(int id) throws DAOException {
+    public Subject findEntityById(long id) throws DAOException {
 
         Subject subject=new Subject();
         try( DBConnection conn= ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=conn.prepareStatement(FIND_SUBJECT_BY_ID)
            ) {
-            pStatement.setInt(1,id);
+            pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs.next()){
-                subject.setSubjectId(rs.getInt("ID"));
+                subject.setSubjectId(rs.getLong("ID"));
                 subject.setSubjectName(rs.getString("SUBJECT_NAME"));
             }
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in findEntityById method",e);
         }
 
         return subject;
     }
 
     @Override
-    public boolean delete(int id) throws DAOException {
+    public boolean delete(long id) throws DAOException {
 
         try (DBConnection connection = ConnectionPool.getInstance().getConnection();PreparedStatement pStatement = connection.prepareStatement(DELETE_SUBJECT)) {
-            pStatement.setInt(1,id);
+            pStatement.setLong(1,id);
             return pStatement.executeUpdate()==2;
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in delete method",e);
         }
     }
 
@@ -81,7 +81,7 @@ public class SubjectDAOImpl implements SubjectDAO {
             subject.setSubjectName(subject.getSubjectName());
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in create method",e);
         }
 
     }
@@ -90,53 +90,52 @@ public class SubjectDAOImpl implements SubjectDAO {
     public Subject update(Subject subject) throws DAOException {
 
         try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(UPDATE_SUBJECT)){
-            pStatement.setInt(1,subject.getSubjectId());
+            pStatement.setLong(1,subject.getSubjectId());
             pStatement.setString(2,subject.getSubjectName());
             pStatement.executeUpdate();
             return subject;
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in update method",e);
         }
-
 
     }
 
     @Override
-    public List<Subject> findSubjectByUserId(int id) throws DAOException {
+    public List<Subject> findSubjectByUserId(long id) throws DAOException {
         List<Subject> subjects=null;
         try(DBConnection connection=ConnectionPool.getInstance().getConnection();
         PreparedStatement pStatement=connection.prepareStatement(FIND_USER_SUBJECTS)){
-            pStatement.setInt(1,id);
+            pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
                 while (rs.next()){
                     Subject subject=new Subject();
-
+                    //todo
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in findSubjectByUserId method",e);
         }
         return subjects;
     }
 
     @Override
-    public List<Subject> findSubjectsBySpecialityId(int id) throws DAOException {
+    public List<Subject> findSubjectsBySpecialityId(long id) throws DAOException {
         List<Subject> subjects=new ArrayList<>();
         try(DBConnection connection=ConnectionPool.getInstance().getConnection();
             PreparedStatement pStatement=connection.prepareStatement(FIND_SUBJECTS_FOR_SPECIALITY)) {
-            pStatement.setInt(1,id);
+          pStatement.setLong(1,id);
             ResultSet resultSet=pStatement.executeQuery();
             if(resultSet!=null){
                 while (resultSet.next()){
                     Subject subject=new Subject();
                     subject.setSubjectName(resultSet.getString("SUBJECT_NAME"));
-                    subject.setSubjectId(resultSet.getInt("ID"));
+                    subject.setSubjectId(resultSet.getLong("ID"));
                     subjects.add(subject);
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException();
+            throw new DAOException("Exception in findSubjectsBySpecialityId method",e);
         }
         return subjects;
     }

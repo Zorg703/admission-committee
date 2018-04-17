@@ -23,6 +23,7 @@ public class CommandMap {
         this.put(CommandType.DELETE_FACULTY,new DeleteFacultyCommand());
         this.put(CommandType.ADD_SPECIALITY,new AddSpecialtyCommand());
         this.put(CommandType.FIND_USER_BY_ID,new FindUserCommand());
+        this.put(CommandType.DELETE_SPECIALITY,new DeleteSpecialityCommand());
     }
 
     };

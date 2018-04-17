@@ -1,58 +1,53 @@
 package by.mordas.project.pool;
 
+import by.mordas.project.dao.DAOException;
+import by.mordas.project.entity.User;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
+import java.util.MissingResourceException;
 import java.util.Properties;
+import java.util.ResourceBundle;
+
 
 public class DBManager {
-   /*private final String URL;
-   private final String NAME;
-   private final String PASSWORD;
-   private final int POOL_SIZE;*/
-   private Properties properties;
-   private final String PROPERTIES_PATH="E:\\EPAMLabs2\\admissioncommittee\\src\\main\\resources\\config.properties";
+    private static Logger logger= org.apache.logging.log4j.LogManager.getRootLogger();
 
-    public Properties getProperties() {
-        return properties;
-    }
+    private static ResourceBundle  resourceBundle=ResourceBundle.getBundle("configuration");
+
 
     public DBManager() {
-        properties = new Properties();
-        readProperties();
-        properties.put("autoReconnect", "true");
-        properties.put("useUnicode", "true");
-        properties.put("characterEncoding", "UTF-8");
+
     }
-    public void readProperties(){
-        try(FileInputStream fileInputStream=new FileInputStream(PROPERTIES_PATH)) {
-            properties.load(fileInputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void registerDriver() {
+    public static String getProperty(String key){
+        String value;
 
         try {
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-        } catch (SQLException e) {
-            e.printStackTrace();
+                value = resourceBundle.getString(key);
+
+        } catch (MissingResourceException e) {
+            logger.log(Level.FATAL, "Resource wasn't found: " + key);
+            throw new RuntimeException(e);
         }
+        return value;
     }
-    public void deregisterDriver(){
+
+    public static void deregisterDriver(){
         try {
             Enumeration<Driver> drivers = DriverManager.getDrivers();
             while (drivers.hasMoreElements()) {
                 DriverManager.deregisterDriver(drivers.nextElement());
             }
         } catch (SQLException e) {
-           // logger.log(Level.ERROR, "Can't deregister driver: " + e.getMessage());
+            logger.log(Level.ERROR, "Can't deregister driver: " + e.getMessage());
         }
 
     }

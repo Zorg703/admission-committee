@@ -7,11 +7,11 @@ import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.User;
 import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.UserLogic;
+import by.mordas.project.logic.impl.UserLogicImpl;
 import by.mordas.project.util.Validator;
 
 public class RegisterOnSpecialityCommand implements Command {
-    UserLogic userLogic=new UserLogic();
+    UserLogicImpl userLogicImpl =new UserLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
@@ -26,7 +26,7 @@ public class RegisterOnSpecialityCommand implements Command {
             user.put(Integer.valueOf(content.getRequestParameter(ParamConstant.SECOND_SUBJECT)), Integer.valueOf(userSecondMark));
             user.put(Integer.valueOf(content.getRequestParameter(ParamConstant.THIRD_SUBJECT)), Integer.valueOf(userThirdMark));
             try {
-                userLogic.setUserSpeciality(user);
+                userLogicImpl.setUserSpeciality(user);
                 router.setPagePath(PageConstant.PAGE_USER_SUCCESS);
                 content.setSessionAttribute(ParamConstant.USER,user);
             } catch (LogicException e) {

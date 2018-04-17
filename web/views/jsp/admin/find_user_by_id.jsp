@@ -22,10 +22,27 @@
     <input type="submit" class="button">
 </form>
 <c:if test="${not empty message}">
-
+   <fmt:message key="admin.find_user_by_id.error"/>
 </c:if>
 <c:if test="${not empty user}">
-
+<table>
+    <tr>
+        <td><fmt:message key="admin.find_user_by_id.first_name"/></td>
+        <td><fmt:message key="admin.find_user_by_id.last_name"/></td>
+        <td><fmt:message key="admin.find_user_by_id.login"/></td>
+        <td><fmt:message key="admin.find_user_by_id.email"/></td>
+        <td><fmt:message key="admin.find_user_by_id.date"/></td>
+        <td><fmt:message key="admin.find_user_by_id.user_speciality"/></td>
+    </tr>
+    <tr>
+        <td><c:out value="${user.firstName}"/></td>
+        <td><c:out value="${user.lastName}"/></td>
+        <td><c:out value="${user.login}"/></td>
+        <td><c:out value="${user.email}"/></td>
+        <td><c:out value="${user.date}"/></td>
+        <td><c:out value="${user.specialityId}"/></td>
+    </tr>
+</table>
 </c:if>
 </body>
 </html>

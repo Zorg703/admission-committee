@@ -6,7 +6,7 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.User;
-import by.mordas.project.logic.UserLogic;
+import by.mordas.project.logic.impl.UserLogicImpl;
 import by.mordas.project.util.Validator;
 
 
@@ -14,7 +14,7 @@ import java.sql.Date;
 import java.util.HashMap;
 
 public class RegistrationNewUserCommand implements Command {
-    private UserLogic userLogic=new UserLogic();
+    private UserLogicImpl userLogicImpl =new UserLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
@@ -32,7 +32,7 @@ public class RegistrationNewUserCommand implements Command {
             user.put(Integer.valueOf(parameters.get(ParamConstant.FIRST_SUBJECT)), Integer.valueOf(parameters.get(ParamConstant.FIRST_SUBJECT_MARK)));
             user.put(Integer.valueOf(parameters.get(ParamConstant.SECOND_SUBJECT)),Integer.valueOf(parameters.get(ParamConstant.SECOND_SUBJECT_MARK)));
             user.put(Integer.valueOf(parameters.get(ParamConstant.THIRD_SUBJECT)), Integer.valueOf(parameters.get(ParamConstant.THIRD_SUBJECT_MARK)));
-            userLogic.registerUser(user);
+            userLogicImpl.registerUser(user);
             content.setSessionAttribute(ParamConstant.USER,user);
             router.setRouter(Router.RouteType.REDIRECT);
             router.setPagePath(PageConstant.PAGE_MAIN);

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Speciality extends Entity {
-    private int specialityId;
+    private long specialityId;
     private String specialityName;
     private int recruitmentPlan;
-    private int facultyId;
+    private long facultyId;
     private List<Subject> subjects;
 
 
@@ -23,19 +23,19 @@ public class Speciality extends Entity {
         this.subjects = subjects;
     }
 
-    public int getFacultyId() {
+    public long getFacultyId() {
         return facultyId;
     }
 
-    public void setFacultyId(int facultyId) {
+    public void setFacultyId(long facultyId) {
         this.facultyId = facultyId;
     }
 
-    public int getSpecialityId() {
+    public long getSpecialityId() {
         return specialityId;
     }
 
-    public void setSpecialityId(int specialityId) {
+    public void setSpecialityId(long specialityId) {
         this.specialityId = specialityId;
     }
 
