@@ -7,7 +7,7 @@ import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.User;
 import by.mordas.project.logic.impl.UserLogicImpl;
-import by.mordas.project.util.Validator;
+import by.mordas.project.util.DataValidator;
 
 
 import java.sql.Date;
@@ -19,7 +19,7 @@ public class RegistrationNewUserCommand implements Command {
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         HashMap<String,String> parameters=content.getRequestParameters();
-        HashMap<String,String> errorMessages=new Validator().checkUserData(parameters);
+        HashMap<String,String> errorMessages=new DataValidator().checkUserData(parameters);
         if(errorMessages.isEmpty()) {
             User user=new User();
             user.setFirstName(parameters.get(ParamConstant.FIRST_NAME));

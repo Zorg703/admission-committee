@@ -8,7 +8,7 @@ import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Faculty;
 import by.mordas.project.logic.impl.AdminLogicImpl;
 import by.mordas.project.logic.LogicException;
-import by.mordas.project.util.Validator;
+import by.mordas.project.util.DataValidator;
 
 public class AddFacultyCommand implements Command {
     AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
@@ -16,21 +16,26 @@ public class AddFacultyCommand implements Command {
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         String facultyName=content.getRequestParameter(ParamConstant.FACULTY_NAME);
-        if(new Validator().checkFacultyOrSpecialityName(facultyName)) {
+
+
             try {
                 Faculty faculty = adminLogicImpl.addFaculty(facultyName);
-                content.setSessionAttribute(ParamConstant.FACULTY,faculty);
-                router.setRouter(Router.RouteType.REDIRECT);
-                router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
+                if(faculty!=null) {
+                    content.setSessionAttribute(ParamConstant.FACULTY, faculty);
+                    router.setRouter(Router.RouteType.REDIRECT);
+                    router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
+                }
+                else {
+                    router.setRouter(Router.RouteType.REDIRECT);
+                    content.setSessionAttribute(ParamConstant.FACULTY_NAME, facultyName);
+                    router.setPagePath(PageConstant.PAGE_ADD_FACULTY);
+                }
             } catch (LogicException e) {
-                e.printStackTrace();
+                router.setRouter(Router.RouteType.REDIRECT);
+                content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
+                router.setPagePath(PageConstant.PAGE_ERROR);
             }
-        }
-        else {
-            router.setRouter(Router.RouteType.REDIRECT);
-            content.setSessionAttribute(ParamConstant.FACULTY_NAME,facultyName);
-            router.setPagePath(PageConstant.PAGE_ADD_FACULTY);
-        }
+
         return router;
     }
 }

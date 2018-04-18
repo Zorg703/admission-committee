@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Validator {
+public class DataValidator {
 
     private static final String FACULTY_SPECIALITY_NAME_REGEX="([А-Я]{1}([а-я]{2,50}(\\s)?)+)|[A-Z]{1}([a-z]{2,50}(\\s)?)+";
     private static final String ID_REGEX="[1-9]\\d*";

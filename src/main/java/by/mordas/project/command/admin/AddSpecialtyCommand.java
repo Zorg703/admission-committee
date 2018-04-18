@@ -9,7 +9,7 @@ import by.mordas.project.entity.Speciality;
 import by.mordas.project.entity.Subject;
 import by.mordas.project.logic.impl.AdminLogicImpl;
 import by.mordas.project.logic.LogicException;
-import by.mordas.project.util.Validator;
+import by.mordas.project.util.DataValidator;
 
 import java.util.HashMap;
 
@@ -20,7 +20,7 @@ public class AddSpecialtyCommand implements Command {
         Router router=new Router();
         Speciality speciality=new Speciality();
         HashMap<String,String> parameters=content.getRequestParameters();
-        HashMap<String,String> errorMessages=new Validator().checkSpecialtyData(parameters);
+        HashMap<String,String> errorMessages=new DataValidator().checkSpecialtyData(parameters);
         if(errorMessages.isEmpty()){
             try {
                 speciality.setFacultyId(Integer.parseInt(parameters.get(ParamConstant.FACULTY_ID)));

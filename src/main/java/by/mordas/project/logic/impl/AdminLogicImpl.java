@@ -1,14 +1,12 @@
 package by.mordas.project.logic.impl;
 
 import by.mordas.project.dao.*;
-import by.mordas.project.dao.mysqlimpl.MySQLFacultyDAOImpl;
-import by.mordas.project.dao.mysqlimpl.MySQLSpecialityDAOImpl;
-import by.mordas.project.dao.mysqlimpl.MySQLUserDAOImpl;
 import by.mordas.project.entity.Faculty;
 import by.mordas.project.entity.Speciality;
 import by.mordas.project.entity.User;
 import by.mordas.project.logic.Logic;
 import by.mordas.project.logic.LogicException;
+import by.mordas.project.util.DataValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,14 +30,18 @@ public class AdminLogicImpl implements Logic {
     }
 
     public Faculty addFaculty(String facultyName) throws LogicException {
-        Faculty faculty=new Faculty();
-        faculty.setFacultyName(facultyName);
-        FacultyDAO facultyDAO=mysqlFactory.getFacultyDAO();
-        try {
-            facultyDAO.create(faculty);
-        } catch (DAOException e) {
-            logger.log(Level.ERROR,e.getMessage());
-            throw new LogicException("Problems with addFaculty method",e);
+        DataValidator dataValidator =new DataValidator();
+        Faculty faculty =null;
+        if(dataValidator.checkFacultyOrSpecialityName(facultyName)) {
+            try {
+                faculty = new Faculty();
+                faculty.setFacultyName(facultyName);
+                FacultyDAO facultyDAO = mysqlFactory.getFacultyDAO();
+                facultyDAO.create(faculty);
+            } catch (DAOException e) {
+                logger.log(Level.ERROR, e.getMessage());
+                throw new LogicException("Problems with addFaculty method", e);
+            }
         }
         return faculty;
     }

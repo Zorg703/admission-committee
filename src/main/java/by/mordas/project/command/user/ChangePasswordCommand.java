@@ -8,7 +8,7 @@ import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.User;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.UserLogicImpl;
-import by.mordas.project.util.Validator;
+import by.mordas.project.util.DataValidator;
 
 import java.util.HashMap;
 
@@ -20,7 +20,7 @@ public class ChangePasswordCommand implements Command {
         Router router=new Router();
         String password1=content.getRequestParameter(ParamConstant.PASSWORD_ONE);
         String password2=content.getRequestParameter(ParamConstant.PASSWORD_TWO);
-        HashMap<String,String> errorMap=new Validator().checkChangedPassword(password1,password2);
+        HashMap<String,String> errorMap=new DataValidator().checkChangedPassword(password1,password2);
         if(errorMap.isEmpty()){
             Long userID=((User)content.getSessionAttribute(ParamConstant.USER)).getUserId();
             try {

@@ -8,7 +8,7 @@ import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.User;
 import by.mordas.project.logic.impl.AdminLogicImpl;
 import by.mordas.project.logic.LogicException;
-import by.mordas.project.util.Validator;
+import by.mordas.project.util.DataValidator;
 
 public class FindUserCommand implements Command {
     AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
@@ -16,7 +16,7 @@ public class FindUserCommand implements Command {
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         String userId=content.getRequestParameter(ParamConstant.USER_ID);
-        if(new Validator().checkId(userId)){
+        if(new DataValidator().checkId(userId)){
             try {
                User user= adminLogicImpl.findUserById(userId);
                content.setRequestAttribute(ParamConstant.USER,user);

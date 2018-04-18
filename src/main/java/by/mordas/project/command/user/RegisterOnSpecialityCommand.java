@@ -8,7 +8,7 @@ import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.User;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.UserLogicImpl;
-import by.mordas.project.util.Validator;
+import by.mordas.project.util.DataValidator;
 
 public class RegisterOnSpecialityCommand implements Command {
     UserLogicImpl userLogicImpl =new UserLogicImpl();
@@ -20,7 +20,7 @@ public class RegisterOnSpecialityCommand implements Command {
         String userFirstMark=content.getRequestParameter(ParamConstant.FIRST_SUBJECT_MARK);
         String userSecondMark=content.getRequestParameter(ParamConstant.SECOND_SUBJECT_MARK);
         String userThirdMark=content.getRequestParameter(ParamConstant.THIRD_SUBJECT_MARK);
-        if(new Validator().validateUserMarks(userFirstMark,userSecondMark,userThirdMark)) {
+        if(new DataValidator().validateUserMarks(userFirstMark,userSecondMark,userThirdMark)) {
             user.setSpecialityId(specialityId);
             user.put(Integer.valueOf(content.getRequestParameter(ParamConstant.FIRST_SUBJECT)), Integer.valueOf(userFirstMark));
             user.put(Integer.valueOf(content.getRequestParameter(ParamConstant.SECOND_SUBJECT)), Integer.valueOf(userSecondMark));

@@ -39,4 +39,5 @@ public final static String FACULTY_ID="faculty_id";
 public final static String SPECIALITY_NAME="speciality_name";
 public final static String USER_ID="user_id";
 public final static String SPECIALITY_ID="speciality_id";
+public final static String EXCEPTION_MESSAGE="exception_message";
 }

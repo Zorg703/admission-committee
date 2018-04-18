@@ -7,7 +7,7 @@ import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.logic.impl.AdminLogicImpl;
 import by.mordas.project.logic.LogicException;
-import by.mordas.project.util.Validator;
+import by.mordas.project.util.DataValidator;
 
 public class DeleteSpecialityCommand implements Command{
     private AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
@@ -16,7 +16,7 @@ public class DeleteSpecialityCommand implements Command{
         Router router=new Router();
         String specialityId=content.getRequestParameter(ParamConstant.SPECIALITY_ID);
         try {
-            if(new Validator().checkId(specialityId) && adminLogicImpl.deleteSpeciality(specialityId)){
+            if(new DataValidator().checkId(specialityId) && adminLogicImpl.deleteSpeciality(specialityId)){
               router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
 
             }

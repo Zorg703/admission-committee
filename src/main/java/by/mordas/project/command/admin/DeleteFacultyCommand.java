@@ -7,7 +7,7 @@ import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.logic.impl.AdminLogicImpl;
 import by.mordas.project.logic.LogicException;
-import by.mordas.project.util.Validator;
+import by.mordas.project.util.DataValidator;
 
 public class DeleteFacultyCommand implements Command {
 
@@ -17,7 +17,7 @@ public class DeleteFacultyCommand implements Command {
         Router router=new Router();
         String id=content.getRequestParameter(ParamConstant.FACULTY_ID);
         try {
-            if(new Validator().checkId(id) && adminLogicImpl.deleteFaculty(Integer.valueOf(id))){
+            if(new DataValidator().checkId(id) && adminLogicImpl.deleteFaculty(Integer.valueOf(id))){
                router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
 
             }
