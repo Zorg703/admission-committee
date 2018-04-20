@@ -10,6 +10,8 @@ import by.mordas.project.entity.Subject;
 import by.mordas.project.entity.User;
 import by.mordas.project.logic.Logic;
 import by.mordas.project.logic.LogicException;
+import by.mordas.project.logic.UserLogic;
+import by.mordas.project.util.DataValidator;
 import by.mordas.project.util.PasswordEncoder;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -18,10 +20,11 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Map;
 
-public class UserLogicImpl implements Logic {
+public class UserLogicImpl implements UserLogic {
     private static Logger logger= LogManager.getRootLogger();
     private DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
 
+    @Override
     public List<Faculty> findAllFaculties() throws LogicException {
         FacultyDAO facultyDAO=mysqlFactory.getFacultyDAO();
         List<Faculty> list = null;
@@ -33,18 +36,25 @@ public class UserLogicImpl implements Logic {
         }
         return list;
     }
-    public List<Speciality> findSpecialitiesByFacultyId(int id) throws LogicException {
-        SpecialityDAO specialityDAO=mysqlFactory.getSpecialityDAO();
+
+    @Override
+    public List<Speciality> findSpecialitiesByFacultyId(String id) throws LogicException {
         List<Speciality> specialities= null;
-        try {
-            specialities = specialityDAO.findSpecialitiesByFacultyID(id);
-        } catch (DAOException e) {
-            logger.log(Level.ERROR,e.getMessage());
-            throw new LogicException("Problems with findSpecialitiesByFacultyId method",e);
+        DataValidator validator=new DataValidator();
+        if(validator.checkId(id)) {
+            SpecialityDAO specialityDAO = mysqlFactory.getSpecialityDAO();
+            Integer facultyId=Integer.valueOf(id);
+            try {
+                specialities = specialityDAO.findSpecialitiesByFacultyID(facultyId);
+            } catch (DAOException e) {
+                logger.log(Level.ERROR, e.getMessage());
+                throw new LogicException("Problems with findSpecialitiesByFacultyId method", e);
+            }
         }
         return specialities;
     }
 
+    @Override
     public void registerUser(User user) throws LogicException {
         UserDAO userDAO=mysqlFactory.getUserDAO();
         user.setPassword(PasswordEncoder.encodePassword(user.getPassword()));
@@ -56,63 +66,94 @@ public class UserLogicImpl implements Logic {
         }
 
     }
+
+    @Override
     public boolean findUserByLogin(String login) throws LogicException {
-        UserDAO userDAO=mysqlFactory.getUserDAO();
-        try {
-            return userDAO.findUserByLogin(login);
-        } catch (DAOException e) {
-            logger.log(Level.ERROR,e.getMessage());
-            throw new LogicException("Problems with findUserByLogin method",e);
-    }
+        DataValidator validator=new DataValidator();
+        if(true) {//todo
+            UserDAO userDAO = mysqlFactory.getUserDAO();
+            try {
+                return userDAO.findUserByLogin(login);
+            } catch (DAOException e) {
+                logger.log(Level.ERROR, e.getMessage());
+                throw new LogicException("Problems with findUserByLogin method", e);
+            }
+        }
+        return false;
 
     }
 
-    public Subject findSubject(Integer id) throws LogicException {
-        SubjectDAO subjectDAO=mysqlFactory.getSubjectDAO();
-        Subject subject=null;
-        try {
-            subject=subjectDAO.findEntityById(id);
-        } catch (DAOException e) {
-            logger.log(Level.ERROR,e.getMessage());
-            throw new LogicException("Problems with findSubject method",e);
+    @Override
+    public Subject findSubject(String id) throws LogicException {
+        Subject subject = null;
+        DataValidator validator=new DataValidator();
+        if(validator.checkId(id)) {
+            Long subjectId=Long.valueOf(id);
+            SubjectDAO subjectDAO = mysqlFactory.getSubjectDAO();
+
+            try {
+                subject = subjectDAO.findEntityById(subjectId);
+            } catch (DAOException e) {
+                logger.log(Level.ERROR, e.getMessage());
+                throw new LogicException("Problems with findSubject method", e);
+            }
         }
         return subject;
     }
-    public Map<Subject,Integer> findSubjects(Long id) throws LogicException {
-        UserDAO userDAO=mysqlFactory.getUserDAO();
+
+    @Override
+    public Map<Subject,Integer> findSubjects(String id) throws LogicException {
         Map<Subject,Integer> subjects=null;
-        try {
-            subjects=userDAO.findUserSubjectsAndScores(id);
-        } catch (DAOException e) {
-            logger.log(Level.ERROR,e.getMessage());
-            throw new LogicException("Problems with findSubjects method",e);
+        DataValidator validator=new DataValidator();
+        if(validator.checkId(id)) {
+            UserDAO userDAO = mysqlFactory.getUserDAO();
+
+            try {
+                Long userId = Long.valueOf(id);
+                subjects = userDAO.findUserSubjectsAndScores(userId);
+            } catch (DAOException e) {
+                logger.log(Level.ERROR, e.getMessage());
+                throw new LogicException("Problems with findSubjects method", e);
+            }
         }
         return subjects;
     }
 
-    public void changePassword(Long userId,String password) throws LogicException {
+    @Override
+    public void changePassword(String userId,String password) throws LogicException {
+        DataValidator validator=new DataValidator();
         UserDAO userDAO=mysqlFactory.getUserDAO();
-        try{
-            password= PasswordEncoder.encodePassword(password);
-            userDAO.changeUserPassword(userId,password);
-        } catch (DAOException e) {
-            logger.log(Level.ERROR,e.getMessage());
-            throw new LogicException("Problems with changePassword method",e);
+        if(validator.checkLoginPassword(userId,password)) {
+            try {
+                Long id=Long.valueOf(userId);
+                password = PasswordEncoder.encodePassword(password);
+                userDAO.changeUserPassword(id, password);
+            } catch (DAOException e) {
+                logger.log(Level.ERROR, e.getMessage());
+                throw new LogicException("Problems with changePassword method", e);
+            }
         }
-
     }
-    public List<Subject> findSubjectsForSpeciality(int specialityId) throws LogicException {
+
+    @Override
+    public List<Subject> findSubjectsForSpeciality(String specialityId) throws LogicException {
+        DataValidator validator=new DataValidator();
         SubjectDAO subjectDAO=mysqlFactory.getSubjectDAO();
-        List<Subject> subjects=null;
-        try {
-            subjects=subjectDAO.findSubjectsBySpecialityId(specialityId);
-        } catch (DAOException e) {
-            logger.log(Level.ERROR,e.getMessage());
-            throw new LogicException("Problems with findSubjectsForSpeciality method",e);
+        List<Subject> subjects = null;
+        if(validator.checkId(specialityId)) {
+            try {
+                Long id=Long.valueOf(specialityId);
+                subjects = subjectDAO.findSubjectsBySpecialityId(id);
+            } catch (DAOException e) {
+                logger.log(Level.ERROR, e.getMessage());
+                throw new LogicException("Problems with findSubjectsForSpeciality method", e);
+            }
+
         }
         return subjects;
     }
 
+    @Override
     public void setUserSpeciality(User user) throws LogicException {
         UserDAO userDAO=mysqlFactory.getUserDAO();
         try {

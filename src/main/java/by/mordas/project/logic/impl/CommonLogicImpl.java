@@ -4,6 +4,7 @@ import by.mordas.project.dao.DAOException;
 import by.mordas.project.dao.DAOFactory;
 import by.mordas.project.dao.UserDAO;
 import by.mordas.project.entity.User;
+import by.mordas.project.logic.CommonLogic;
 import by.mordas.project.logic.Logic;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.util.PasswordEncoder;
@@ -15,10 +16,11 @@ import org.apache.logging.log4j.Logger;
 /**
  * Created by Enginer on 03.03.2018.
  */
-public class CommonLogicImpl implements Logic {
+public class CommonLogicImpl implements CommonLogic {
     private static Logger logger= LogManager.getRootLogger();
     private DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
 
+    @Override
     public User findUserLoginAndPassword(String login,String password) throws LogicException {
         UserDAO userDAO=mysqlFactory.getUserDAO();
         User user=null;

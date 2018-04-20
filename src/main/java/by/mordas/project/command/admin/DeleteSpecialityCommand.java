@@ -15,18 +15,23 @@ public class DeleteSpecialityCommand implements Command{
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         String specialityId=content.getRequestParameter(ParamConstant.SPECIALITY_ID);
+
+
         try {
-            if(new DataValidator().checkId(specialityId) && adminLogicImpl.deleteSpeciality(specialityId)){
-              router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
+            if(adminLogicImpl.deleteSpeciality(specialityId)){
+                router.setRouter(Router.RouteType.REDIRECT);
+                router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
 
             }
             else {
-
+                //router.setRouter(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.PAGE_DELETE_SPECIALITY);
                 content.setSessionAttribute(ParamConstant.MESSAGE,ParamConstant.MESSAGE);
             }
         } catch (LogicException e) {
-            e.printStackTrace();
+            router.setRouter(Router.RouteType.REDIRECT);
+            content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
+            router.setPagePath(PageConstant.PAGE_ERROR);
         }
 
         return router;

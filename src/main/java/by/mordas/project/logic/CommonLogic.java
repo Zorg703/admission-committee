@@ -1,4 +1,7 @@
 package by.mordas.project.logic;
 
-public interface CommonLogic {
+import by.mordas.project.entity.User;
+
+public interface CommonLogic extends Logic{
+    public User findUserLoginAndPassword(String login, String password) throws LogicException;
 }

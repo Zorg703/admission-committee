@@ -1,6 +1,7 @@
 package by.mordas.project.util;
 
 import by.mordas.project.command.ParamConstant;
+import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.UserLogicImpl;
 
 import java.util.HashMap;
@@ -27,11 +28,15 @@ public class DataValidator {
     private static boolean checkLogin(String login){
         UserLogicImpl userLogicImpl =new UserLogicImpl();
         boolean isLoginFree=false;
-        isLoginFree= userLogicImpl.findUserByLogin(login);
+        try {
+            isLoginFree= userLogicImpl.findUserByLogin(login);//todo
+        } catch (LogicException e) {
+            e.printStackTrace();
+        }
         return isLoginFree;
     }
 
-    public static boolean checkLoginPassword(String login,String password){
+    public boolean checkLoginPassword(String login,String password){
         return checkData(LOGIN_REGEX,login) && checkData(PASSWORD_REGEX,password);
     }
 
