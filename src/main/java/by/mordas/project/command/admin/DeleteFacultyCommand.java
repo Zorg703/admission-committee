@@ -17,7 +17,7 @@ public class DeleteFacultyCommand implements Command {
         Router router=new Router();
         String id=content.getRequestParameter(ParamConstant.FACULTY_ID);
         try {
-            if(new DataValidator().checkId(id) && adminLogicImpl.deleteFaculty(Integer.valueOf(id))){
+            if(adminLogicImpl.deleteFaculty(id)){
                router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
 
             }
@@ -27,7 +27,9 @@ public class DeleteFacultyCommand implements Command {
                 content.setSessionAttribute(ParamConstant.MESSAGE,ParamConstant.MESSAGE);
             }
         } catch (LogicException e) {
-            e.printStackTrace();
+            router.setRouter(Router.RouteType.REDIRECT);
+            content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
+            router.setPagePath(PageConstant.PAGE_ERROR);
         }
         return router;
     }
