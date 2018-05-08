@@ -8,26 +8,37 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
+<c:import url="/views/jsp/admin/include/menu.jsp"/>
 <html>
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
 <head>
-    <title><fmt:message key="admin.add_speciality_on_faculty.title"/> </title>
+    <title><fmt:message key="admin.add_speciality_on_faculty.title"/></title>
 </head>
 <body>
 <form name="add-speciality" method="post" action="${pageContext.servletContext.contextPath}/controller">
     <input type="hidden" name="command" value="add_speciality">
     <fmt:message key="admin.add_speciality_on_faculty.faculty_id"/>
-    <input type="text" name="faculty_id" value="${speciality.faculty}">
+    <c:if test="${not empty messages.faculty_id}">
+        <fmt:message key="admin.add_speciality_on_faculty.message.id"/>
+    </c:if>
+
+    <input type="text" name="faculty_id" pattern="[1-9]\d*" required value="${speciality.faculty_id}"><br>
     <fmt:message key="admin.add_speciality_on_faculty.speciality_name"/>
-    <input type="text" name="speciality_name" value="${speciality.speciality_name}">
+    <c:if test="${not empty messages.speciality_name}">
+        <fmt:message key="admin.add_speciality_on_faculty.speciality_name"/>
+    </c:if>
+    <input type="text" name="speciality_name" pattern="([А-Я]{1}([а-я]{2,50}(\s)?)+)|[A-Z]{1}([a-z]{2,50}(\s)?)+" required value="${speciality.speciality_name}"><br>
+    <c:if test="${not empty messages.recruitment_plan}">
+        <fmt:message key="admin.add_speciality_on_faculty.recruitment_plan"/>
+    </c:if>
     <fmt:message key="admin.add_speciality_on_faculty.recruitment_plan"/>
-    <input type="text" name="recruitment_plan" value="">
-    <fmt:message key="admin.add_speciality_on_faculty.subject_for_registration"/>
-    <tr><td><fmt:message key="user.registration.subjects_name"/>:</td><td><fmt:message key="user.registration.mark"/>:</td><tr>
+    <input type="text" name="recruitment_plan" required value="${speciality.recruitment_plan}" pattern="[1-9]\d{0,4}" ><br>
+    <fmt:message key="admin.add_speciality_on_faculty.subject_for_registration"/><br>
     <td>
         <label>
-            <select required name="second_subject" value="${speciality.second_subject}" >
+            <select required name="first_subject" value="${speciality.first_subject}">
                 <option disabled selected><fmt:message key="admin.add_speciality_on_faculty.subject"/></option>
                 <option value="1"><fmt:message key="user.registration.maths"/></option>
                 <option value="2"><fmt:message key="user.registration.physic"/></option>
@@ -40,10 +51,10 @@
                 <option value="9"><fmt:message key="user.registration.geography"/></option>
             </select>
         </label>
-        <c:if test="${not empty messages.second_subject}">
+        <c:if test="${not empty messages.first_subject}">
             <fmt:message key="user.registration.message.subject"/>
         </c:if>
-    </td>
+    </td><br>
     <td>
         <label>
             <select required name="second_subject" value="${speciality.second_subject}">
@@ -62,10 +73,10 @@
         <c:if test="${not empty messages.second_subject}">
             <fmt:message key="user.registration.message.subject"/>
         </c:if>
-    </td>
+    </td><br>
     <td>
         <label>
-            <select required name="second_subject" value="${user_params.second_subject}">
+            <select required name="third_subject" value="${speciality.third_subject}">
                 <option disabled selected><fmt:message key="admin.add_speciality_on_faculty.subject"/></option>
                 <option value="1"><fmt:message key="user.registration.maths"/></option>
                 <option value="2"><fmt:message key="user.registration.physic"/></option>
@@ -78,10 +89,16 @@
                 <option value="9"><fmt:message key="user.registration.geography"/></option>
             </select>
         </label>
-        <c:if test="${not empty messages.second_subject}">
+        <c:if test="${not empty messages.third_subject}">
             <fmt:message key="user.registration.message.subject"/>
         </c:if>
-    </td>
+    </td><br>
+    <c:if test="${not empty messages.subjects}">
+        <fmt:message key="user.registration.message.subjects"/>
+    </c:if>
+    <input class="button" type="submit">
 </form>
+<c:remove var="messages"/>
+<c:remove var="speciality"/>
 </body>
 </html>

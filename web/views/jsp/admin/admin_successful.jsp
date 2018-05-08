@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:import url="${pageContext.request.contextPath}/views/include/header.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
+<c:import url="/views/jsp/admin/include/menu.jsp"/>
 <html>
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
@@ -16,12 +17,6 @@
     <title><fmt:message key="admin.successful.title"/> </title>
 </head>
 <body>
-<c:if test="${not empty faculty}">
-    <fmt:message key="admin.successful.add_faculty"/>
-    <fmt:message key="admin.successful.faculty_name"/>
-    <c:out value="${faculty.facultyName}"/>
-    <fmt:message key="admin.successful.faculty_id"/>
-    <c:out value="${faculty.facultyId}"/>
-</c:if>
+<fmt:message key="admin.successful.success"/>
 </body>
 </html>

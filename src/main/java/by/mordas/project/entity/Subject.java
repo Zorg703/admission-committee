@@ -22,6 +22,26 @@ public class Subject extends Entity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Subject subject = (Subject) o;
+
+        if (subjectId != subject.subjectId) return false;
+        return subjectName != null ? subjectName.equals(subject.subjectName) : subject.subjectName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (subjectId ^ (subjectId >>> 32));
+        if (subjectName!=null) {
+           result = 31 * result + subjectName.hashCode();
+        }
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Subject{" +
                 "subjectId=" + subjectId +

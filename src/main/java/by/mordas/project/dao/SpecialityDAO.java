@@ -27,8 +27,9 @@ public interface SpecialityDAO extends AbstractDAO<Speciality> {
 
     Speciality update(Speciality specialty) throws DAOException;
 
-    List<User> findUserOnSpeciality(long id) throws DAOException;
+    List<User> findUsersOnSpeciality(long id) throws DAOException;
 
+    public List<Integer> defineUsersSumScoreRegisterOnSpeciality(long specialityId) throws DAOException;
 
 
 

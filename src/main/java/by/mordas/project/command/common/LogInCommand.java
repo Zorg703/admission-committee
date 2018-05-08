@@ -9,7 +9,7 @@ import by.mordas.project.entity.User;
 import by.mordas.project.logic.impl.CommonLogicImpl;
 import by.mordas.project.logic.LogicException;
 
-public class LoginCommand implements Command {
+public class LogInCommand implements Command {
     private CommonLogicImpl commonLogicImpl =new CommonLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
@@ -19,20 +19,23 @@ public class LoginCommand implements Command {
         String password= content.getRequestParameter(ParamConstant.PASSWORD);
         try {
             user= commonLogicImpl.findUserLoginAndPassword(login,password);
+            if(user!=null){
+                router.setRouter(Router.RouteType.REDIRECT);
+                content.setSessionAttribute(ParamConstant.USER,user);
+                router.setPagePath(PageConstant.PAGE_MAIN);
+            }
+            else {
+                router.setRouter(Router.RouteType.REDIRECT);
+                content.setSessionAttribute(ParamConstant.MESSAGE,ParamConstant.MESSAGE);
+                content.setSessionAttribute(ParamConstant.LOGIN_PARAM,content.getRequestParameters());
+                router.setPagePath(PageConstant.PAGE_LOGIN);
+            }
         } catch (LogicException e) {
-            e.printStackTrace();
-        }
-        if(user!=null){
-
-            content.setSessionAttribute(ParamConstant.USER,user);
-            router.setPagePath(PageConstant.PAGE_MAIN);
-        }
-        else {
             router.setRouter(Router.RouteType.REDIRECT);
-            content.setSessionAttribute(ParamConstant.MESSAGE,ParamConstant.MESSAGE);
-            content.setSessionAttribute(ParamConstant.LOGIN_PARAM,content.getRequestParameters());
-            router.setPagePath(PageConstant.PAGE_LOGIN);
+            content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
+            router.setPagePath(PageConstant.PAGE_ERROR);
         }
+
         return router;
     }
 }

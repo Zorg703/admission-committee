@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:import url="${pageContext.request.contextPath}/views/include/header.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
+<c:import url="/views/jsp/admin/include/menu.jsp"/>
 <html>
 <head>
     <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
@@ -16,14 +17,21 @@
     <title><fmt:message key="admin.add_faculty.title"/> </title>
 </head>
 <body>
+    <h2><fmt:message key="admin.add_faculty.text"/></h2>
 <form name="add-faculty-form" method="post" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="add_faculty"/>
-    <fmt:message key="admin.add_faculty.name"/>
-    <input type="text" name="faculty" value="" required pattern="([А-Я]{1}([а-я]{2,50}(\s)?)+)|[A-Z]{1}([a-z]{2,50}(\s)?)+"/>
-    <input class="button" type="submit">
-    <c:if test="${not empty faculty_name}">
-        <fmt:message key="admin.add_faculty.incorrect_name"/>
-    </c:if>
+    <div class="card shadow">
+        <div class="card-block">
+            <label for="name"> <fmt:message key="admin.add_faculty.name"/></label>
+    <input id="name" class="form-control" type="text" name="faculty_name" value="" required pattern="([А-Я]{1}([а-я]{2,50}(\s)?)+)|[A-Z]{1}([a-z]{2,50}(\s)?)+"/>
+            <c:if test="${not empty message}">
+                <small><fmt:message key="admin.add_faculty.incorrect_name"/></small>
+            </c:if>
+            <input class="btn btn-success" type="submit" value=<fmt:message key="user.registration.confirm"/>>
+
+    <c:remove var="message"/>
+    </div>
+    </div>
 </form>
 </body>
 </html>

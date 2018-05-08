@@ -1,10 +1,15 @@
 package by.mordas.project.util;
 
 import by.mordas.project.command.ParamConstant;
+import by.mordas.project.dao.DAOException;
+import by.mordas.project.dao.DAOFactory;
+import by.mordas.project.dao.FacultyDAO;
+import by.mordas.project.entity.Faculty;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.UserLogicImpl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,10 +22,12 @@ public class DataValidator {
     private static final String DATE_REGEX="(((19\\d\\d)|(200\\d)|(2010))-((0[1-9]|1[012])-(0[1-9]|[12]\\d)|(0[13-9]|1[012])-30|(0[13578]|1[02])-31))";
     private static final String MARK_REGEX="[1-9]\\d?|100";
     private static final String LOGIN_REGEX="^[a-zA-Z][a-zA-Z0-9-_]{4,30}";
-    private static final String PASSWORD_REGEX="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}";
+    private static final String PASSWORD_REGEX="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}";
     private static final String EMAIL_REGEX="^[\\w]+[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$";
     private static final String SUBJECT_ID="[1-9]";
+    private static final String RECRUITMENT_PLAN="[1-9]\\d{0,4}";
     private static final String LOGIN_BUSY ="login_busy";
+
     /*private void xc(String data){
         Pattern loginPattern = Pattern.compile(f);
         Matcher matcher = loginPattern.matcher(data);
@@ -104,8 +111,8 @@ public class DataValidator {
         }
         return errorMap;
     }
-    public boolean validateUserMarks(String first, String second, String third) {
-        return checkData(MARK_REGEX, first) && !checkData(MARK_REGEX, second) && checkData(MARK_REGEX, third);
+    public boolean validateUserMarks(String first, String second, String third,String certificate) {
+        return checkData(MARK_REGEX, first) && checkData(MARK_REGEX, second) && checkData(MARK_REGEX, third)&& checkData(MARK_REGEX,certificate) ;
 
     }
 
@@ -121,6 +128,12 @@ public class DataValidator {
 
         if(!checkId(parameterMap.get(ParamConstant.FACULTY_ID))){
             errorMessageMap.put(ParamConstant.FACULTY_ID,parameterMap.get(ParamConstant.FACULTY_ID));
+        }
+        if( !isContainsFaculty(Integer.parseInt(parameterMap.get(ParamConstant.FACULTY_ID)))){
+            errorMessageMap.put(ParamConstant.FACULTY_ID,parameterMap.get(ParamConstant.FACULTY_ID));
+        }
+        if(!checkData(RECRUITMENT_PLAN,parameterMap.get(ParamConstant.RECRUITMENT_PLAN))){
+            errorMessageMap.put(ParamConstant.RECRUITMENT_PLAN,parameterMap.get(ParamConstant.FACULTY_ID));
         }
         if(!checkFacultyOrSpecialityName(parameterMap.get(ParamConstant.SPECIALITY_NAME))){
             errorMessageMap.put(ParamConstant.SPECIALITY_NAME,parameterMap.get(ParamConstant.SPECIALITY_NAME));
@@ -142,5 +155,21 @@ public class DataValidator {
             }
         }
         return errorMessageMap;
+    }
+
+    private boolean isContainsFaculty(int id){
+        DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
+        try {
+            FacultyDAO facultyDAO=mysqlFactory.getFacultyDAO();
+            List<Faculty> faculties=facultyDAO.findAllEntity();
+            for(Faculty faculty:faculties){
+                if(faculty.getFacultyId()==id){
+                    return true;
+                }
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

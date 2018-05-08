@@ -22,21 +22,23 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     private static final Logger logger= LogManager.getRootLogger();
     private static final String FIND_ALL_SPECIALITY="SELECT ID,SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID FROM SPECIALITY";
     private static final String FIND_SPECIALITY_BY_ID="SELECT ID,SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID FROM SPECIALITY WHERE ID=?";
-    private static final String CREATE_SPECIALITY="INSERT INTO SPECIALITY(SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID) VALUES(?,?,?,?)";
-    private static final String UPDATE_SPECIALITY="UPDATE SPECIALITY SET ID=? SPECIALITY_NAME=?,RECRUITMENT_PLAN=?,FACULTY_ID=?";
-    private static final String UPDATE_SPECIALITY_SUBJECT="UPDATE SUBJECT_FOR_SPECIALITY SET ID_SPECIALITY=?,ID_SUBJECT=?";
+    private static final String CREATE_SPECIALITY="INSERT INTO SPECIALITY(SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID) VALUES(?,?,?)";
+    private static final String UPDATE_SPECIALITY="UPDATE SPECIALITY SET SPECIALITY_NAME=?,RECRUITMENT_PLAN=?,FACULTY_ID=? WHERE ID=?";
+    private static final String UPDATE_SPECIALITY_SUBJECT="UPDATE SUBJECT_FOR_SPECIALITY SET ID_SUBJECT=? WHERE ID_SPECIALITY=?";
     private static final String DELETE_SPECIALITY="DELETE FROM SPECIALITY WHERE ID=?";
     private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, FACULTY_ID FROM SPECIALITY WHERE FACULTY_ID=?";
-    private static final String FIND_ALL_USERS_ON_SPECIALITY_BY_ID ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_AVG," +
-            "SPECIALITY_ID FROM USER  WHERE SPECIALITY ID=?";
-    private static final String INSERT_SPECIALITY_SUBJECTS="INSERT INTO SUBJECT_FOR_SPECIALITY(ID_SPECIALITY,ID_SUBJECT)";
-//    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, FACULTY_ID FROM SPECIALITY" +
+    private static final String FIND_ALL_USERS_ON_SPECIALITY_BY_ID ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
+            "SPECIALITY_ID FROM USER  WHERE SPECIALITY_ID=?";
+    private static final String INSERT_SPECIALITY_SUBJECTS="INSERT INTO SUBJECT_FOR_SPECIALITY(ID_SPECIALITY,ID_SUBJECT) VALUES (?,?)";
+    private static final String FIND_SUBJECT_USER="SELECT * FROM USER_SUBJECT_MARK WHERE ID_USER=?";
+    private static final String DEFINE_SUMMARY_USER_SCORE="SELECT sum(user_mark) as sum FROM user INNER JOIN (SELECT id_user, user_mark FROM user_subject_mark UNION SELECT id,certificate_mark FROM user)as marks ON user.id=marks.id_user WHERE speciality_id= ? GROUP BY id";
+    private static final String DELETE_SPECIALITY_SUBJECTS="DELETE FROM SUBJECT_FOR_SPECIALITY WHERE ID_SPECIALITY=?";
+    /// /    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, FACULTY_ID FROM SPECIALITY" +
 //
 // 30          " INNER JOIN FACULTY ON SPECIALITY.FACULTY_ID=FACULTY.ID AND FACULTY.ID=?";
 
     @Override
     public List<Speciality> findAllEntity() throws DAOException {
-
         List<Speciality> specialties=new ArrayList<>();
         try( DBConnection connection= ConnectionPool.getInstance().getConnection();Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_SPECIALITY)) {
@@ -44,6 +46,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
                 while (rs.next()) {
                     Speciality speciality=new Speciality();
                     setSpeciality(rs,speciality);
+                    specialties.add(speciality);
                 }
             }
         } catch (SQLException e) {
@@ -56,15 +59,14 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
 
     @Override
     public Speciality findEntityById(long id) throws DAOException {
-
-        Speciality speciality =new Speciality();
+        Speciality speciality=null;
         try(DBConnection conn= ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=conn.prepareStatement(FIND_SPECIALITY_BY_ID);
             ) {
             pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
-            if(rs!=null){
-
-                setSpeciality(rs,speciality);
+            if(rs.next()){
+                speciality=new Speciality();
+               setSpeciality(rs,speciality);
             }
         } catch (SQLException e) {
             throw new DAOException("Exception in findAllEntity method",e);
@@ -73,7 +75,6 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     }
 
     public List<Speciality> findSpecialitiesByFacultyID(long id) throws DAOException {
-
         List<Speciality> specialities=new ArrayList<>();
         try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_SPECIALITY_BY_FACULTY_ID);
         ) {
@@ -95,38 +96,80 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
 
     @Override
     public boolean delete(long id) throws DAOException {
-        try (DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement = connection.prepareStatement(DELETE_SPECIALITY)) {
+        DBConnection connection=null;
+        PreparedStatement pStatement =null;
+        int result=0;
+        try {
+            connection=ConnectionPool.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            pStatement=connection.prepareStatement(DELETE_SPECIALITY_SUBJECTS);
             pStatement.setLong(1,id);
-            return pStatement.executeUpdate()==4;
+            result+=pStatement.executeUpdate();
+            pStatement = connection.prepareStatement(DELETE_SPECIALITY);
+            pStatement.setLong(1,id);
+            result+=pStatement.executeUpdate();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException("Exception in delete method",e);
+            }
             throw new DAOException("Exception in delete method",e);
         }
-
+        finally {
+            try {if(pStatement!=null ) {
+                pStatement.close();
+            }
+                if(connection!=null){
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                logger.log(Level.ERROR,"Problems with close prepared statement");
+            }
+        }
+        return result==4;
     }
 
     @Override
     public void create(Speciality specialty) throws DAOException {
         PreparedStatement pStatement=null;
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection()){
-            pStatement=connection.prepareStatement(CREATE_SPECIALITY);
-            pStatement.setString(2,specialty.getSpecialityName());
-            pStatement.setInt(3,specialty.getRecruitmentPlan());
-            pStatement.setLong(4,specialty.getFacultyId());
+        DBConnection connection=null;
+        try{
+            connection=ConnectionPool.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            pStatement=connection.prepareStatement(CREATE_SPECIALITY,Statement.RETURN_GENERATED_KEYS);
+            pStatement.setString(1,specialty.getSpecialityName());
+            pStatement.setInt(2,specialty.getRecruitmentPlan());
+            pStatement.setLong(3,specialty.getFacultyId());
+            pStatement.executeUpdate();
             ResultSet resultSet=pStatement.getGeneratedKeys();
             if (resultSet.next()){
-                specialty.setFacultyId(resultSet.getInt("ID"));
+                specialty.setSpecialityId(resultSet.getLong(1));
             }
             for(Subject subject:specialty.getSubjects()){
                 pStatement=connection.prepareStatement(INSERT_SPECIALITY_SUBJECTS);
                 pStatement.setLong(1,specialty.getSpecialityId());
                 pStatement.setLong(2,subject.getSubjectId());
+                pStatement.executeUpdate();
             }
+            connection.commit();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException("Exception in create method",e);
+            }
             throw new DAOException("Exception in create method",e);
         }
         finally {
-            try {if(pStatement!=null)
+            try {if(pStatement!=null ) {
                 pStatement.close();
+            }
+            if(connection!=null){
+                connection.setAutoCommit(true);
+                connection.close();
+            }
             } catch (SQLException e) {
                logger.log(Level.ERROR,"Problems with close prepared statement");
             }
@@ -137,22 +180,36 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     @Override
     public Speciality update(Speciality specialty) throws DAOException {
         PreparedStatement pStatement=null;
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection()){
+        DBConnection connection=null;
+        try{
+            connection=ConnectionPool.getInstance().getConnection();
+            connection.setAutoCommit(false);
             pStatement=connection.prepareStatement(UPDATE_SPECIALITY);
+            pStatement.setString(1,specialty.getSpecialityName());
+            pStatement.setLong(2,specialty.getRecruitmentPlan());
+            pStatement.setLong(3,specialty.getFacultyId());
+            pStatement.setLong(4,specialty.getSpecialityId());
+            pStatement.executeUpdate();
+            pStatement=connection.prepareStatement(DELETE_SPECIALITY_SUBJECTS);
             pStatement.setLong(1,specialty.getSpecialityId());
-            pStatement.setString(2,specialty.getSpecialityName());
-            pStatement.setLong(3,specialty.getRecruitmentPlan());
-            pStatement.setLong(4,specialty.getFacultyId());
             pStatement.executeUpdate();
             for(Subject subject:specialty.getSubjects()){
-                pStatement=connection.prepareStatement(UPDATE_SPECIALITY_SUBJECT);
+                pStatement=connection.prepareStatement(INSERT_SPECIALITY_SUBJECTS);
                 pStatement.setLong(1,specialty.getSpecialityId());
                 pStatement.setLong(2,subject.getSubjectId());
+
                 pStatement.executeUpdate();
             }
+            connection.commit();
 
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             throw new DAOException("Exception in update method:",e);
+
         }
         finally {
             if(pStatement!=null){
@@ -162,41 +219,107 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
                     logger.log(Level.ERROR,"Problems with close prepared statement");
                 }
             }
+            if(connection!=null){
+                try {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }
 
         }
         return specialty;
     }
 
-
-    public List<User> findUserOnSpeciality(long id) throws DAOException {
+    @Override
+    public List<User> findUsersOnSpeciality(long id) throws DAOException {
         List<User> users =new ArrayList<>();
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
-            PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_USERS_ON_SPECIALITY_BY_ID)){
+        PreparedStatement pStatement=null;
+        PreparedStatement pStatement2=null;
+        DBConnection connection=null;
+        try{
+            connection=ConnectionPool.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            pStatement=connection.prepareStatement(FIND_ALL_USERS_ON_SPECIALITY_BY_ID);
             pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
                 while (rs.next()){
                     User user =new User();
+                    user.setUserId(rs.getLong("ID"));
                     user.setFirstName(rs.getString("FIRST_NAME"));
                     user.setLastName(rs.getString("LAST_NAME"));
-                    user.setBirthday(rs.getDate("BIRTHDAY"));
                     user.setCertificateMark(rs.getInt("CERTIFICATE_MARK"));
-                    user.setSpecialityId(rs.getInt("SPECIALITY_ID"));
+                    pStatement2=connection.prepareStatement(FIND_SUBJECT_USER);
+                    pStatement2.setLong(1,user.getUserId());
+                    ResultSet rs2=pStatement2.executeQuery();
+                    if(rs2!=null) {
+                        while (rs2.next()) {
+                            Subject subject=new Subject();
+                            Long subjectId = rs2.getLong("ID_SUBJECT");
+                            subject.setSubjectId(subjectId);
+                            Integer mark = rs2.getInt("USER_MARK");
+                            user.put(subject, mark);
+                        }
+                    }
                     users.add(user);
                 }
             }
+            connection.commit();
+
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException("Exception in findUserOnSpeciality method",e);
+            }
             throw new DAOException("Exception in findUserOnSpeciality method",e);
         }
-        return users;
+        finally {
+            try {
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
+                if (pStatement != null & pStatement2!=null) {
+                    pStatement.close();
+                    pStatement2.close();
+                }
+            } catch (SQLException e) {
+                logger.log(Level.ERROR, e.getMessage());
+            }
+        }
+
+            return users;
     }
 
-    private Speciality setSpeciality(ResultSet rs,Speciality specialty) throws SQLException {
-        specialty.setSpecialityId(rs.getInt("ID"));
+    @Override
+    public List<Integer> defineUsersSumScoreRegisterOnSpeciality(long specialityId) throws DAOException {
+        List<Integer> sumList=new ArrayList<>();
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement(DEFINE_SUMMARY_USER_SCORE)) {
+            preparedStatement.setLong(1,specialityId);
+            ResultSet resultSet=preparedStatement.executeQuery();
+            if(resultSet!=null){
+                while (resultSet.next()) {
+                    sumList.add(resultSet.getInt(1));
+                }
+
+
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Problems in defineUsersSumScoreRegisterOnSpeciality method");
+        }
+        return sumList;
+    }
+
+    private void setSpeciality(ResultSet rs,Speciality specialty) throws SQLException {
+        specialty.setSpecialityId(rs.getLong("ID"));
         specialty.setSpecialityName(rs.getString("SPECIALITY_NAME"));
         specialty.setRecruitmentPlan(rs.getInt("RECRUITMENT_PLAN"));
         specialty.setFacultyId(rs.getInt("FACULTY_ID"));
-        return specialty;
     }
 
 

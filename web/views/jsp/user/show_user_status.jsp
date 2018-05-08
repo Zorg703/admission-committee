@@ -6,11 +6,37 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/user/include/menu.jsp"/>
 <html>
+<fmt:setLocale value="${sessionScope.locale}" scope="request"/>
+<fmt:setBundle basename="localization"/>
 <head>
-    <title>Title</title>
+    <title><fmt:message key="user.show_status.title"/></title>
 </head>
 <body>
+<c:choose>
+    <c:when test="${user.specialityId!=0}">
+        <fmt:message key="user.show_status.register"/><fmt:message key="user.show_status.faculty"/> ${faculty.facultyName}
+        <fmt:message key="user.show_status.speciality"/>${speciality.specialityName}
+        <c:choose>
+            <c:when test="${is_accepted=true}">
+                <fmt:message key="user.show_status.hired"/>
+            </c:when>
+            <c:otherwise>
+                <fmt:message key="user.show_status.sorry"/>
+            </c:otherwise>
+        </c:choose>
+    </c:when>
+    <c:otherwise>
+        <fmt:message key="user.show_status.empty"/>
+    </c:otherwise>
+</c:choose>
+<c:if test="${not empty message}">
+fgj
+</c:if>
 
 </body>
 </html>

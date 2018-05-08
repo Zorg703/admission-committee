@@ -16,15 +16,23 @@ public class ShowSpecialitySubjectsCommand implements Command {
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
-        int specialityId= Integer.parseInt(content.getRequestParameter(ParamConstant.SPECIALITY));
+        String specialityId= content.getRequestParameter(ParamConstant.SPECIALITY_ID);
         try {
             List<Subject> subjects= userLogicImpl.findSubjectsForSpeciality(specialityId);
-            router.setPagePath(PageConstant.PAGE_REGISTER_ON_FACULTY);
-            content.setRequestAttribute(ParamConstant.SUBJECTS,subjects);
-            content.setSessionAttribute(ParamConstant.SPECIALITY,specialityId);
+            if(!subjects.isEmpty()) {
+                router.setPagePath(PageConstant.PAGE_REGISTER_ON_FACULTY);
+                content.setRequestAttribute(ParamConstant.SUBJECTS, subjects);
+                content.setSessionAttribute(ParamConstant.SPECIALITY_ID, specialityId);
+            }
+            else {
+                router.setPagePath(PageConstant.PAGE_REGISTER_ON_FACULTY);
+                content.setRequestAttribute(ParamConstant.MESSAGE,specialityId);
+            }
 
         } catch (LogicException e) {
-            e.printStackTrace();
+            router.setRouter(Router.RouteType.REDIRECT);
+            content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
+            router.setPagePath(PageConstant.PAGE_ERROR);
         }
 
         return router;

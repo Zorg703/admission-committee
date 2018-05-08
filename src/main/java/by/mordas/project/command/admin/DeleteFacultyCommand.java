@@ -11,7 +11,8 @@ import by.mordas.project.util.DataValidator;
 
 public class DeleteFacultyCommand implements Command {
 
-    AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
+    private AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
+
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
@@ -24,7 +25,7 @@ public class DeleteFacultyCommand implements Command {
             else {
                 router.setRouter(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.PAGE_DELETE_FACULTY);
-                content.setSessionAttribute(ParamConstant.MESSAGE,ParamConstant.MESSAGE);
+                content.setSessionAttribute(ParamConstant.MESSAGE,"Incorrect faculty id");
             }
         } catch (LogicException e) {
             router.setRouter(Router.RouteType.REDIRECT);

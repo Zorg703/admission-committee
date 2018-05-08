@@ -37,7 +37,9 @@ public class ConnectionPool {
         DBConnection dbConnection;
     for (int i=0;i<POOL_SIZE;i++){
         try {
+             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
              dbConnection=new DBConnection(DriverManager.getConnection(URL, USER,PASSWORD));
+
              connectionsStorage.offer(dbConnection);
 
 //        } catch (DAOException e) {

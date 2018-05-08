@@ -31,4 +31,6 @@ public interface UserDAO extends AbstractDAO<User> {
     void changeUserPassword(Long userId,String password) throws DAOException;
 
     void updateUserSpeciality(User user) throws DAOException;
+
+    void clearUserScore(User user) throws DAOException;
 }

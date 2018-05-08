@@ -1,21 +1,22 @@
 <%--
   Created by IntelliJ IDEA.
   User: Admin
-  Date: 29.03.2018
-  Time: 14:19
+  Date: 21.04.2018
+  Time: 10:16
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:import url="/views/include/header.jsp"/>
+<c:import url="/views/jsp/common/include/menu.jsp"/>
+<c:import url="/views/jsp/common/include/navbar.jsp"/>
 <html>
 <head>
-    <fmt:setLocale value="${locale}" scope="request"/>
+    <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
     <fmt:setBundle basename="localization"/>
-    <title>Title</title>
+    <title><fmt:message key="user.success_registration.title"/> </title>
 </head>
 <body>
-
+<fmt:message key="user.success_registration.text"/>
 </body>
 </html>

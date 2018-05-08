@@ -6,6 +6,7 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Speciality;
+import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.UserLogicImpl;
 
 import java.util.List;
@@ -16,10 +17,17 @@ public class ShowSpecialitiesCommand implements Command {
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         List<Speciality> specialities;
-        Integer id=Integer.parseInt(content.getRequestParameter(ParamConstant.ID));
-        specialities= userLogicImpl.findSpecialitiesByFacultyId(id);
-        content.setRequestAttribute(ParamConstant.SPECIALITIES,specialities);
-        router.setPagePath(PageConstant.PAGE_SHOW_SPECIALITIES);
+        String id=content.getRequestParameter(ParamConstant.ID);
+        try {
+            specialities= userLogicImpl.findSpecialitiesByFacultyId(id);
+            content.setRequestAttribute(ParamConstant.SPECIALITY_LIST,specialities);
+            router.setPagePath(PageConstant.PAGE_SHOW_SPECIALITIES);
+        } catch (LogicException e) {
+            router.setRouter(Router.RouteType.REDIRECT);
+            content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
+            router.setPagePath(PageConstant.PAGE_ERROR);
+        }
+
         return router;
     }
 }

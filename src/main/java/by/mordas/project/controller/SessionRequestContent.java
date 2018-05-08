@@ -13,6 +13,7 @@ public class SessionRequestContent {
     private HashMap<String,Object> sessionAttributes;
     private HashMap<String,String> requestHeaders;
     private HttpServletRequest request;
+    private HttpSession session;
 
     public SessionRequestContent(HttpServletRequest request) {
         this.request=request;
@@ -20,11 +21,11 @@ public class SessionRequestContent {
         requestParameters =new HashMap<>();
         sessionAttributes = new HashMap<>();
         requestHeaders=new HashMap<>();
+        session=request.getSession();
 
     }
 
     public void extractValues(){
-        HttpSession session=request.getSession();
         Enumeration<String> parameters=request.getParameterNames();
         while (parameters.hasMoreElements()){
             String name=parameters.nextElement();
@@ -89,5 +90,9 @@ public class SessionRequestContent {
 
     public HashMap<String, String> getRequestHeaders() {
         return requestHeaders;
+    }
+
+    public HttpSession getSession() {
+        return session;
     }
 }

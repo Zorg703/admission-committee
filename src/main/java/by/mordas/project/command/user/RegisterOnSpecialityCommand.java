@@ -10,35 +10,35 @@ import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.UserLogicImpl;
 import by.mordas.project.util.DataValidator;
 
+import java.util.HashMap;
+
 public class RegisterOnSpecialityCommand implements Command {
-    UserLogicImpl userLogicImpl =new UserLogicImpl();
+    private UserLogicImpl userLogicImpl =new UserLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
-        Integer specialityId= (Integer) content.getSessionAttribute(ParamConstant.SPECIALITY);
+        HashMap<String,String> parameters=content.getRequestParameters();
+        Long specialityId=Long.valueOf((String) content.getSessionAttribute(ParamConstant.SPECIALITY_ID));
         User user=(User) content.getSessionAttribute(ParamConstant.USER);
-        String userFirstMark=content.getRequestParameter(ParamConstant.FIRST_SUBJECT_MARK);
-        String userSecondMark=content.getRequestParameter(ParamConstant.SECOND_SUBJECT_MARK);
-        String userThirdMark=content.getRequestParameter(ParamConstant.THIRD_SUBJECT_MARK);
-        if(new DataValidator().validateUserMarks(userFirstMark,userSecondMark,userThirdMark)) {
-            user.setSpecialityId(specialityId);
-            user.put(Integer.valueOf(content.getRequestParameter(ParamConstant.FIRST_SUBJECT)), Integer.valueOf(userFirstMark));
-            user.put(Integer.valueOf(content.getRequestParameter(ParamConstant.SECOND_SUBJECT)), Integer.valueOf(userSecondMark));
-            user.put(Integer.valueOf(content.getRequestParameter(ParamConstant.THIRD_SUBJECT)), Integer.valueOf(userThirdMark));
-            try {
-                userLogicImpl.setUserSpeciality(user);
+        //user.getSpecialityId==0 ???  проверка
+
+
+        try {
+            if(userLogicImpl.setUserSpeciality(user,specialityId,parameters)!=null){
+                router.setRouter(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.PAGE_USER_SUCCESS);
                 content.setSessionAttribute(ParamConstant.USER,user);
-            } catch (LogicException e) {
-                e.printStackTrace();
             }
-        }
-        else {
-            router.setPagePath(PageConstant.PAGE_REGISTER_ON_FACULTY);
-            content.setSessionAttribute(ParamConstant.MESSAGE,ParamConstant.MESSAGE);
+            else {
+                router.setPagePath(PageConstant.PAGE_REGISTER_ON_FACULTY);
+                content.setSessionAttribute(ParamConstant.MESSAGE,ParamConstant.MESSAGE);
+                router.setRouter(Router.RouteType.REDIRECT);
+            }
+        } catch (LogicException e) {
             router.setRouter(Router.RouteType.REDIRECT);
+            content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
+            router.setPagePath(PageConstant.PAGE_ERROR);
         }
-
         return router;
     }
 }

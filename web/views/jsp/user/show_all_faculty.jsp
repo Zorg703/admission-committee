@@ -8,15 +8,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:import url="/views/include/header.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/user/include/menu.jsp"/>
 <html>
 <head>
     <fmt:setLocale value="${locale}" scope="request"/>
     <fmt:setBundle basename="localization"/>
-    <title><fmt:message key="user.find_all_facylty.title"/> </title>
+    <title><fmt:message key="user.find_all_faculty.title"/> </title>
 </head>
 <body>
-<c:if test="${not empty faculty_list}">
+<c:if test="${not empty faculty_list && user.specialityId==0}">
+    <fmt:message key="admin.choose_faculty_and_speciality.faculty"/>
 <table>
 
     <c:forEach var="faculty" items="${faculty_list}" varStatus="status">
@@ -25,7 +27,9 @@
         </tr>
     </c:forEach>
 </table>
-
+</c:if>
+<c:if test="${user.specialityId!=0}">
+    <c:redirect url="${pageContext.request.contextPath}/controller?command=show_user_status"/>
 </c:if>
 </body>
 </html>

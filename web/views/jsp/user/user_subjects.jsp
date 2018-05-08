@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:import url="${pageContext.request.contextPath}/views/include/header.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/user/include/menu.jsp"/>
 <html>
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
@@ -19,5 +20,8 @@
 <c:forEach var="subject" items="${subjects}">
     <fmt:message key="user.subjects.name"/> <c:out value="${subject.key.subjectName}"/><fmt:message key="user.subjects.score"/> <c:out value="${subject.value}"/>
 </c:forEach>
+<c:if test="${not empty empty_subjects}">
+    <fmt:message key="user.subjects.empty"/>
+</c:if>
 </body>
 </html>

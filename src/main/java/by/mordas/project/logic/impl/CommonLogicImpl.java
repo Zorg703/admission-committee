@@ -23,16 +23,23 @@ public class CommonLogicImpl implements CommonLogic {
     @Override
     public User findUserLoginAndPassword(String login,String password) throws LogicException {
         UserDAO userDAO=mysqlFactory.getUserDAO();
+        DataValidator validator=new DataValidator();
         User user=null;
-        if(DataValidator.checkLoginPassword(login,password)) {
-            try {
-                user=userDAO.findUserByPasswordAndLogin(login, PasswordEncoder.encodePassword(password));
-            } catch (DAOException e) {
-                logger.log(Level.ERROR,e.getMessage());
-                throw new LogicException("Problems with findUserByPasswordAndLogin method",e);
+        try {
+            if(validator.checkLoginPassword(login,password )/*&& findLogin(login)*/) {
+                password= PasswordEncoder.encodePassword(password);
+                user = userDAO.findUserByPasswordAndLogin(login,password);
             }
+        } catch (DAOException e) {
+            logger.log(Level.ERROR,e.getMessage());
+            throw new LogicException("Problems with findUserByPasswordAndLogin method",e);
         }
         return user;
+    }
+
+    private boolean findLogin(String login) throws DAOException {
+        UserDAO userDAO=mysqlFactory.getUserDAO();
+        return userDAO.findUserByLogin(login);
     }
 
 }

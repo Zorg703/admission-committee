@@ -20,23 +20,27 @@ public class ChangePasswordCommand implements Command {
         Router router=new Router();
         String password1=content.getRequestParameter(ParamConstant.PASSWORD_ONE);
         String password2=content.getRequestParameter(ParamConstant.PASSWORD_TWO);
-        HashMap<String,String> errorMap=new DataValidator().checkChangedPassword(password1,password2);
-        if(errorMap.isEmpty()){
-            Long userID=((User)content.getSessionAttribute(ParamConstant.USER)).getUserId();
-            try {
-                userLogicImpl.changePassword(userID,password1);
-                router.setPagePath(PageConstant.PAGE_CHANGE_PASSWORD);
+        Long userID=((User)content.getSessionAttribute(ParamConstant.USER)).getUserId();
+        HashMap<String,String> errorMap= null;
+        try {
+            errorMap = userLogicImpl.changePassword(userID,password1,password2);
+            if(errorMap.isEmpty()){
+                router.setPagePath(PageConstant.PAGE_USER_SUCCESS);
                 router.setRouter(Router.RouteType.REDIRECT);
-                content.setSessionAttribute(SUCCESS_CHANGED,SUCCESS_CHANGED);
-            } catch (LogicException e) {
-                e.printStackTrace();
+               // content.setSessionAttribute(SUCCESS_CHANGED,SUCCESS_CHANGED);
             }
-        }
-        else {
+            else {
+                router.setRouter(Router.RouteType.REDIRECT);
+                router.setPagePath(PageConstant.PAGE_CHANGE_PASSWORD);
+                content.setSessionAttribute(ParamConstant.ERROR_MESSAGES,errorMap);
+            }
+        } catch (LogicException e) {
             router.setRouter(Router.RouteType.REDIRECT);
-            router.setPagePath(PageConstant.PAGE_CHANGE_PASSWORD);
-            content.setSessionAttribute(ParamConstant.ERROR_MESSAGES,errorMap);
+            content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
+            router.setPagePath(PageConstant.PAGE_ERROR);
         }
+
+
 
         return router;
     }

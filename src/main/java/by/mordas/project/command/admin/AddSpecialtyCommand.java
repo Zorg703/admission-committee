@@ -14,37 +14,27 @@ import by.mordas.project.util.DataValidator;
 import java.util.HashMap;
 
 public class AddSpecialtyCommand implements Command {
-    AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
+    private AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
-        Speciality speciality=new Speciality();
         HashMap<String,String> parameters=content.getRequestParameters();
-        HashMap<String,String> errorMessages=new DataValidator().checkSpecialtyData(parameters);
+        try {
+        HashMap<String,String> errorMessages=adminLogicImpl.addSpeciality(parameters);
         if(errorMessages.isEmpty()){
-            try {
-                speciality.setFacultyId(Integer.parseInt(parameters.get(ParamConstant.FACULTY_ID)));
-                speciality.setSpecialityName(parameters.get(ParamConstant.SPECIALITY_NAME));
-                Subject subject1=new Subject();
-                subject1.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.FIRST_SUBJECT)));
-                speciality.add(subject1);
-                Subject subject2=new Subject();
-                subject2.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.SECOND_SUBJECT)));
-                speciality.add(subject2);
-                Subject subject3=new Subject();
-                subject3.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.THIRD_SUBJECT)));
-                adminLogicImpl.addSpeciality(speciality);
-                router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
-                router.setRouter(Router.RouteType.REDIRECT);
-            } catch (LogicException e) {
-                e.printStackTrace();
-            }
+            router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
+            router.setRouter(Router.RouteType.REDIRECT);
         }
         else {
             content.setSessionAttribute(ParamConstant.ERROR_MESSAGES,errorMessages);
             content.setSessionAttribute(ParamConstant.SPECIALITY,parameters);
             router.setRouter(Router.RouteType.REDIRECT);
             router.setPagePath(PageConstant.PAGE_ADD_SPECIALITY);
+        }
+        } catch (LogicException e) {
+            router.setRouter(Router.RouteType.REDIRECT);
+            content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
+            router.setPagePath(PageConstant.PAGE_ERROR);
         }
         return router;
     }

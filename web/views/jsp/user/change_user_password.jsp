@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:import url="${pageContext.request.contextPath}/views/include/header.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/user/include/menu.jsp"/>
 <html>
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
@@ -16,8 +17,8 @@
     <title><fmt:message key="user.change_user_data.title"/> </title>
 </head>
 <body>
-<form name="changing-form" method="post" action="${pageContext.request.contextPath}/controller}">
-  <input type="hidden" name="command" value="change_password">
+<form name="changing-form" method="post" action="${pageContext.request.contextPath}/controller">
+  <input type="hidden" name="command" value="change_user_password">
     <label><fmt:message key="user.registration.password"/>:<br>
         <input type="password" required name="password1" id="password1"pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}" value=""> </label>
 
@@ -37,9 +38,10 @@
         <fmt:message key="user.success.changed"/>
     </c:if>
 </form>
-${messages=null}
-${user_params=null}
-${changed=null}
+<c:remove var="messages"/>
+<c:remove var="user_params"/>
+<c:remove var="changed"/>
+
 <script type="text/javascript">
     window.onload = function () {
         document.getElementById("password1").onchange = validatePassword;

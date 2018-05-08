@@ -13,18 +13,29 @@ public class User extends Entity {
     private int certificateMark;
     private long specialityId;
     private Date birthday;
-    private Map<Integer,Integer> subjectMark;
+    private Map<Subject,Integer> subjectMark;
     private String email;
+    private int roleId;
+
+
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
 
     public User() {
         subjectMark=new HashMap<>(3);
     }
 
-    public Map<Integer, Integer> getSubjectMark() {
+    public Map<Subject, Integer> getSubjectMark() {
         return subjectMark;
     }
 
-    public void setSubjectMark(Map<Integer, Integer> subjectMark) {
+    public void setSubjectMark(Map<Subject, Integer> subjectMark) {
         this.subjectMark = subjectMark;
     }
 
@@ -116,7 +127,7 @@ public class User extends Entity {
         this.birthday = birthday;
     }
 
-    public Integer put(Integer key, Integer value) {
+    public Integer put(Subject key, Integer value) {
         return subjectMark.put(key, value);
     }
 }

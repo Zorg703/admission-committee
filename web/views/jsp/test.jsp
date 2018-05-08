@@ -15,8 +15,12 @@
     <title>Title</title>
 </head>
 <body>
+<a href="${pageContext.request.contextPath}/controller?command=SHOW_ALL_USERS_REGISTER_ON_SPECIALITY&speciality_id=2"><fmt:message key="admin.action.show"/></a>
+
+
 <form name="LoginForm" method="post" action="${pageContext.request.contextPath}/controller">
-<table>
+
+    <table>
 <input list="subject" required name="first-subject">
 <datalist id="subject">
     <option 1><fmt:message key="user.registration.belarusian"/>

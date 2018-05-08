@@ -11,6 +11,7 @@ import by.mordas.project.util.DataValidator;
 
 public class DeleteSpecialityCommand implements Command{
     private AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
+
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
@@ -26,7 +27,7 @@ public class DeleteSpecialityCommand implements Command{
             else {
                 //router.setRouter(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.PAGE_DELETE_SPECIALITY);
-                content.setSessionAttribute(ParamConstant.MESSAGE,ParamConstant.MESSAGE);
+                content.setSessionAttribute(ParamConstant.MESSAGE,"Incorrect speciality id");
             }
         } catch (LogicException e) {
             router.setRouter(Router.RouteType.REDIRECT);

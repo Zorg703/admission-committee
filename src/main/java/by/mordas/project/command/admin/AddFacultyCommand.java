@@ -21,13 +21,12 @@ public class AddFacultyCommand implements Command {
             try {
                 Faculty faculty = adminLogicImpl.addFaculty(facultyName);
                 if(faculty!=null) {
-                    content.setSessionAttribute(ParamConstant.FACULTY, faculty);
                     router.setRouter(Router.RouteType.REDIRECT);
+                    content.setSessionAttribute(ParamConstant.FACULTY, faculty);
                     router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
                 }
                 else {
-                    router.setRouter(Router.RouteType.REDIRECT);
-                    content.setSessionAttribute(ParamConstant.FACULTY_NAME, facultyName);
+                    content.setSessionAttribute(ParamConstant.MESSAGE, faculty);
                     router.setPagePath(PageConstant.PAGE_ADD_FACULTY);
                 }
             } catch (LogicException e) {
@@ -35,7 +34,6 @@ public class AddFacultyCommand implements Command {
                 content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
                 router.setPagePath(PageConstant.PAGE_ERROR);
             }
-
         return router;
     }
 }

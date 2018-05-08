@@ -11,7 +11,7 @@ public final static String LOCALE="locale";
 public final static String FACULTY_LIST="faculty_list";
 public final static String CURRENT_URL="current";
 public final static String ID="id";
-public final static String SPECIALITIES="speciality_list";
+public final static String SPECIALITY_LIST ="speciality_list";
 public final static String MESSAGE="message";
 public final static String LOGIN_PARAM="params";
 
@@ -40,4 +40,8 @@ public final static String SPECIALITY_NAME="speciality_name";
 public final static String USER_ID="user_id";
 public final static String SPECIALITY_ID="speciality_id";
 public final static String EXCEPTION_MESSAGE="exception_message";
+public final static String EMPTY_SUBJECTS="empty_subjects";
+public final static String IS_ACCEPTED="is_accepted";
+public final static String RECRUITMENT_PLAN="recruitment_plan";
 }
+
