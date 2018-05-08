@@ -18,6 +18,7 @@
     <title><fmt:message key="admin.menu.show_all_faculty"/> </title>
 </head>
 <body>
+<h3><fmt:message key="admin.show_all_faculty.head"/> </h3>
 <div class="container">
 <table class="table table-bordered table-hover"style="width: 70%">
     <tr>

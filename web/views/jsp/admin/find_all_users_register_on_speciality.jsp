@@ -18,7 +18,9 @@
     <title><fmt:message key="admin.find_all_users_register_on_speciality.title"/> </title>
 </head>
 <body>
-<a href="${pageContext.request.contextPath}/controller?command=show_accepted_users&speciality_id=${speciality.specialityId}"><fmt:message key="admin.find_all_users_register_on_speciality.show_accepted"/> </a>
+<h5>
+    <fmt:message key="admin.find_all_users_register_on_speciality.link"/>
+<a href="${pageContext.request.contextPath}/controller?command=show_accepted_users&speciality_id=${speciality.specialityId}"><fmt:message key="admin.find_all_users_register_on_speciality.show_accepted"/> </a></h5>
 <c:if test="${not empty user_list}">
 
 <fmt:message key="admin.show_all_faculty.name"/>: ${faculty.facultyName}

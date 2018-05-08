@@ -17,10 +17,12 @@
     <title><fmt:message key="admin.choose_faculty_and_speciality.title"/> </title>
 </head>
 <body>
+<h2><fmt:message key="admin.find_all_users_register_on_speciality.head"/> </h2>
 <c:if test="${not empty faculty_list}">
 <fmt:message key="admin.choose_faculty_and_speciality.faculty"/>
-
-<form name="find_all_faculty_form" method="get">
+<form name="choose_speciality" method="get">
+    <div class="card-show">
+        <div class="card-block">
     <input type="hidden" name="command" value="find_specialities_for_choose_faculty">
     <label>
         <select name="faculty_id">
@@ -30,13 +32,16 @@
             </c:forEach>
         </select>
     </label>
-    <input class="button" type="submit" >
+            <input class="btn btn-success" type="submit" value=<fmt:message key="user.registration.confirm"/>>
+        </div>
+    </div>
 </form>
 </c:if>
 <c:if test="${not empty speciality_list}">
-    <fmt:message key="admin.show_all_faculty.name"/> : <c:out value="${faculty.facultyName}"/>
 <fmt:message key="admin.choose_faculty_and_speciality.speciality"/>
 <form name="find_users_on_current_speciality" method="get">
+    <div class="card-show">
+        <div class="card-block">
     <input type="hidden" name="command" value="show_all_users_register_on_speciality">
     <label>
         <select name="speciality_id">
@@ -46,7 +51,9 @@
             </c:forEach>
         </select>
     </label>
-    <input class="button" type="submit">
+    <input class="btn btn-success" type="submit" value=<fmt:message key="user.registration.confirm"/>>
+        </div>
+    </div>
 </form>
 </c:if>
 </body>

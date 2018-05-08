@@ -45,7 +45,7 @@ public class ConnectionPool {
 //        } catch (DAOException e) {
 //            logger.log(Level.ERROR, e.getMessage());
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage());
         }
     }
 

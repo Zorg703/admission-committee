@@ -17,14 +17,19 @@
     <title><fmt:message key="admin.delete_faculty.title"/> </title>
 </head>
 <body>
+<h2><fmt:message key="admin.delete_faculty.head"/> </h2>
 <form name="delete-faculty" method="post" action="${pageContext.request.contextPath}/controller">
+    <div class="card shadow">
+        <div class="card-block">
     <input type="hidden" name="command" value="delete_faculty">
-    <fmt:message key="admin.update_speciality.faculty_id"/>
-    <input type="text" name="faculty_id" value="" required pattern="[1-9]\d*">
+            <label for="id"> <fmt:message key="admin.update_speciality.faculty_id"/></label>
+    <input type="text" id="id" class="form-control" name="faculty_id" value="" required pattern="[1-9]\d*">
     <c:if test="${not empty message}">
         <fmt:message key="admin.delete_faculty.message"/>
     </c:if>
-    <input class="button" type="submit">
+            <input class="btn btn-success" type="submit" value=<fmt:message key="user.registration.confirm"/>>
+        </div>
+    </div>
 </form>
 <c:remove var="message"/>
 </body>
