@@ -9,8 +9,13 @@ import by.mordas.project.entity.Faculty;
 import by.mordas.project.logic.AdminLogic;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.AdminLogicImpl;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class UpdateFacultyCommand implements Command{
+    private static Logger logger= LogManager.getRootLogger();
+
     private AdminLogic adminLogic=new AdminLogicImpl();
     private static final String ERROR_ID="error_id";
     private static final String ERROR_FACULTY_NAME="error_name";
@@ -38,6 +43,7 @@ public class UpdateFacultyCommand implements Command{
                 router.setRouter(Router.RouteType.REDIRECT);
             }
         } catch (LogicException e) {
+            logger.log(Level.ERROR, e.getMessage());
             content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
             router.setPagePath(PageConstant.PAGE_ERROR);
         }

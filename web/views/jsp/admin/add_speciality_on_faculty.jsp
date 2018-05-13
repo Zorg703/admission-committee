@@ -17,25 +17,36 @@
     <title><fmt:message key="admin.add_speciality_on_faculty.title"/></title>
 </head>
 <body>
+<h2><fmt:message key="admin.add_speciality_on_faculty.head"/> </h2>
 <form name="add-speciality" method="post" action="${pageContext.servletContext.contextPath}/controller">
+    <div class="card shadow">
+        <div class="card-block">
     <input type="hidden" name="command" value="add_speciality">
-    <fmt:message key="admin.add_speciality_on_faculty.faculty_id"/>
+    <label for="id"> <fmt:message key="admin.add_speciality_on_faculty.faculty_id"/></label>
+    <input type="text" class="form-control" id="id" name="faculty_id" pattern="[1-9]\d*" required value="${speciality.faculty_id}"><br>
     <c:if test="${not empty messages.faculty_id}">
+        <div class="alert alert-danger">
         <fmt:message key="admin.add_speciality_on_faculty.message.id"/>
+        </div>
     </c:if>
+            <label for="name"><fmt:message key="admin.add_speciality_on_faculty.speciality_name"/></label>
 
-    <input type="text" name="faculty_id" pattern="[1-9]\d*" required value="${speciality.faculty_id}"><br>
-    <fmt:message key="admin.add_speciality_on_faculty.speciality_name"/>
-    <c:if test="${not empty messages.speciality_name}">
-        <fmt:message key="admin.add_speciality_on_faculty.speciality_name"/>
-    </c:if>
-    <input type="text" name="speciality_name" pattern="([А-Я]{1}([а-я]{2,50}(\s)?)+)|[A-Z]{1}([a-z]{2,50}(\s)?)+" required value="${speciality.speciality_name}"><br>
-    <c:if test="${not empty messages.recruitment_plan}">
-        <fmt:message key="admin.add_speciality_on_faculty.recruitment_plan"/>
-    </c:if>
-    <fmt:message key="admin.add_speciality_on_faculty.recruitment_plan"/>
-    <input type="text" name="recruitment_plan" required value="${speciality.recruitment_plan}" pattern="[1-9]\d{0,4}" ><br>
-    <fmt:message key="admin.add_speciality_on_faculty.subject_for_registration"/><br>
+
+    <input type="text" id="name" class="form-control" name="speciality_name" pattern="([А-Я]{1}([а-я]{2,50}(\s)?)+)|[A-Z]{1}([a-z]{2,50}(\s)?)+" required value="${speciality.speciality_name}"><br>
+            <c:if test="${not empty messages.speciality_name}">
+            <div class="alert alert-danger">
+                <fmt:message key="admin.add_speciality_on_faculty.speciality_name"/>
+            </div>
+            </c:if>
+
+    <label for="plan"><fmt:message key="admin.add_speciality_on_faculty.recruitment_plan"/></label>
+    <input type="text" class="form-control" id="plan" name="recruitment_plan" required value="${speciality.recruitment_plan}" pattern="[1-9]\d{0,4}" ><br>
+            <c:if test="${not empty messages.recruitment_plan}">
+            <div class="alert alert-danger">
+                <fmt:message key="admin.add_speciality_on_faculty.recruitment_plan"/>
+            </div>
+            </c:if>
+           <h3><fmt:message key="admin.add_speciality_on_faculty.subject_for_registration"/></h3>
     <td>
         <label>
             <select required name="first_subject" value="${speciality.first_subject}">
@@ -52,7 +63,9 @@
             </select>
         </label>
         <c:if test="${not empty messages.first_subject}">
+        <div class="alert alert-danger">
             <fmt:message key="user.registration.message.subject"/>
+        </div>
         </c:if>
     </td><br>
     <td>
@@ -71,7 +84,9 @@
             </select>
         </label>
         <c:if test="${not empty messages.second_subject}">
+        <div class="alert alert-danger">
             <fmt:message key="user.registration.message.subject"/>
+        </div>
         </c:if>
     </td><br>
     <td>
@@ -90,13 +105,23 @@
             </select>
         </label>
         <c:if test="${not empty messages.third_subject}">
+        <div class="alert alert-danger">
             <fmt:message key="user.registration.message.subject"/>
+        </div>
         </c:if>
     </td><br>
     <c:if test="${not empty messages.subjects}">
+            <div class="alert alert-danger">
         <fmt:message key="user.registration.message.subjects"/>
+            </div>
     </c:if>
-    <input class="button" type="submit">
+            <label for="start"><fmt:message key="admin.add_speciality_on_faculty.start_registration"/></label>
+            <input id="start" class="form-control" name="start_registration" required type="datetime-local" min="2018-05-01T00:00" max="2018-12-31T23:30">
+            <label for="end"><fmt:message key="admin.add_speciality_on_faculty.end_registration"/></label>
+            <input id="end" class="form-control" name="end_registration"required type="datetime-local" min="2018-05-01T00:00" max="2018-12-31T23:30">
+            <input class="btn btn-success" type="submit" name="end_registration" value=<fmt:message key="user.registration.confirm"/>>
+        </div>
+    </div>
 </form>
 <c:remove var="messages"/>
 <c:remove var="speciality"/>

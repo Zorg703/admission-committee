@@ -8,6 +8,8 @@ import by.mordas.project.entity.Faculty;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.UserLogicImpl;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -21,12 +23,13 @@ public class DataValidator {
     private static final String LAST_NAME_REGEX="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}";
     private static final String DATE_REGEX="(((19\\d\\d)|(200\\d)|(2010))-((0[1-9]|1[012])-(0[1-9]|[12]\\d)|(0[13-9]|1[012])-30|(0[13578]|1[02])-31))";
     private static final String MARK_REGEX="[1-9]\\d?|100";
-    private static final String LOGIN_REGEX="^[a-zA-Z][a-zA-Z0-9-_]{4,30}";
+    private static final String LOGIN_REGEX="^[a-zA-Z][a-zA-Z0-9-_]{3,30}";
     private static final String PASSWORD_REGEX="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}";
     private static final String EMAIL_REGEX="^[\\w]+[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$";
     private static final String SUBJECT_ID="[1-9]";
     private static final String RECRUITMENT_PLAN="[1-9]\\d{0,4}";
     private static final String LOGIN_BUSY ="login_busy";
+    private static final String DATE_TIME_REGEX="(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2})";
 
     /*private void xc(String data){
         Pattern loginPattern = Pattern.compile(f);
@@ -152,6 +155,19 @@ public class DataValidator {
                     parameterMap.get(ParamConstant.FIRST_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT)) ||
                     parameterMap.get(ParamConstant.SECOND_SUBJECT).equals(parameterMap.get(ParamConstant.THIRD_SUBJECT))) {
                 errorMessageMap.put(ParamConstant.SUBJECTS, ParamConstant.SUBJECTS);
+            }
+        }
+        if(!checkData(DATE_TIME_REGEX,parameterMap.get(ParamConstant.START_REGISTRATION))){
+            errorMessageMap.put(ParamConstant.START_REGISTRATION,parameterMap.get(ParamConstant.START_REGISTRATION));
+        }
+        if(!checkData(DATE_TIME_REGEX,parameterMap.get(ParamConstant.END_REGISTRATION))){
+            errorMessageMap.put(ParamConstant.END_REGISTRATION,parameterMap.get(ParamConstant.END_REGISTRATION));
+        }
+        if(!checkData(DATE_TIME_REGEX,parameterMap.get(ParamConstant.START_REGISTRATION)) && !checkData(DATE_TIME_REGEX,parameterMap.get(ParamConstant.END_REGISTRATION))){
+            LocalDateTime startDateTime=DateConverter.getLocaleDateTime(parameterMap.get(ParamConstant.START_REGISTRATION));
+            LocalDateTime endDateTime=DateConverter.getLocaleDateTime(parameterMap.get(ParamConstant.END_REGISTRATION));
+            if(endDateTime.isBefore(startDateTime)){
+                errorMessageMap.put(ParamConstant.END_REGISTRATION,parameterMap.get(ParamConstant.END_REGISTRATION));
             }
         }
         return errorMessageMap;

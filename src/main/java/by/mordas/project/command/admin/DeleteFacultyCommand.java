@@ -8,9 +8,12 @@ import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.logic.impl.AdminLogicImpl;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.util.DataValidator;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DeleteFacultyCommand implements Command {
-
+    private static Logger logger= LogManager.getRootLogger();
     private AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
 
     @Override
@@ -28,6 +31,7 @@ public class DeleteFacultyCommand implements Command {
                 content.setSessionAttribute(ParamConstant.MESSAGE,"Incorrect faculty id");
             }
         } catch (LogicException e) {
+            logger.log(Level.ERROR, e.getMessage());
             router.setRouter(Router.RouteType.REDIRECT);
             content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
             router.setPagePath(PageConstant.PAGE_ERROR);

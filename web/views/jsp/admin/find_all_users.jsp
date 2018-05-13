@@ -20,7 +20,8 @@
 <h3><fmt:message key="admin.find_all_user.show"/>:</h3>
 <c:if test="${not empty user_list}">
     <table class="table table-bordered table-hover" style="width: 50%">
-        <tr><th>#</th>
+        <tr>
+            <th>#</th>
             <th style="width: 15%"><fmt:message key="admin.find_user_by_id.id"/></th>
             <th><fmt:message key="admin.find_user_by_id.first_name"/> </th>
             <th><fmt:message key="admin.find_user_by_id.last_name"/></th>

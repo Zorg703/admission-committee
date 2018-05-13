@@ -9,10 +9,14 @@ import by.mordas.project.entity.User;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.UserLogicImpl;
 import by.mordas.project.util.DataValidator;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 
 public class RegisterOnSpecialityCommand implements Command {
+    private static Logger logger= LogManager.getRootLogger();
     private UserLogicImpl userLogicImpl =new UserLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
@@ -35,6 +39,7 @@ public class RegisterOnSpecialityCommand implements Command {
                 router.setRouter(Router.RouteType.REDIRECT);
             }
         } catch (LogicException e) {
+            logger.log(Level.ERROR,e.getMessage());
             router.setRouter(Router.RouteType.REDIRECT);
             content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
             router.setPagePath(PageConstant.PAGE_ERROR);

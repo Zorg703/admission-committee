@@ -37,6 +37,7 @@
     </div>
 </form>
 </c:if>
+<h3>${faculty.facultyName}</h3>
 <c:if test="${not empty speciality_list}">
 <fmt:message key="admin.choose_faculty_and_speciality.speciality"/>
 <form name="find_users_on_current_speciality" method="get">

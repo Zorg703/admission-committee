@@ -67,38 +67,33 @@ public class ConnectionPool {
     }
 
     public  DBConnection getConnection(){
-
             DBConnection connection = null;
+        try {
+            connection = connectionsStorage.take();
+        } catch (InterruptedException e) {
+         logger.log(Level.ERROR,"Can't take connection from connection pool");
+        }
 
-                connection = connectionsStorage.poll();
-
-            return connection;
-
+        return connection;
 
     }
 
     public void closeConnection(DBConnection connection){
         connectionsStorage.offer(connection);
-
     }
 
     public static void closePool() {
         try {
             for (int i = 0; i < POOL_SIZE; i++) {
                 DBConnection connection = connectionsStorage.take();
-                connection.closeConnection(connection);
-
+                connection.closeConnection();
             }
         } catch (InterruptedException e) {
-            logger.log(Level.ERROR, "Connection can't do ");
+            logger.log(Level.ERROR, "Problems with take connection from connection pool");
         } catch (SQLException e) {
-            e.printStackTrace();
-
+            logger.log(Level.ERROR,"Problems with close connection");
             DBManager.deregisterDriver();
-
-
         }
     }
-
 
 }

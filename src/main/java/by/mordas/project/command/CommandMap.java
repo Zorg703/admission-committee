@@ -68,16 +68,12 @@ public class CommandMap {
             return map.get(key);
         }
         catch (IllegalArgumentException e){
-            return getOrDefault(cmd,new GoToMainPage());
+            return map.get(CommandType.GO_TO_MAIN_PAGE);
         }
 
     }
     public Command get(CommandType key){
         return map.get(key);
-    }
-
-    private Command getOrDefault(String cmd,Command defaultValue){
-        return map.getOrDefault(cmd,defaultValue);
     }
 
 

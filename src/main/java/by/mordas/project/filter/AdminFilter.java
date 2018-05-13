@@ -1,7 +1,6 @@
 package by.mordas.project.filter;
 
-import by.mordas.project.command.PageConstant;
-import by.mordas.project.command.ParamConstant;
+import by.mordas.project.command.*;
 import by.mordas.project.entity.User;
 
 import javax.servlet.*;
@@ -20,8 +19,9 @@ public class AdminFilter implements Filter{
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request=(HttpServletRequest) servletRequest;
         User user=(User)request.getSession().getAttribute(ParamConstant.USER);
+
             if(user==null){
-               request.getRequestDispatcher(PageConstant.PAGE_LOGIN).forward(servletRequest, servletResponse);
+                request.getRequestDispatcher(PageConstant.PAGE_LOGIN).forward(servletRequest, servletResponse);
                 return;
             }
             if(user.getRoleId()!=2){

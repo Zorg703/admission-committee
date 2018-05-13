@@ -26,7 +26,7 @@ public class MySQLUserDAOImpl implements UserDAO {
     private static final String FIND_USER_BY_ID ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
             "SPECIALITY_ID,LOGIN,EMAIL,ROLE_ID FROM USER WHERE ID=?";
     private static final String FIND_ALL_USER="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY," +
-            "SPECIALITY_ID,EMAIL,ROLE_ID FROM USER ORDER BY LAST_NAME";
+            "SPECIALITY_ID,EMAIL,LOGIN,ROLE_ID FROM USER ORDER BY LAST_NAME";
     private static final String INSERT_USER ="INSERT INTO USER(FIRST_NAME,LAST_NAME,BIRTHDAY," +
             "LOGIN,PASSWORD,EMAIL) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_USER ="UPDATE USER SET ID=?,FIRST_NAME=?,LAST_NAME=?," +
@@ -109,7 +109,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
         @Override
     public void create(User user) throws DAOException {
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(INSERT_USER,Statement.RETURN_GENERATED_KEYS);){
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(INSERT_USER)){
             pStatement.setString(1, user.getFirstName());
             pStatement.setString(2, user.getLastName());
             pStatement.setDate(3, user.getBirthday());
@@ -200,6 +200,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
         user.setBirthday(rs.getDate("BIRTHDAY"));
         user.setEmail(rs.getString("EMAIL"));
         user.setRoleId(rs.getInt("ROLE_ID"));
+        user.setLogin(rs.getString("LOGIN"));
         user.setSpecialityId(rs.getLong("SPECIALITY_ID"));
     return user;
     }

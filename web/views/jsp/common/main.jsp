@@ -36,8 +36,8 @@
 
    <body>
 
-  <div class="container">
-   <h2>Welcome to our university</h2>
+  <div class="container col-md-8" style="width: 100%">
+   <h2><fmt:message key="main.page.header"/> </h2>
    <div id="myCarousel" class="carousel slide" data-ride="carousel">
        <!-- Indicators -->
        <ol class="carousel-indicators">

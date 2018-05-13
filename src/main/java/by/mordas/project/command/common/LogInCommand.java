@@ -8,8 +8,12 @@ import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.User;
 import by.mordas.project.logic.impl.CommonLogicImpl;
 import by.mordas.project.logic.LogicException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class LogInCommand implements Command {
+    private static Logger logger= LogManager.getRootLogger();
     private CommonLogicImpl commonLogicImpl =new CommonLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
@@ -31,6 +35,7 @@ public class LogInCommand implements Command {
                 router.setPagePath(PageConstant.PAGE_LOGIN);
             }
         } catch (LogicException e) {
+            logger.log(Level.ERROR,e.getMessage());
             router.setRouter(Router.RouteType.REDIRECT);
             content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
             router.setPagePath(PageConstant.PAGE_ERROR);

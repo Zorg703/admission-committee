@@ -17,27 +17,33 @@
     <title><fmt:message key="admin.update_speciality.title"/></title>
 </head>
 <body>
+<h2><fmt:message key="admin.update_faculty.head"/> </h2>
 <form name="update-faculty" method="post" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="update_faculty">
     <div class="card shadow">
         <div class="card-block">
             <label for="id"><fmt:message key="admin.update_speciality.faculty_id"/></label>
     <input id="id" type="text" class="form-control" name="faculty_id" pattern="[1-9]\d*" required value=""/>
-    <fmt:message key="admin.add_faculty.name"/>
-            <label for="name"></label>
+            <label for="name"><fmt:message key="admin.add_faculty.name"/></label>
     <input id="name" class="form-control" type="text" name="faculty_name" required pattern="([А-Я]{1}([а-я]{2,50}(\s)?)+)|[A-Z]{1}([a-z]{2,50}(\s)?)+" value=""/>
 
             <c:if test="${not empty error_id}">
-      <small> <fmt:message key="admin.update_speciality.error_id"/></small>
+            <div class="alert alert-danger">
+      <fmt:message key="admin.update_speciality.error_id"/>
+            </div>
     </c:if>
 
-    <c:if test="${not empty error_name}">
-     <small> <fmt:message key="admin.update_speciality.error_name"/></small>
-    </c:if>
+
     <input class="btn btn-success" type="submit" value=<fmt:message key="user.registration.confirm"/> >
         </div>
     </div>
+    <c:if test="${not empty error_name}">
+        <div class="alert alert-warning">
+            <strong><fmt:message key="admin.update_speciality.error_name"/></strong>
+        </div>
+    </c:if>
 </form>
+
 <c:remove var="error_id"/>
 <c:remove var="error_name"/>
 </body>

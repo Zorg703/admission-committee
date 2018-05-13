@@ -5,30 +5,45 @@
   Time: 8:55
   To change this template use File | Settings | File Templates.
 --%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:import url="/views/jsp/admin/include/menu.jsp"/>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/admin/include/menu.jsp"/>
 <html>
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
 <head>
-    <title><fmt:message key="admin.find_all_users_register_on_speciality.title"/> </title>
+    <title><fmt:message key="admin.find_all_users_register_on_speciality.title"/></title>
 </head>
 <body>
-<h5>
-    <fmt:message key="admin.find_all_users_register_on_speciality.link"/>
-<a href="${pageContext.request.contextPath}/controller?command=show_accepted_users&speciality_id=${speciality.specialityId}"><fmt:message key="admin.find_all_users_register_on_speciality.show_accepted"/> </a></h5>
+<h3><fmt:message key="admin.find_all_users_register_on_speciality.data"/></h3>
 <c:if test="${not empty user_list}">
-
-<fmt:message key="admin.show_all_faculty.name"/>: ${faculty.facultyName}
-<fmt:message key="user.menu.speciality"/>: ${speciality.specialityName}
-<fmt:message key="admin.add_speciality_on_faculty.recruitment_plan"/>: ${speciality.recruitmentPlan}
-<fmt:message key="admin.show_all_specialities.count"/>: ${fn:length(user_list)}
-<table>
+<table class="table table-bordered table-dark table-inverse" style="width: 50%">
     <tr>
+        <th><fmt:message key="admin.show_all_faculty.name"/>:</th>
+        <td>${faculty.facultyName}</td>
+    </tr>
+    <tr>
+        <th><fmt:message key="admin.find_all_users_register_on_speciality.speciality_name"/>:</th>
+        <td>${speciality.specialityName}</td>
+    </tr>
+    <tr>
+        <th><fmt:message key="admin.add_speciality_on_faculty.recruitment_plan"/></th>
+        <td>${speciality.recruitmentPlan}</td>
+    </tr>
+    <tr>
+            <th><fmt:message key="admin.show_all_specialities.count"/>:</th>
+        <td>${fn:length(user_list)}</td>
+    </tr>
+</table>
+    <h3><a href="${pageContext.request.contextPath}/controller?command=show_accepted_users&speciality_id=${speciality.specialityId}">
+        <fmt:message key="admin.find_all_users_register_on_speciality.link"/></a></h3>
+<table class="table table-bordered table-hover" style="width: 50%">
+    <tr>
+        <th>#</th>
         <th>
             <fmt:message key="admin.find_user_by_id.id"/>
         </th>
@@ -42,8 +57,9 @@
             <fmt:message key="admin.find_all_users_register_on_speciality.score"/>
         </th>
     </tr>
-    <c:forEach var="user" items="${user_list}">
+    <c:forEach var="user" items="${user_list}" varStatus="loop">
         <tr>
+            <td>${loop.index+1}</td>
             <td>${user.userId}</td>
             <td>${user.firstName}</td>
             <td>${user.lastName}</td>
@@ -54,13 +70,13 @@
             <td>${user.certificateMark+counter}</td>
         </tr>
     </c:forEach>
-
 </table>
 </c:if>
-
 <c:if test="${not empty message}">
-    Пользователи не зарегистрированы на данную специальность
-</c:if>
+    <div class="alert alert-danger">
+    <fmt:message key="admin.find_all_users_register_on_speciality.message"/>
+    </div>
+        </c:if>
 <c:remove var="message"/>
 </body>
 </html>

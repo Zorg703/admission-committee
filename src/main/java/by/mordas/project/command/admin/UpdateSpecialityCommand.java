@@ -9,11 +9,15 @@ import by.mordas.project.entity.Speciality;
 import by.mordas.project.logic.AdminLogic;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.AdminLogicImpl;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 
 public class UpdateSpecialityCommand implements Command {
-    AdminLogic adminLogic=new AdminLogicImpl();
+    private static Logger logger= LogManager.getRootLogger();
+    private AdminLogic adminLogic=new AdminLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
@@ -33,6 +37,7 @@ public class UpdateSpecialityCommand implements Command {
                 }
 
         } catch (LogicException e) {
+            logger.log(Level.ERROR, e.getMessage());
             router.setRouter(Router.RouteType.REDIRECT);
             content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
             router.setPagePath(PageConstant.PAGE_ERROR);

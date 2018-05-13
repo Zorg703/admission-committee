@@ -33,7 +33,6 @@
 
         <c:if test="${not empty messages.first_name}">
                 <fmt:message key="user.registration.message.first_name"/>
-
         </c:if>
     <div class="col-md-6 mb-3">
         <label  for="lastName"><fmt:message key="user.registration.last_name"/> </label>
@@ -76,7 +75,7 @@
         <h3><fmt:message key="user.registration.date"/></h3>
     <div class="mb-3">
         <label for="login"><fmt:message key="user.registration.login"/></label>
-        <input class="form-control" type="text" id="login" placeholder="" name="login" required pattern="^[a-zA-Z][a-zA-Z0-9-_]{4,30}" value="${user_params.login}">
+        <input class="form-control" type="text" id="login" placeholder="" name="login" required pattern="^[a-zA-Z][a-zA-Z0-9-_]{3,30}" value="${user_params.login}">
         <small id="loginHelpBlock" class="form-text text-muted">
             <fmt:message key="user.registration.login_helper"/>
         </small>

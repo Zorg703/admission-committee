@@ -6,7 +6,7 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class DBConnection implements Connection, AutoCloseable {
-    Connection connection;
+    private Connection connection;
 
     DBConnection(Connection connection) {
         this.connection = connection;
@@ -281,7 +281,7 @@ public class DBConnection implements Connection, AutoCloseable {
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return connection.isWrapperFor(iface);
     }
-    void closeConnection(DBConnection connection) throws SQLException {
+    void closeConnection() throws SQLException {
         connection.close();
     }
 }

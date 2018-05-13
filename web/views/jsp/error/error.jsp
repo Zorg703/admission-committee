@@ -17,7 +17,9 @@
 </head>
 <body>
 <c:out value="${exception_message}"/>
-
+<c:out value="${message}"/>
+<h3><fmt:message key="common.error.message"/>
+<a href="${pageContext.servletContext.contextPath}/views/jsp/common/main.jsp"><fmt:message key="common.error.link"/> </a></h3>
 ${pageContext.exception}
 
 <c:forEach var="trace"
@@ -25,6 +27,7 @@ ${pageContext.exception}
     <p>${trace}</p>
 </c:forEach>
 
-<a href="${pageContext.servletContext.contextPath}/views/jsp/common/main.jsp">link</a>
+
 </body>
+<c:remove var="message"/>
 </html>

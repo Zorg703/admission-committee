@@ -18,14 +18,16 @@
 </head>
 <body>
     <h2><fmt:message key="admin.add_faculty.text"/></h2>
-<form name="add-faculty-form" method="post" action="${pageContext.request.contextPath}/controller">
+<form name="add-faculty-form " method="post" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="add_faculty"/>
     <div class="card shadow">
         <div class="card-block">
             <label for="name"> <fmt:message key="admin.add_faculty.name"/></label>
-    <input id="name" class="form-control" type="text" name="faculty_name" value="" required pattern="([А-Я]{1}([а-я]{2,50}(\s)?)+)|[A-Z]{1}([a-z]{2,50}(\s)?)+"/>
+    <input id="name" type="text" name="faculty_name" value="" required pattern="([А-Я]{1}([а-я]{2,50}(\s)?)+)|[A-Z]{1}([a-z]{2,50}(\s)?)+"/>
             <c:if test="${not empty message}">
-                <small><fmt:message key="admin.add_faculty.incorrect_name"/></small>
+                <div class="alert alert-danger">
+                <fmt:message key="admin.add_faculty.incorrect_name"/>
+                </div>
             </c:if>
             <input class="btn btn-success" type="submit" value=<fmt:message key="user.registration.confirm"/>>
 

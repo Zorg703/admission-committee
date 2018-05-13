@@ -1,7 +1,10 @@
 package by.mordas.project.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Speciality extends Entity {
     private long specialityId;
@@ -9,10 +12,23 @@ public class Speciality extends Entity {
     private int recruitmentPlan;
     private long facultyId;
     private List<Subject> subjects;
+    private LocalDateTime start_registration;
+    private LocalDateTime end_registration;
+
 
 
     public Speciality(){
         subjects=new ArrayList<>();
+    }
+
+    public Speciality(long specialityId, String specialityName, int recruitmentPlan, long facultyId, List<Subject> subjects,LocalDateTime start_registration ,LocalDateTime end_registration) {
+        this.specialityId = specialityId;
+        this.specialityName = specialityName;
+        this.recruitmentPlan = recruitmentPlan;
+        this.facultyId = facultyId;
+        this.subjects = subjects;
+        this.start_registration=start_registration;
+        this.end_registration = end_registration;
     }
 
     public List<Subject> getSubjects() {
@@ -57,6 +73,22 @@ public class Speciality extends Entity {
 
     public boolean add(Subject subject) {
         return subjects.add(subject);
+    }
+
+    public LocalDateTime getStart_registration() {
+        return start_registration;
+    }
+
+    public void setStart_registration(LocalDateTime start_registration) {
+        this.start_registration = start_registration;
+    }
+
+    public LocalDateTime getEnd_registration() {
+        return end_registration;
+    }
+
+    public void setEnd_registration(LocalDateTime end_registration) {
+        this.end_registration = end_registration;
     }
 
     @Override

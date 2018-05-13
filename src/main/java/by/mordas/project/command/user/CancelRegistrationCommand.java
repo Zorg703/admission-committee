@@ -9,9 +9,13 @@ import by.mordas.project.entity.User;
 import by.mordas.project.logic.AdminLogic;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.AdminLogicImpl;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class CancelRegistrationCommand implements Command {
+    private static Logger logger= LogManager.getRootLogger();
     private AdminLogic adminLogic=new AdminLogicImpl();
 
     @Override
@@ -25,6 +29,7 @@ public class CancelRegistrationCommand implements Command {
             content.setSessionAttribute(ParamConstant.USER,user);
             router.setPagePath(PageConstant.PAGE_USER_SUCCESS);
         } catch (LogicException e) {
+            logger.log(Level.ERROR,e.getMessage());
             router.setRouter(Router.RouteType.REDIRECT);
             content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
             router.setPagePath(PageConstant.PAGE_ERROR);

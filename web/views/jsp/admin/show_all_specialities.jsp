@@ -17,9 +17,10 @@
     <title><fmt:message key="admin.show_all_specialities.title"/> </title>
 </head>
 <body>
-<fmt:message key="admin.show_all_specialities.table"/>
-<table>
+<h3><fmt:message key="admin.show_all_specialities.table"/></h3>
+<table class="table table-bordered table-hover" style="width: 60%">
     <tr>
+        <th>#</th>
         <th>
             <fmt:message key="admin.show_all_specialities.id"/>
         </th>
@@ -33,8 +34,9 @@
             <fmt:message key="admin.add_speciality_on_faculty.faculty_id"/>
         </th>
     </tr>
-        <c:forEach items="${speciality_list}" var="speciality">
+        <c:forEach items="${speciality_list}" var="speciality" varStatus="loop">
             <tr>
+                <td>${loop.index+1}</td>
             <td>${speciality.specialityId}</td>
             <td>${speciality.specialityName}</td>
             <td>${speciality.recruitmentPlan}</td>

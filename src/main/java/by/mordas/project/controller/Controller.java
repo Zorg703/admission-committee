@@ -32,27 +32,16 @@ public class Controller extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.service(req, resp);
-    }
-
-    @Override
     public void destroy() {
         ConnectionPool.closePool();
         super.destroy();
     }
 
-    @Override
-    public void init() throws ServletException {
-        super.init();
-    }
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Router router;
-        request.setCharacterEncoding("UTF-8");
         SessionRequestContent content=new SessionRequestContent(request);
         content.extractValues();
-        Command command= CommandMap.getInstance().get(content.getRequestParameter("command"));
+        Command command= CommandMap.getInstance().get(content.getRequestParameter(ParamConstant.COMMAND));
         router=command.execute(content);
         request=content.getRequest();
         switch (router.getRouter()){
@@ -60,6 +49,7 @@ public class Controller extends HttpServlet {
             break;
             case REDIRECT:response.sendRedirect(router.getPagePath());
             break;
+            default: //
         }
 
 

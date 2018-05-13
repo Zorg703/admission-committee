@@ -10,17 +10,18 @@ import by.mordas.project.logic.AdminLogic;
 import by.mordas.project.logic.Logic;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.util.DataValidator;
+import by.mordas.project.util.DateConverter;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AdminLogicImpl implements AdminLogic {
-    private static Logger logger= LogManager.getRootLogger();
     private DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
 
     @Override
@@ -30,7 +31,7 @@ public class AdminLogicImpl implements AdminLogic {
         try {
             userList=userDAO.findAllEntity();
         } catch (DAOException e) {
-            logger.log(Level.ERROR,e.getMessage());
+
             throw new LogicException("Problems with findAllUser method",e);
         }
         return userList;
@@ -47,7 +48,6 @@ public class AdminLogicImpl implements AdminLogic {
                 FacultyDAO facultyDAO = mysqlFactory.getFacultyDAO();
                 facultyDAO.create(faculty);
             } catch (DAOException e) {
-                logger.log(Level.ERROR, e.getMessage());
                 throw new LogicException("Problems with addFaculty method", e);
             }
         }
@@ -63,7 +63,6 @@ public class AdminLogicImpl implements AdminLogic {
             try {
                 return facultyDAO.delete(id);
             } catch (DAOException e) {
-                logger.log(Level.ERROR, e.getMessage());
                 throw new LogicException("Problems with deleteFaculty method", e);
             }
         }
@@ -76,7 +75,6 @@ public class AdminLogicImpl implements AdminLogic {
         try {
             specialityDAO.create(speciality);
         } catch (DAOException e) {
-            logger.log(Level.ERROR,e.getMessage());
             throw new LogicException("Problems with addSpeciality method",e);
         }
         return speciality;
@@ -93,7 +91,6 @@ public class AdminLogicImpl implements AdminLogic {
                 user= userDAO.findEntityById(id);
 
             } catch (DAOException e) {
-                logger.log(Level.ERROR,e.getMessage());
                 throw new LogicException("Problems with findUserById method",e);
             }
         }
@@ -110,7 +107,6 @@ public class AdminLogicImpl implements AdminLogic {
             try {
                 return specialityDAO.delete(id);
             } catch (DAOException e) {
-                logger.log(Level.ERROR, e.getMessage());
                 throw new LogicException("Problems with deleteSpeciality method", e);
             }
         }
@@ -127,6 +123,8 @@ public class AdminLogicImpl implements AdminLogic {
                 speciality.setFacultyId(Integer.parseInt(parameters.get(ParamConstant.FACULTY_ID)));
                 speciality.setSpecialityName(parameters.get(ParamConstant.SPECIALITY_NAME));
                 speciality.setRecruitmentPlan(Integer.parseInt(parameters.get(ParamConstant.RECRUITMENT_PLAN)));
+                speciality.setStart_registration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.START_REGISTRATION)));
+                speciality.setEnd_registration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.END_REGISTRATION)));
                 Subject subject1=new Subject();
                 subject1.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.FIRST_SUBJECT)));
                 speciality.add(subject1);
@@ -140,7 +138,6 @@ public class AdminLogicImpl implements AdminLogic {
                 specialityDAO.create(speciality);
             }
             catch (DAOException e) {
-                logger.log(Level.ERROR, e.getMessage());
                 throw new LogicException("Problems with addSpeciality method", e);
             }
         }
@@ -153,7 +150,6 @@ public class AdminLogicImpl implements AdminLogic {
         try {
            specialities=mysqlFactory.getSpecialityDAO().findAllEntity();
         } catch (DAOException e) {
-            logger.log(Level.ERROR, e.getMessage());
             throw new LogicException("Problems with findAllSpecialities method",e);
         }
         return specialities;
@@ -168,7 +164,6 @@ public class AdminLogicImpl implements AdminLogic {
                 Long specialityId=Long.valueOf(id);
                 userList=mysqlFactory.getSpecialityDAO().findUsersOnSpeciality(specialityId);
             } catch (DAOException e) {
-                logger.log(Level.ERROR, e.getMessage());
                 throw new LogicException("Problems with findUsersRegisterOnFaculty method",e);
             }
         }
@@ -183,7 +178,6 @@ public class AdminLogicImpl implements AdminLogic {
             try {
                 speciality=mysqlFactory.getSpecialityDAO().findEntityById(specialityId);
             } catch (DAOException e) {
-                logger.log(Level.ERROR, e.getMessage());
                 throw new LogicException("Problems with findUsersRegisterOnFaculty method",e);
             }
         }
@@ -195,7 +189,6 @@ public class AdminLogicImpl implements AdminLogic {
         try {
             faculty=mysqlFactory.getFacultyDAO().findEntityById(speciality.getFacultyId());
         } catch (DAOException e) {
-            logger.log(Level.ERROR, e.getMessage());
             throw new LogicException("Problems with findFacultyOnSpeciality method",e);
         }
         return faculty;
@@ -209,7 +202,6 @@ public class AdminLogicImpl implements AdminLogic {
             try {
                 faculty = mysqlFactory.getFacultyDAO().findEntityById(id);
             } catch (DAOException e) {
-                logger.log(Level.ERROR, e.getMessage());
                 throw new LogicException("Problems with findFaculty method",e);
             }
         }
@@ -224,7 +216,6 @@ public class AdminLogicImpl implements AdminLogic {
                 mysqlFactory.getFacultyDAO().update(faculty);
                 return true;
             } catch (DAOException e) {
-                logger.log(Level.ERROR, e.getMessage());
                 throw new LogicException("Problems with updateFaculty method",e);
             }
         }
@@ -240,7 +231,6 @@ public class AdminLogicImpl implements AdminLogic {
             try {
                 speciality = mysqlFactory.getSpecialityDAO().findEntityById(id);
             } catch (DAOException e) {
-                logger.log(Level.ERROR, e.getMessage());
                 throw new LogicException("Problems with findSpecialityById method", e);
             }
 
@@ -260,6 +250,8 @@ public class AdminLogicImpl implements AdminLogic {
                     speciality.setSpecialityName(parameters.get(ParamConstant.SPECIALITY_NAME));
                     speciality.setRecruitmentPlan(Integer.parseInt(parameters.get(ParamConstant.RECRUITMENT_PLAN)));
                     speciality.setFacultyId(Long.parseLong(parameters.get(ParamConstant.FACULTY_ID)));
+                    speciality.setStart_registration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.START_REGISTRATION)));
+                    speciality.setEnd_registration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.END_REGISTRATION)));
                     Subject subject1 = new Subject();
                     subject1.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.FIRST_SUBJECT)));
                     speciality.add(subject1);
@@ -275,7 +267,6 @@ public class AdminLogicImpl implements AdminLogic {
                     errorMap.put(ParamConstant.SPECIALITY_ID,parameters.get(ParamConstant.SPECIALITY_ID));
                 }
             } catch (DAOException e) {
-                logger.log(Level.ERROR, e.getMessage());
                 throw new LogicException("Problems with updateSpeciality method", e);
             }
         }
@@ -308,7 +299,6 @@ public class AdminLogicImpl implements AdminLogic {
                 return acceptedUsers;
             }
         } catch (LogicException e) {
-            logger.log(Level.ERROR, e.getMessage());
             throw new LogicException("Problems with findAllAcceptedUsersOnSpeciality method", e);
         }
 
@@ -320,7 +310,6 @@ public class AdminLogicImpl implements AdminLogic {
             List<Faculty> faculties=mysqlFactory.getFacultyDAO().findAllEntity();
             return faculties;
         } catch (DAOException e) {
-            logger.log(Level.ERROR, e.getMessage());
             throw new LogicException("Problems with findAllFaculty method", e);
         }
     }
@@ -335,7 +324,6 @@ public class AdminLogicImpl implements AdminLogic {
             try {
                 specialities = specialityDAO.findSpecialitiesByFacultyID(facultyId);
             } catch (DAOException e) {
-                logger.log(Level.ERROR, e.getMessage());
                 throw new LogicException("Problems with findSpecialitiesOnFaculty method", e);
             }
         }
@@ -349,7 +337,6 @@ public class AdminLogicImpl implements AdminLogic {
         try {
             mysqlFactory.getUserDAO().clearUserScore(user);
         } catch (DAOException e) {
-            logger.log(Level.ERROR, e.getMessage());
             throw new LogicException("Problems with canceledRegistration method", e);
         }
 

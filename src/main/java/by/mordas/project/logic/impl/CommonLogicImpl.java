@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
  * Created by Enginer on 03.03.2018.
  */
 public class CommonLogicImpl implements CommonLogic {
-    private static Logger logger= LogManager.getRootLogger();
     private DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
 
     @Override
@@ -31,7 +30,6 @@ public class CommonLogicImpl implements CommonLogic {
                 user = userDAO.findUserByPasswordAndLogin(login,password);
             }
         } catch (DAOException e) {
-            logger.log(Level.ERROR,e.getMessage());
             throw new LogicException("Problems with findUserByPasswordAndLogin method",e);
         }
         return user;

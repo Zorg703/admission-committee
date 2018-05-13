@@ -8,10 +8,14 @@ import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.User;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.AdminLogicImpl;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class ShowAllUserCommand implements Command {
+    private static Logger logger= LogManager.getRootLogger();
     private AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
 
     @Override
@@ -23,6 +27,7 @@ public class ShowAllUserCommand implements Command {
             content.setRequestAttribute(ParamConstant.USER_LIST,userList);
             router.setPagePath(PageConstant.PAGE_SHOW_USERS);
         } catch (LogicException e) {
+            logger.log(Level.ERROR, e.getMessage());
             router.setRouter(Router.RouteType.REDIRECT);
             content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
             router.setPagePath(PageConstant.PAGE_ERROR);

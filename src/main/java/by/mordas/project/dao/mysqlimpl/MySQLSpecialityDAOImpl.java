@@ -7,26 +7,24 @@ import by.mordas.project.entity.Subject;
 import by.mordas.project.entity.User;
 import by.mordas.project.pool.ConnectionPool;
 import by.mordas.project.pool.DBConnection;
+import by.mordas.project.util.DateConverter;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     private static final Logger logger= LogManager.getRootLogger();
-    private static final String FIND_ALL_SPECIALITY="SELECT ID,SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID FROM SPECIALITY";
-    private static final String FIND_SPECIALITY_BY_ID="SELECT ID,SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID FROM SPECIALITY WHERE ID=?";
-    private static final String CREATE_SPECIALITY="INSERT INTO SPECIALITY(SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID) VALUES(?,?,?)";
-    private static final String UPDATE_SPECIALITY="UPDATE SPECIALITY SET SPECIALITY_NAME=?,RECRUITMENT_PLAN=?,FACULTY_ID=? WHERE ID=?";
+    private static final String FIND_ALL_SPECIALITY="SELECT ID,SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID,START_REGISTRATION,END_REGISTRATION FROM SPECIALITY";
+    private static final String FIND_SPECIALITY_BY_ID="SELECT ID,SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID,START_REGISTRATION,END_REGISTRATION FROM SPECIALITY WHERE ID=?";
+    private static final String CREATE_SPECIALITY="INSERT INTO SPECIALITY(SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID,START_REGISTRATION,END_REGISTRATION) VALUES(?,?,?,?,?)";
+    private static final String UPDATE_SPECIALITY="UPDATE SPECIALITY SET SPECIALITY_NAME=?,RECRUITMENT_PLAN=?,FACULTY_ID=?,START_REGISTRATION=?,END_REGISTRATION=? WHERE ID=?";
     private static final String UPDATE_SPECIALITY_SUBJECT="UPDATE SUBJECT_FOR_SPECIALITY SET ID_SUBJECT=? WHERE ID_SPECIALITY=?";
     private static final String DELETE_SPECIALITY="DELETE FROM SPECIALITY WHERE ID=?";
-    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, FACULTY_ID FROM SPECIALITY WHERE FACULTY_ID=?";
+    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, FACULTY_ID,,START_REGISTRATION,END_REGISTRATION FROM SPECIALITY WHERE FACULTY_ID=?";
     private static final String FIND_ALL_USERS_ON_SPECIALITY_BY_ID ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
             "SPECIALITY_ID FROM USER  WHERE SPECIALITY_ID=?";
     private static final String INSERT_SPECIALITY_SUBJECTS="INSERT INTO SUBJECT_FOR_SPECIALITY(ID_SPECIALITY,ID_SUBJECT) VALUES (?,?)";
@@ -142,6 +140,8 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
             pStatement.setString(1,specialty.getSpecialityName());
             pStatement.setInt(2,specialty.getRecruitmentPlan());
             pStatement.setLong(3,specialty.getFacultyId());
+            pStatement.setTimestamp(4, DateConverter.getTimestamp(specialty.getStart_registration()));
+            pStatement.setTimestamp(5,DateConverter.getTimestamp(specialty.getEnd_registration()));
             pStatement.executeUpdate();
             ResultSet resultSet=pStatement.getGeneratedKeys();
             if (resultSet.next()){
@@ -189,6 +189,9 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
             pStatement.setLong(2,specialty.getRecruitmentPlan());
             pStatement.setLong(3,specialty.getFacultyId());
             pStatement.setLong(4,specialty.getSpecialityId());
+            pStatement.setTimestamp(5, DateConverter.getTimestamp(specialty.getStart_registration()));
+            pStatement.setTimestamp(6,DateConverter.getTimestamp(specialty.getEnd_registration()));
+
             pStatement.executeUpdate();
             pStatement=connection.prepareStatement(DELETE_SPECIALITY_SUBJECTS);
             pStatement.setLong(1,specialty.getSpecialityId());
@@ -320,6 +323,8 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
         specialty.setSpecialityName(rs.getString("SPECIALITY_NAME"));
         specialty.setRecruitmentPlan(rs.getInt("RECRUITMENT_PLAN"));
         specialty.setFacultyId(rs.getInt("FACULTY_ID"));
+        specialty.setStart_registration(rs.getTimestamp("START_REGISTRATION").toLocalDateTime());
+        specialty.setEnd_registration(rs.getTimestamp("END_REGISTRATION").toLocalDateTime());
     }
 
 

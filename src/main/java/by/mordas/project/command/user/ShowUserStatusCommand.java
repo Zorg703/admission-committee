@@ -13,8 +13,12 @@ import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.UserLogic;
 import by.mordas.project.logic.impl.AdminLogicImpl;
 import by.mordas.project.logic.impl.UserLogicImpl;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ShowUserStatusCommand implements Command {
+    private static Logger logger= LogManager.getRootLogger();
     private UserLogic userLogic=new UserLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
@@ -34,6 +38,7 @@ public class ShowUserStatusCommand implements Command {
                 content.setRequestAttribute(ParamConstant.IS_ACCEPTED, isAccepted);
                 router.setPagePath(PageConstant.PAGE_SHOW_USER_STATUS);
             } catch (LogicException e) {
+                logger.log(Level.ERROR,e.getMessage());
                 router.setRouter(Router.RouteType.REDIRECT);
                 content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE, e.getMessage());
                 router.setPagePath(PageConstant.PAGE_ERROR);

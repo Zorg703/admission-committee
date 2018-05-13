@@ -14,19 +14,18 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
 <head>
-
     <title><fmt:message key="admin.menu.show_all_faculty"/> </title>
 </head>
 <body>
 <h3><fmt:message key="admin.show_all_faculty.head"/> </h3>
-<div class="container">
+<div class="container" style="width: 70%">
 <table class="table table-bordered table-hover"style="width: 70%">
     <tr>
-        <th scope="col" style="width: 10%">#</th>
-    <th scope="col" style="width: 15%">
+        <th scope="col" style="width: 25%">#</th>
+    <th scope="col" style="width: 25%">
         <fmt:message key="admin.show_all_faculty.id"/>
     </th>
-    <th scope="col" style="width: 25%">
+    <th scope="col" style="width: 50%">
         <fmt:message key="admin.show_all_faculty.name"/>
     </th>
     </tr>

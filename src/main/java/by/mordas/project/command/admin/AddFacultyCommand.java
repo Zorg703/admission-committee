@@ -9,9 +9,13 @@ import by.mordas.project.entity.Faculty;
 import by.mordas.project.logic.impl.AdminLogicImpl;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.util.DataValidator;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class AddFacultyCommand implements Command {
-    AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
+    private static Logger logger= LogManager.getRootLogger();
+    private AdminLogicImpl adminLogicImpl =new AdminLogicImpl();
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
@@ -30,6 +34,7 @@ public class AddFacultyCommand implements Command {
                     router.setPagePath(PageConstant.PAGE_ADD_FACULTY);
                 }
             } catch (LogicException e) {
+                logger.log(Level.ERROR, e.getMessage());
                 router.setRouter(Router.RouteType.REDIRECT);
                 content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
                 router.setPagePath(PageConstant.PAGE_ERROR);

@@ -10,6 +10,6 @@ public class GoToUserStatusPage implements Command {
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         router.setPagePath(PageConstant.PAGE_SHOW_USER_STATUS);
-        return null;
+        return router;
     }
 }

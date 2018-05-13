@@ -8,7 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:import url="/views/jsp/common/include/menu.jsp"/>
 <c:import url="/views/jsp/common/include/navbar.jsp"/>
 <html>
 <head>
@@ -17,6 +16,6 @@
     <title><fmt:message key="user.success_registration.title"/> </title>
 </head>
 <body>
-<fmt:message key="user.success_registration.text"/>
+<h2><fmt:message key="user.success_registration.text"/></h2>
 </body>
 </html>
