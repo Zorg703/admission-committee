@@ -33,6 +33,12 @@
         <th>
             <fmt:message key="admin.add_speciality_on_faculty.faculty_id"/>
         </th>
+        <th>
+            <fmt:message key="admin.add_speciality_on_faculty.start_registration"/>
+        </th>
+        <th>
+            <fmt:message key="admin.add_speciality_on_faculty.end_registration"/>
+        </th>
     </tr>
         <c:forEach items="${speciality_list}" var="speciality" varStatus="loop">
             <tr>
@@ -41,6 +47,8 @@
             <td>${speciality.specialityName}</td>
             <td>${speciality.recruitmentPlan}</td>
             <td>${speciality.facultyId}</td>
+                <td>${speciality.startRegistration}</td>
+                <td>${speciality.endRegistration}</td>
             </tr>
         </c:forEach>
 </table>
