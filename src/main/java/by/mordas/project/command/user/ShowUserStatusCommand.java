@@ -20,6 +20,8 @@ import org.apache.logging.log4j.Logger;
 public class ShowUserStatusCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
     private UserLogic userLogic=new UserLogicImpl();
+    private static final String IS_OPEN="is_open";
+
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
@@ -32,10 +34,20 @@ public class ShowUserStatusCommand implements Command {
                 speciality = userLogic.findSpeciality(specialityId);
                 long facultyId = speciality.getFacultyId();
                 faculty = userLogic.findFaculty(facultyId);
-                boolean isAccepted = userLogic.isAccepted(speciality, user);
-                content.setRequestAttribute(ParamConstant.FACULTY, faculty);
-                content.setRequestAttribute(ParamConstant.SPECIALITY, speciality);
-                content.setRequestAttribute(ParamConstant.IS_ACCEPTED, isAccepted);
+
+                boolean isRegistrationOpen=userLogic.checkEndOfSpecialityRegistrationDate(speciality);
+                if(isRegistrationOpen){
+                    content.setRequestAttribute(ParamConstant.FACULTY, faculty);
+                    content.setRequestAttribute(ParamConstant.SPECIALITY, speciality);
+                    content.setRequestAttribute(IS_OPEN, isRegistrationOpen);
+                }
+                else {
+                    boolean isAccepted = userLogic.isAccepted(speciality, user);
+                    content.setRequestAttribute(ParamConstant.FACULTY, faculty);
+                    content.setRequestAttribute(ParamConstant.SPECIALITY, speciality);
+                    content.setRequestAttribute(ParamConstant.IS_ACCEPTED, isAccepted);
+
+                }
                 router.setPagePath(PageConstant.PAGE_SHOW_USER_STATUS);
             } catch (LogicException e) {
                 logger.log(Level.ERROR,e.getMessage());

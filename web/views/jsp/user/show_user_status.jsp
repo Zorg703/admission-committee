@@ -25,6 +25,9 @@
             <c:when test="${is_accepted=true}">
                 <fmt:message key="user.show_status.hired"/>
             </c:when>
+            <c:when test="${is_open=true}">
+                <fmt:message key="user.show_status.open_registration"/>: ${speciality.endRegistration}
+            </c:when>
             <c:otherwise>
                 <fmt:message key="user.show_status.sorry"/>
             </c:otherwise>
@@ -34,9 +37,5 @@
         <fmt:message key="user.show_status.empty"/>
     </c:otherwise>
 </c:choose>
-<c:if test="${not empty message}">
-fgj
-</c:if>
-
 </body>
 </html>

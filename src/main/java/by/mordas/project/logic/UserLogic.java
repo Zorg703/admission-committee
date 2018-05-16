@@ -34,4 +34,6 @@ public interface UserLogic extends Logic {
     Faculty findFaculty(Long facultyId) throws LogicException;
 
     boolean isAccepted(Speciality speciality,User user) throws LogicException;
+
+    boolean checkEndOfSpecialityRegistrationDate(Speciality speciality);
 }

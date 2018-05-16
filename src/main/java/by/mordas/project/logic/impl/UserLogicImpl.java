@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -218,21 +219,22 @@ public class UserLogicImpl implements UserLogic {
     @Override
     public boolean isAccepted(Speciality speciality,User user) throws LogicException {
         try {
-            List<Integer> score=mysqlFactory.getSpecialityDAO().defineUsersSumScoreRegisterOnSpeciality(speciality.getSpecialityId());
-            int recruitmentPlan=speciality.getRecruitmentPlan();
-            if (score.isEmpty() || score.size()<recruitmentPlan) {
-                return true;
-            }
-            else {
-                if(calculateUserAvgScore(user)>calculateSpecialityAcceptedScore(score,recruitmentPlan))
-                    return true;
-            }
+                List<Integer> score = mysqlFactory.getSpecialityDAO().defineUsersSumScoreRegisterOnSpeciality(speciality.getSpecialityId());
+                int recruitmentPlan = speciality.getRecruitmentPlan();
+                return calculateUserAvgScore(user) >= calculateSpecialityAcceptedScore(score, recruitmentPlan);
 
         } catch (DAOException e) {
             logger.log(Level.ERROR, e.getMessage());
             throw new LogicException("Problems with isAccepted method",e);
         }
-        return false;
+
+    }
+
+    @Override
+    public boolean checkEndOfSpecialityRegistrationDate(Speciality speciality){
+        LocalDateTime now=LocalDateTime.now();
+        return speciality.getEndRegistration().isAfter(now);
+
     }
 
     private int calculateUserAvgScore(User user){
