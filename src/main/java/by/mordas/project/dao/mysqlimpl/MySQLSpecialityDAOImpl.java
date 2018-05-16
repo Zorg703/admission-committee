@@ -140,8 +140,8 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
             pStatement.setString(1,specialty.getSpecialityName());
             pStatement.setInt(2,specialty.getRecruitmentPlan());
             pStatement.setLong(3,specialty.getFacultyId());
-            pStatement.setTimestamp(4, DateConverter.getTimestamp(specialty.getStart_registration()));
-            pStatement.setTimestamp(5,DateConverter.getTimestamp(specialty.getEnd_registration()));
+            pStatement.setTimestamp(4, DateConverter.getTimestamp(specialty.getStartRegistration()));
+            pStatement.setTimestamp(5,DateConverter.getTimestamp(specialty.getEndRegistration()));
             pStatement.executeUpdate();
             ResultSet resultSet=pStatement.getGeneratedKeys();
             if (resultSet.next()){
@@ -189,8 +189,8 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
             pStatement.setLong(2,specialty.getRecruitmentPlan());
             pStatement.setLong(3,specialty.getFacultyId());
             pStatement.setLong(4,specialty.getSpecialityId());
-            pStatement.setTimestamp(5, DateConverter.getTimestamp(specialty.getStart_registration()));
-            pStatement.setTimestamp(6,DateConverter.getTimestamp(specialty.getEnd_registration()));
+            pStatement.setTimestamp(5, DateConverter.getTimestamp(specialty.getStartRegistration()));
+            pStatement.setTimestamp(6,DateConverter.getTimestamp(specialty.getEndRegistration()));
 
             pStatement.executeUpdate();
             pStatement=connection.prepareStatement(DELETE_SPECIALITY_SUBJECTS);
@@ -323,8 +323,8 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
         specialty.setSpecialityName(rs.getString("SPECIALITY_NAME"));
         specialty.setRecruitmentPlan(rs.getInt("RECRUITMENT_PLAN"));
         specialty.setFacultyId(rs.getInt("FACULTY_ID"));
-        specialty.setStart_registration(rs.getTimestamp("START_REGISTRATION").toLocalDateTime());
-        specialty.setEnd_registration(rs.getTimestamp("END_REGISTRATION").toLocalDateTime());
+        specialty.setStartRegistration(rs.getTimestamp("START_REGISTRATION").toLocalDateTime());
+        specialty.setEndRegistration(rs.getTimestamp("END_REGISTRATION").toLocalDateTime());
     }
 
 

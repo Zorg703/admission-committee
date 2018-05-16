@@ -1,7 +1,6 @@
 package by.mordas.project.util;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -11,8 +10,8 @@ public class DateConverter {
         return Timestamp.valueOf(localDateTime);
     }
     public static LocalDateTime getLocaleDateTime(String dateTime){
-        dateTime=dateTime.replace('T',' ');
-        LocalDateTime localDateTime=LocalDateTime.parse(dateTime,formatter);
-        return localDateTime;
+        return LocalDateTime.parse(dateTime,formatter);
     }
+
+
 }

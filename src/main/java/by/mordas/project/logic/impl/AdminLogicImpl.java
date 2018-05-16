@@ -123,8 +123,8 @@ public class AdminLogicImpl implements AdminLogic {
                 speciality.setFacultyId(Integer.parseInt(parameters.get(ParamConstant.FACULTY_ID)));
                 speciality.setSpecialityName(parameters.get(ParamConstant.SPECIALITY_NAME));
                 speciality.setRecruitmentPlan(Integer.parseInt(parameters.get(ParamConstant.RECRUITMENT_PLAN)));
-                speciality.setStart_registration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.START_REGISTRATION)));
-                speciality.setEnd_registration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.END_REGISTRATION)));
+                speciality.setStartRegistration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.START_REGISTRATION)));
+                speciality.setEndRegistration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.END_REGISTRATION)));
                 Subject subject1=new Subject();
                 subject1.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.FIRST_SUBJECT)));
                 speciality.add(subject1);
@@ -250,8 +250,8 @@ public class AdminLogicImpl implements AdminLogic {
                     speciality.setSpecialityName(parameters.get(ParamConstant.SPECIALITY_NAME));
                     speciality.setRecruitmentPlan(Integer.parseInt(parameters.get(ParamConstant.RECRUITMENT_PLAN)));
                     speciality.setFacultyId(Long.parseLong(parameters.get(ParamConstant.FACULTY_ID)));
-                    speciality.setStart_registration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.START_REGISTRATION)));
-                    speciality.setEnd_registration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.END_REGISTRATION)));
+                    speciality.setStartRegistration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.START_REGISTRATION)));
+                    speciality.setEndRegistration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.END_REGISTRATION)));
                     Subject subject1 = new Subject();
                     subject1.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.FIRST_SUBJECT)));
                     speciality.add(subject1);

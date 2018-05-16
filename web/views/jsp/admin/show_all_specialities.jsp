@@ -47,8 +47,11 @@
             <td>${speciality.specialityName}</td>
             <td>${speciality.recruitmentPlan}</td>
             <td>${speciality.facultyId}</td>
-                <td>${speciality.startRegistration}</td>
-                <td>${speciality.endRegistration}</td>
+                <td>
+                    <fmt:parseDate value="${speciality.startRegistration}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedStartDateTime" type="both" />
+                    <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedStartDateTime}" /> </td>
+                <td><fmt:parseDate value="${speciality.endRegistration}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedEndDateTime" type="both" />
+                    <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedEndDateTime}" /></td>
             </tr>
         </c:forEach>
 </table>

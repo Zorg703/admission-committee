@@ -12,23 +12,22 @@ public class Speciality extends Entity {
     private int recruitmentPlan;
     private long facultyId;
     private List<Subject> subjects;
-    private LocalDateTime start_registration;
-    private LocalDateTime end_registration;
+    private LocalDateTime startRegistration;
+    private LocalDateTime endRegistration;
 
 
-
-    public Speciality(){
-        subjects=new ArrayList<>();
+    public Speciality() {
+        subjects = new ArrayList<>();
     }
 
-    public Speciality(long specialityId, String specialityName, int recruitmentPlan, long facultyId, List<Subject> subjects,LocalDateTime start_registration ,LocalDateTime end_registration) {
+    public Speciality(long specialityId, String specialityName, int recruitmentPlan, long facultyId, List<Subject> subjects, LocalDateTime start_registration, LocalDateTime end_registration) {
         this.specialityId = specialityId;
         this.specialityName = specialityName;
         this.recruitmentPlan = recruitmentPlan;
         this.facultyId = facultyId;
         this.subjects = subjects;
-        this.start_registration=start_registration;
-        this.end_registration = end_registration;
+        this.startRegistration = start_registration;
+        this.endRegistration = end_registration;
     }
 
     public List<Subject> getSubjects() {
@@ -75,30 +74,21 @@ public class Speciality extends Entity {
         return subjects.add(subject);
     }
 
-    public LocalDateTime getStart_registration() {
-        return start_registration;
+    public LocalDateTime getStartRegistration() {
+        return startRegistration;
     }
 
-    public void setStart_registration(LocalDateTime start_registration) {
-        this.start_registration = start_registration;
+    public void setStartRegistration(LocalDateTime startRegistration) {
+        this.startRegistration = startRegistration;
     }
 
-    public LocalDateTime getEnd_registration() {
-        return end_registration;
+    public LocalDateTime getEndRegistration() {
+        return endRegistration;
     }
 
-    public void setEnd_registration(LocalDateTime end_registration) {
-        this.end_registration = end_registration;
-    }
-
-    @Override
-    public String toString() {
-        return "Speciality{" +
-                "specialityId=" + specialityId +
-                ", specialityName='" + specialityName + '\'' +
-                ", recruitmentPlan=" + recruitmentPlan +
-                ", facultyId=" + facultyId +
-                ", subjects=" + subjects +
-                "} " + super.toString();
+    public void setEndRegistration(LocalDateTime endRegistration) {
+        this.endRegistration = endRegistration;
     }
 }
+
+

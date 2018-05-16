@@ -608,12 +608,12 @@
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="151" parent="135" name="end_registration">
+    <column id="151" parent="135" name="start_registration">
       <Position>5</Position>
       <DataType>datetime|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="152" parent="135" name="start_registration">
+    <column id="152" parent="135" name="end_registration">
       <Position>6</Position>
       <DataType>datetime|0</DataType>
       <ColumnKind>normal</ColumnKind>
