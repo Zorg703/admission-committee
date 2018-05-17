@@ -34,6 +34,7 @@ public class CommandMap {
         this.put(CommandType.UPDATE_FACULTY,new UpdateFacultyCommand());
         this.put(CommandType.UPDATE_SPECIALITY,new UpdateSpecialityCommand());
         this.put(CommandType.SHOW_ACCEPTED_USERS,new ShowAcceptedUsersCommand());
+        this.put(CommandType.UPDATE_SPECIALITY_REGISTER_DATE,new UpdateSpecialityRegistrationDateCommand());
         this.put(CommandType.LOG_OUT,new LogOutCommand());
         this.put(CommandType.GO_TO_REGISTER_FACULTY_PAGE,new GoToRegisterFacultyPage());
         this.put(CommandType.GO_TO_CHANGE_PASSWORD_PAGE,new GoToChangePasswordPage());

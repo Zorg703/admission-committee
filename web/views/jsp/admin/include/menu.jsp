@@ -26,10 +26,10 @@
     <a class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=go_to_add_speciality_page"><fmt:message key="admin.menu.add_speciality"/> </a>
     <a class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=go_to_update_speciality_page"><fmt:message key="admin.menu.update_speciality"/> </a>
     <a class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=go_to_delete_speciality_page"><fmt:message key="admin.menu.delete_speciality"/></a>
-    <a class="list-group-item" class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=show_all_users"><fmt:message key="admin.menu.show_all_users"/> </a>
+    <a class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=show_all_users"><fmt:message key="admin.menu.show_all_users"/> </a>
     <a class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=go_to_find_user_by_id_page"><fmt:message key="admin.menu.find_user_by_id"/> </a>
     <a class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=go_to_choose_faculty_and_speciality_page"><fmt:message key="admin.menu.find_register_users_on_speciality"/> </a>
-
+    <a class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=update_speciality_register_date"><fmt:message key=""></fmt:message> </a>
 
     </div>
 </nav>

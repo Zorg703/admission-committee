@@ -58,7 +58,7 @@ public class AdminLogicImpl implements AdminLogic {
     public boolean deleteFaculty(String facultyId) throws LogicException {
         DataValidator validator=new DataValidator();
         if(validator.checkId(facultyId)) {
-            Integer id=Integer.valueOf(facultyId);
+            Long id=Long.valueOf(facultyId);
             FacultyDAO facultyDAO = mysqlFactory.getFacultyDAO();
             try {
                 return facultyDAO.delete(id);
@@ -103,7 +103,7 @@ public class AdminLogicImpl implements AdminLogic {
         DataValidator validator=new DataValidator();
         if(validator.checkId(specialityId)) {
             SpecialityDAO specialityDAO = mysqlFactory.getSpecialityDAO();
-            Integer id = Integer.valueOf(specialityId);
+            Long id = Long.valueOf(specialityId);
             try {
                 return specialityDAO.delete(id);
             } catch (DAOException e) {

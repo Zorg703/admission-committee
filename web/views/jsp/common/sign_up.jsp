@@ -135,9 +135,6 @@
             <c:set var="count" value="${count + 1}" scope="page"/>
         </c:if>
     </c:forEach>
-    <c:if test="${count!=0}">
-        <fmt:message key="user.registration.empty_field" />
-    </c:if>
 </form>
         </div>
     </div>

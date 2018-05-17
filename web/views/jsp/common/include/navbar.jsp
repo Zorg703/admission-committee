@@ -40,7 +40,7 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand"  href="${pageContext.request.contextPath}/controller?command=go_to_main_page"><fmt:message key="common.header"/></a>
+                <a class="navbar-brand"  href="${pageContext.request.contextPath}/views/jsp/common/log_in.jsp"><fmt:message key="common.header"/></a>
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/controller?command=update_locale&locale=ru_RU">Русский</a></li>
