@@ -31,6 +31,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     private static final String FIND_SUBJECT_USER="SELECT * FROM USER_SUBJECT_MARK WHERE ID_USER=?";
     private static final String DEFINE_SUMMARY_USER_SCORE="SELECT sum(user_mark) as sum FROM user INNER JOIN (SELECT id_user, user_mark FROM user_subject_mark UNION SELECT id,certificate_mark FROM user)as marks ON user.id=marks.id_user WHERE speciality_id= ? GROUP BY id";
     private static final String DELETE_SPECIALITY_SUBJECTS="DELETE FROM SUBJECT_FOR_SPECIALITY WHERE ID_SPECIALITY=?";
+    private static final String UPDATE_REGISTER_DATE="UPDATE SPECIALITY SET START_REGISTRATION=?,END_REGISTRATION=? WHERE ID=?";
     /// /    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, FACULTY_ID FROM SPECIALITY" +
 //
 // 30          " INNER JOIN FACULTY ON SPECIALITY.FACULTY_ID=FACULTY.ID AND FACULTY.ID=?";
@@ -316,6 +317,19 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
             throw new DAOException("Problems in defineUsersSumScoreRegisterOnSpeciality method");
         }
         return sumList;
+    }
+
+    @Override
+    public void updateSpecialityRegisterDate(Speciality speciality) throws DAOException {
+        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement(UPDATE_REGISTER_DATE)) {
+            preparedStatement.setTimestamp(1,DateConverter.getTimestamp(speciality.getStartRegistration()));
+            preparedStatement.setTimestamp(2,DateConverter.getTimestamp(speciality.getEndRegistration()));
+            preparedStatement.setLong(3,speciality.getSpecialityId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Problems in updateSpecialityDate method");
+        }
     }
 
     private void setSpeciality(ResultSet rs,Speciality specialty) throws SQLException {

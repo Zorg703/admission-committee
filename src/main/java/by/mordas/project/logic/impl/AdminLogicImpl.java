@@ -116,31 +116,32 @@ public class AdminLogicImpl implements AdminLogic {
     @Override
     public HashMap<String,String> addSpeciality(HashMap<String,String> parameters) throws LogicException {
         DataValidator validator=new DataValidator();
-        HashMap<String,String> errorMap=validator.checkSpecialtyData(parameters);
-        if(errorMap.isEmpty()) {
+        HashMap<String,String> errorMap;
             try {
-                Speciality speciality=new Speciality();
-                speciality.setFacultyId(Integer.parseInt(parameters.get(ParamConstant.FACULTY_ID)));
-                speciality.setSpecialityName(parameters.get(ParamConstant.SPECIALITY_NAME));
-                speciality.setRecruitmentPlan(Integer.parseInt(parameters.get(ParamConstant.RECRUITMENT_PLAN)));
-                speciality.setStartRegistration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.START_REGISTRATION)));
-                speciality.setEndRegistration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.END_REGISTRATION)));
-                Subject subject1=new Subject();
-                subject1.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.FIRST_SUBJECT)));
-                speciality.add(subject1);
-                Subject subject2=new Subject();
-                subject2.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.SECOND_SUBJECT)));
-                speciality.add(subject2);
-                Subject subject3=new Subject();
-                subject3.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.THIRD_SUBJECT)));
-                speciality.add(subject3);
-                SpecialityDAO specialityDAO = mysqlFactory.getSpecialityDAO();
-                specialityDAO.create(speciality);
+                errorMap=validator.checkSpecialtyData(parameters);
+                if(errorMap.isEmpty()) {
+                    Speciality speciality = new Speciality();
+                    speciality.setFacultyId(Integer.parseInt(parameters.get(ParamConstant.FACULTY_ID)));
+                    speciality.setSpecialityName(parameters.get(ParamConstant.SPECIALITY_NAME));
+                    speciality.setRecruitmentPlan(Integer.parseInt(parameters.get(ParamConstant.RECRUITMENT_PLAN)));
+                    speciality.setStartRegistration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.START_REGISTRATION)));
+                    speciality.setEndRegistration(DateConverter.getLocaleDateTime(parameters.get(ParamConstant.END_REGISTRATION)));
+                    Subject subject1 = new Subject();
+                    subject1.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.FIRST_SUBJECT)));
+                    speciality.add(subject1);
+                    Subject subject2 = new Subject();
+                    subject2.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.SECOND_SUBJECT)));
+                    speciality.add(subject2);
+                    Subject subject3 = new Subject();
+                    subject3.setSubjectId(Integer.parseInt(parameters.get(ParamConstant.THIRD_SUBJECT)));
+                    speciality.add(subject3);
+                    SpecialityDAO specialityDAO = mysqlFactory.getSpecialityDAO();
+                    specialityDAO.create(speciality);
+                }
             }
             catch (DAOException e) {
                 throw new LogicException("Problems with addSpeciality method", e);
             }
-        }
         return errorMap;
     }
 
@@ -240,9 +241,10 @@ public class AdminLogicImpl implements AdminLogic {
     @Override
     public HashMap<String, String> updateSpeciality(HashMap<String, String> parameters) throws LogicException {
         DataValidator validator=new DataValidator();
-        HashMap<String,String> errorMap=validator.checkSpecialtyData(parameters);
-        if (errorMap.isEmpty()){
+        HashMap<String,String> errorMap;
             try {
+                errorMap=validator.checkSpecialtyData(parameters);
+                if (errorMap.isEmpty()){
                 Speciality speciality=findSpeciality(parameters.get(ParamConstant.SPECIALITY_ID));
                 if(speciality!=null) {
                     speciality = new Speciality();
@@ -263,13 +265,14 @@ public class AdminLogicImpl implements AdminLogic {
                     speciality.add(subject3);
                     mysqlFactory.getSpecialityDAO().update(speciality);
                 }
+                }
                 else {
                     errorMap.put(ParamConstant.SPECIALITY_ID,parameters.get(ParamConstant.SPECIALITY_ID));
                 }
             } catch (DAOException e) {
                 throw new LogicException("Problems with updateSpeciality method", e);
             }
-        }
+
         return errorMap;
     }
 
@@ -307,8 +310,7 @@ public class AdminLogicImpl implements AdminLogic {
     @Override
     public List<Faculty> findAllFaculty() throws LogicException {
         try {
-            List<Faculty> faculties=mysqlFactory.getFacultyDAO().findAllEntity();
-            return faculties;
+            return mysqlFactory.getFacultyDAO().findAllEntity();
         } catch (DAOException e) {
             throw new LogicException("Problems with findAllFaculty method", e);
         }
@@ -339,6 +341,27 @@ public class AdminLogicImpl implements AdminLogic {
         } catch (DAOException e) {
             throw new LogicException("Problems with canceledRegistration method", e);
         }
+
+    }
+
+    @Override
+    public HashMap<String, String> updateRegisterOnSpecialityDate(String startDate, String endDate, String specialityId) throws LogicException {
+        DataValidator validator=new DataValidator();
+        HashMap<String,String> errorMap=validator.checkRegisterDate(startDate, endDate,specialityId);
+        if(errorMap.isEmpty()){
+            try {
+                Speciality speciality=new Speciality();
+                speciality.setSpecialityId(Long.valueOf(specialityId));
+                speciality.setEndRegistration(DateConverter.getLocaleDateTime(startDate));
+                speciality.setStartRegistration(DateConverter.getLocaleDateTime(endDate));
+                mysqlFactory.getSpecialityDAO().updateSpecialityRegisterDate(speciality);
+            }
+             catch (DAOException e) {
+                throw new LogicException("Problems with updateRegisterOnSpecialityDate");
+            }
+        }
+        return errorMap;
+
 
     }
 

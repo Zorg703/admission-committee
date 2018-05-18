@@ -14,8 +14,8 @@ public abstract class DAOFactory {
             case Oracle:
                 return new OracleDAOFactory();
             default:
-                //todo
-                return null;
+
+                throw new UnsupportedOperationException();//todo
         }
 
 

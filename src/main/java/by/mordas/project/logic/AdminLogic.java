@@ -41,4 +41,8 @@ public interface AdminLogic extends Logic{
     List<Speciality> findSpecialitiesOnFaculty(String id) throws LogicException;
 
     void canceledUserRegistration(long id) throws LogicException;
+
+    boolean updateRegisterOnSpecialityDate(String startDate, String endDate);
+
+    HashMap<String,String> updateRegisterOnSpecialityDate(String startDate, String endDate, String specialityId) throws LogicException;
 }

@@ -119,14 +119,14 @@
             <input id="start" class="form-control" name="start_registration" required type="datetime-local" min="2018-05-01T00:00" max="2018-12-31T23:30">
             <c:if test="${not empty messages.start_registration}">
                 <div class="alert alert-danger">
-                    <fmt:message key=""/>
+                    <fmt:message key="admin.add_speciality_on_faculty.start_registration.message"/>
                 </div>
             </c:if>
             <label for="end"><fmt:message key="admin.add_speciality_on_faculty.end_registration"/></label>
             <input id="end" class="form-control" name="end_registration"required type="datetime-local" min="2018-05-01T00:00" max="2018-12-31T23:30">
             <c:if test="${not empty messages.end_registration}">
                 <div class="alert alert-danger">
-                    <fmt:message key=""/>
+                    <fmt:message key="admin.add_speciality_on_faculty.end_registration.message"/>
                 </div>
             </c:if>
             <input class="btn btn-success" type="submit" name="end_registration" value=<fmt:message key="user.registration.confirm"/>>

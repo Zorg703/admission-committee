@@ -23,8 +23,8 @@
     <div class="card shadow">
         <div class="card-block">
     <input type="hidden" name="command" value="delete_speciality">
-            <label for="name"><fmt:message key="admin.delete_speciality.id"/></label>
-    <input id="name" class="form-control" type="text" name="speciality_id" value="" required pattern="[1-9]\d*">
+            <label for="id"><fmt:message key="admin.delete_speciality.id"/></label>
+    <input id="id" class="form-control" type="text" name="speciality_id" value="" required pattern="[1-9]\d*">
     <c:if test="${not empty message}">
         <fmt:message key="admin.delete_speciality.message"/>
     </c:if>

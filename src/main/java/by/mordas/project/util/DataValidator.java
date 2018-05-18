@@ -4,9 +4,13 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.dao.DAOException;
 import by.mordas.project.dao.DAOFactory;
 import by.mordas.project.dao.FacultyDAO;
+import by.mordas.project.dao.UserDAO;
+import by.mordas.project.dao.factoryimpl.MySQLDAOFactory;
 import by.mordas.project.entity.Faculty;
 import by.mordas.project.logic.LogicException;
 import by.mordas.project.logic.impl.UserLogicImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DataValidator {
-
+    private static Logger logger= LogManager.getRootLogger();
     private static final String FACULTY_SPECIALITY_NAME_REGEX="([А-Я]{1}([а-я]{2,50}(\\s)?)+)|[A-Z]{1}([a-z]{2,50}(\\s)?)+";
     private static final String ID_REGEX="[1-9](\\d){0,18}";
     private static final String FIRST_NAME_REGEX="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}";
@@ -35,34 +39,26 @@ public class DataValidator {
         Pattern loginPattern = Pattern.compile(f);
         Matcher matcher = loginPattern.matcher(data);
     }*/
-    private static boolean checkLogin(String login){
-        UserLogicImpl userLogicImpl =new UserLogicImpl();
-        boolean isLoginFree=false;
-        try {
-            isLoginFree= userLogicImpl.findUserByLogin(login);//todo
-        } catch (LogicException e) {
-            e.printStackTrace();
-        }
-        return isLoginFree;
+    public boolean checkLogin(String login) throws DAOException {
+        DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
+        UserDAO userDAO=mysqlFactory.getUserDAO();
+        return userDAO.findUserByLogin(login);
     }
 
     public boolean checkLoginPassword(String login,String password){
         return checkData(LOGIN_REGEX,login) && checkData(PASSWORD_REGEX,password);
     }
 
-    private static boolean checkData(final String REGEX, String data){
+    private boolean checkData(final String REGEX, String data){
         if(data!=null) {
             Pattern loginPattern = Pattern.compile(REGEX);
             Matcher matcher = loginPattern.matcher(data);
             return matcher.matches();
         }
-        else
-        {
             return false;
-        }
     }
 
-    public HashMap<String,String> checkUserData(HashMap<String,String> parameterMap){
+    public HashMap<String,String> checkUserData(HashMap<String,String> parameterMap) throws DAOException {
         HashMap<String,String> errorMessageMap=new HashMap<>();
         if(!checkData(FIRST_NAME_REGEX,parameterMap.get(ParamConstant.FIRST_NAME))){
             errorMessageMap.put(ParamConstant.FIRST_NAME,parameterMap.get(ParamConstant.FIRST_NAME));
@@ -126,7 +122,7 @@ public class DataValidator {
 
     public boolean checkId(String id){return checkData(ID_REGEX,id);}
 
-    public HashMap<String,String> checkSpecialtyData(HashMap<String,String> parameterMap){
+    public HashMap<String,String> checkSpecialtyData(HashMap<String,String> parameterMap) throws DAOException {
         HashMap<String,String> errorMessageMap=new HashMap<>();
 
         if(!checkId(parameterMap.get(ParamConstant.FACULTY_ID))){
@@ -163,7 +159,7 @@ public class DataValidator {
         if(!checkData(DATE_TIME_REGEX,parameterMap.get(ParamConstant.END_REGISTRATION))){
             errorMessageMap.put(ParamConstant.END_REGISTRATION,parameterMap.get(ParamConstant.END_REGISTRATION));
         }
-        if(!checkData(DATE_TIME_REGEX,parameterMap.get(ParamConstant.START_REGISTRATION)) && !checkData(DATE_TIME_REGEX,parameterMap.get(ParamConstant.END_REGISTRATION))){
+        if(checkData(DATE_TIME_REGEX,parameterMap.get(ParamConstant.START_REGISTRATION)) && checkData(DATE_TIME_REGEX,parameterMap.get(ParamConstant.END_REGISTRATION))){
             LocalDateTime startDateTime=DateConverter.getLocaleDateTime(parameterMap.get(ParamConstant.START_REGISTRATION));
             LocalDateTime endDateTime=DateConverter.getLocaleDateTime(parameterMap.get(ParamConstant.END_REGISTRATION));
             if(endDateTime.isBefore(startDateTime)){
@@ -173,9 +169,30 @@ public class DataValidator {
         return errorMessageMap;
     }
 
-    private boolean isContainsFaculty(int id){
+    public HashMap<String,String> checkRegisterDate(String start,String end,String specialityId){
+        HashMap<String,String> errorMap=new HashMap<>();
+        if(!checkId(specialityId)){
+            errorMap.put(ParamConstant.SPECIALITY_ID,specialityId);
+        }
+        if(!checkData(DATE_TIME_REGEX,start)){
+            errorMap.put(ParamConstant.START_REGISTRATION,start);
+        }
+        if(!checkData(DATE_TIME_REGEX,end)){
+            errorMap.put(ParamConstant.END_REGISTRATION,end);
+        }
+        if(checkData(DATE_TIME_REGEX,start) && checkData(DATE_TIME_REGEX,end)){
+            LocalDateTime startDateTime=DateConverter.getLocaleDateTime(start);
+            LocalDateTime endDateTime=DateConverter.getLocaleDateTime(start);
+            if(endDateTime.isBefore(startDateTime)){
+                errorMap.put(ParamConstant.END_REGISTRATION,end);
+            }
+        }
+        return errorMap;
+    }
+
+    private boolean isContainsFaculty(int id) throws DAOException {
         DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
-        try {
+
             FacultyDAO facultyDAO=mysqlFactory.getFacultyDAO();
             List<Faculty> faculties=facultyDAO.findAllEntity();
             for(Faculty faculty:faculties){
@@ -183,9 +200,7 @@ public class DataValidator {
                     return true;
                 }
             }
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
+
         return false;
     }
 }

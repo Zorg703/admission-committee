@@ -22,11 +22,12 @@ public class DeleteFacultyCommand implements Command {
         String id=content.getRequestParameter(ParamConstant.FACULTY_ID);
         try {
             if(adminLogicImpl.deleteFaculty(id)){
+                router.setRouter(Router.RouteType.REDIRECT);
                router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
 
             }
             else {
-                router.setRouter(Router.RouteType.REDIRECT);
+               // router.setRouter(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.PAGE_DELETE_FACULTY);
                 content.setSessionAttribute(ParamConstant.MESSAGE,"Incorrect faculty id");
             }

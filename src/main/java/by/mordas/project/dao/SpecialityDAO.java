@@ -32,5 +32,5 @@ public interface SpecialityDAO extends AbstractDAO<Speciality> {
     public List<Integer> defineUsersSumScoreRegisterOnSpeciality(long specialityId) throws DAOException;
 
 
-
+    void updateSpecialityRegisterDate(Speciality speciality) throws DAOException;
 }

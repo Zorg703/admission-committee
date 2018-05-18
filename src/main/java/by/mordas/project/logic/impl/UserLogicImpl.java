@@ -55,10 +55,10 @@ public class UserLogicImpl implements UserLogic {
         return specialities;
     }
 
-    @Override
+
     public boolean findUserByLogin(String login) throws LogicException {
         DataValidator validator=new DataValidator();
-        if(true) {//todo
+        if(validator.checkLogin(login)) {//todo
             UserDAO userDAO = mysqlFactory.getUserDAO();
             try {
                 return userDAO.findUserByLogin(login);

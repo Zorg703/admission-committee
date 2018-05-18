@@ -30,6 +30,7 @@ public class AddFacultyCommand implements Command {
                     router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
                 }
                 else {
+                    router.setRouter(Router.RouteType.REDIRECT);
                     content.setSessionAttribute(ParamConstant.MESSAGE, faculty);
                     router.setPagePath(PageConstant.PAGE_ADD_FACULTY);
                 }

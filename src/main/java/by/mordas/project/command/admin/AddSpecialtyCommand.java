@@ -30,9 +30,9 @@ public class AddSpecialtyCommand implements Command {
             router.setRouter(Router.RouteType.REDIRECT);
         }
         else {
+            router.setRouter(Router.RouteType.REDIRECT);
             content.setSessionAttribute(ParamConstant.ERROR_MESSAGES,errorMessages);
             content.setSessionAttribute(ParamConstant.SPECIALITY,parameters);
-            router.setRouter(Router.RouteType.REDIRECT);
             router.setPagePath(PageConstant.PAGE_ADD_SPECIALITY);
         }
         } catch (LogicException e) {
