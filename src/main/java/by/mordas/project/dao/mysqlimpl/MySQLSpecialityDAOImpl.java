@@ -6,7 +6,7 @@ import by.mordas.project.entity.Speciality;
 import by.mordas.project.entity.Subject;
 import by.mordas.project.entity.User;
 import by.mordas.project.pool.ConnectionPool;
-import by.mordas.project.pool.DBConnection;
+import by.mordas.project.pool.PooledConnection;
 import by.mordas.project.util.DateConverter;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -39,7 +39,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     @Override
     public List<Speciality> findAllEntity() throws DAOException {
         List<Speciality> specialties=new ArrayList<>();
-        try( DBConnection connection= ConnectionPool.getInstance().getConnection();Statement statement=connection.createStatement();
+        try(PooledConnection connection= ConnectionPool.getInstance().getConnection(); Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_SPECIALITY)) {
             if (rs != null) {
                 while (rs.next()) {
@@ -59,7 +59,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     @Override
     public Speciality findEntityById(long id) throws DAOException {
         Speciality speciality=null;
-        try(DBConnection conn= ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=conn.prepareStatement(FIND_SPECIALITY_BY_ID);
+        try(PooledConnection conn= ConnectionPool.getInstance().getConnection(); PreparedStatement pStatement=conn.prepareStatement(FIND_SPECIALITY_BY_ID);
             ) {
             pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
@@ -75,7 +75,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
 
     public List<Speciality> findSpecialitiesByFacultyID(long id) throws DAOException {
         List<Speciality> specialities=new ArrayList<>();
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_SPECIALITY_BY_FACULTY_ID);
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection(); PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_SPECIALITY_BY_FACULTY_ID);
         ) {
             pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
@@ -95,7 +95,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
 
     @Override
     public boolean delete(long id) throws DAOException {
-        DBConnection connection=null;
+        PooledConnection connection=null;
         PreparedStatement pStatement =null;
         int result=0;
         try {
@@ -133,7 +133,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     @Override
     public void create(Speciality specialty) throws DAOException {
         PreparedStatement pStatement=null;
-        DBConnection connection=null;
+        PooledConnection connection=null;
         try{
             connection=ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
@@ -181,7 +181,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     @Override
     public Speciality update(Speciality specialty) throws DAOException {
         PreparedStatement pStatement=null;
-        DBConnection connection=null;
+        PooledConnection connection=null;
         try{
             connection=ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
@@ -242,7 +242,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
         List<User> users =new ArrayList<>();
         PreparedStatement pStatement=null;
         PreparedStatement pStatement2=null;
-        DBConnection connection=null;
+        PooledConnection connection=null;
         try{
             connection=ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
@@ -302,7 +302,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     @Override
     public List<Integer> defineUsersSumScoreRegisterOnSpeciality(long specialityId) throws DAOException {
         List<Integer> sumList=new ArrayList<>();
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
             PreparedStatement preparedStatement=connection.prepareStatement(DEFINE_SUMMARY_USER_SCORE)) {
             preparedStatement.setLong(1,specialityId);
             ResultSet resultSet=preparedStatement.executeQuery();
@@ -321,7 +321,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
 
     @Override
     public void updateSpecialityRegisterDate(Speciality speciality) throws DAOException {
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
             PreparedStatement preparedStatement=connection.prepareStatement(UPDATE_REGISTER_DATE)) {
             preparedStatement.setTimestamp(1,DateConverter.getTimestamp(speciality.getStartRegistration()));
             preparedStatement.setTimestamp(2,DateConverter.getTimestamp(speciality.getEndRegistration()));

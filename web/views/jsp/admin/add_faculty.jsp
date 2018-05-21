@@ -30,8 +30,6 @@
                 </div>
             </c:if>
             <input class="btn btn-success" type="submit" value=<fmt:message key="user.registration.confirm"/>>
-
-    <c:remove var="message"/>
     </div>
     </div>
 </form>

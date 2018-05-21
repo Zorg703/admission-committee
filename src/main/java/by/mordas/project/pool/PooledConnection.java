@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-public class DBConnection implements Connection, AutoCloseable {
+public class PooledConnection implements Connection, AutoCloseable {
     private Connection connection;
 
-    DBConnection(Connection connection) {
+    PooledConnection(Connection connection) {
         this.connection = connection;
     }
 

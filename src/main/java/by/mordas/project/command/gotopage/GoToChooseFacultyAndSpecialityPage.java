@@ -6,20 +6,24 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Faculty;
-import by.mordas.project.entity.Speciality;
-import by.mordas.project.logic.AdminLogic;
-import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.impl.AdminLogicImpl;
+import by.mordas.project.service.FacultyService;
+import by.mordas.project.service.LogicException;
+import by.mordas.project.service.factory.ServiceFactory;
+
 
 import java.util.List;
 
 public class GoToChooseFacultyAndSpecialityPage implements Command {
-    private AdminLogic adminLogic=new AdminLogicImpl();
+    private FacultyService facultyService;
+
+    public GoToChooseFacultyAndSpecialityPage(){
+        facultyService= ServiceFactory.getInstance().getFacultyService();
+    }
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         try {
-            List<Faculty> faculties=adminLogic.findAllFaculty();
+            List<Faculty> faculties=facultyService.findAllFaculties();
             content.setRequestAttribute(ParamConstant.FACULTY_LIST,faculties);
             router.setPagePath(PageConstant.PAGE_CHOOSE_FACULTY_AND_SPECIALITY);
         } catch (LogicException e) {

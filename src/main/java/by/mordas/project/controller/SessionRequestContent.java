@@ -21,11 +21,11 @@ public class SessionRequestContent {
         requestParameters =new HashMap<>();
         sessionAttributes = new HashMap<>();
         requestHeaders=new HashMap<>();
-        session=request.getSession();
-
+        extractValues();
     }
 
-    public void extractValues(){
+    private void extractValues(){
+        session=request.getSession();
         Enumeration<String> parameters=request.getParameterNames();
         while (parameters.hasMoreElements()){
             String name=parameters.nextElement();

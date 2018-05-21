@@ -6,14 +6,13 @@ import by.mordas.project.command.PageConstant;
 import by.mordas.project.command.ParamConstant;
 import by.mordas.project.entity.User;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@WebFilter(urlPatterns ="/controller")
-        public class CommandFilter implements Filter {
+@WebFilter(urlPatterns = "/controller")
+public class CommandFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -21,10 +20,10 @@ import java.io.IOException;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request=(HttpServletRequest) servletRequest;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
         try {
-            String cmd=request.getParameter(ParamConstant.COMMAND);
-            if(cmd!=null) {
+            String cmd = request.getParameter(ParamConstant.COMMAND);
+            if (cmd != null) {
                 CommandType command = CommandType.valueOf(cmd.toUpperCase());
                 User user = (User) request.getSession().getAttribute(ParamConstant.USER);
                 switch (command.getType()) {
@@ -54,17 +53,14 @@ import java.io.IOException;
                         servletRequest.getServletContext().getRequestDispatcher(PageConstant.PAGE_ERROR).forward(servletRequest, servletResponse);
                         break;
                 }
-            }
-            else {
+            } else {
                 request.getSession().setAttribute(ParamConstant.MESSAGE, "Unknown command!");
                 servletRequest.getServletContext().getRequestDispatcher(PageConstant.PAGE_ERROR).forward(servletRequest, servletResponse);
             }
-        }
-        catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             request.getSession().setAttribute(ParamConstant.MESSAGE, "Unknown command!");
             servletRequest.getServletContext().getRequestDispatcher(PageConstant.PAGE_ERROR).forward(servletRequest, servletResponse);
         }
-
 
 
     }

@@ -6,9 +6,9 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.User;
-import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.impl.UserLogicImpl;
-import by.mordas.project.util.DataValidator;
+import by.mordas.project.service.LogicException;
+import by.mordas.project.service.UserService;
+import by.mordas.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +17,10 @@ import java.util.HashMap;
 
 public class RegisterOnSpecialityCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
-    private UserLogicImpl userLogicImpl =new UserLogicImpl();
+    private UserService userService;
+    public RegisterOnSpecialityCommand(){
+        userService=ServiceFactory.getInstance().getUserService();
+    }
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
@@ -28,15 +31,14 @@ public class RegisterOnSpecialityCommand implements Command {
 
 
         try {
-            if(userLogicImpl.setUserSpeciality(user,specialityId,parameters)!=null){
+            if(userService.setUserSpeciality(user,specialityId,parameters)!=null){
                 router.setRouter(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.PAGE_USER_SUCCESS);
                 content.setSessionAttribute(ParamConstant.USER,user);
             }
             else {
                 router.setPagePath(PageConstant.PAGE_REGISTER_ON_FACULTY);
-                content.setSessionAttribute(ParamConstant.MESSAGE,ParamConstant.MESSAGE);
-                router.setRouter(Router.RouteType.REDIRECT);
+                content.setRequestAttribute(ParamConstant.MESSAGE,specialityId);
             }
         } catch (LogicException e) {
             logger.log(Level.ERROR,e.getMessage());

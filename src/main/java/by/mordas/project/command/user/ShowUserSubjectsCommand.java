@@ -7,8 +7,9 @@ import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Subject;
 import by.mordas.project.entity.User;
-import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.impl.UserLogicImpl;
+import by.mordas.project.service.LogicException;
+import by.mordas.project.service.SubjectService;
+import by.mordas.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,14 +18,17 @@ import java.util.Map;
 
 public class ShowUserSubjectsCommand implements Command{
     private static Logger logger= LogManager.getRootLogger();
-    private UserLogicImpl userLogicImpl =new UserLogicImpl();
+    private SubjectService subjectService;
+    public ShowUserSubjectsCommand(){
+        subjectService=ServiceFactory.getInstance().getSubjectService();
+    }
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         User user= (User) content.getSessionAttribute(ParamConstant.USER);
         Map<Subject,Integer> subjectsMap= null;
         try {
-            subjectsMap = userLogicImpl.findSubjects(user.getUserId());
+            subjectsMap = subjectService.findSubjects(user.getUserId());
             if(subjectsMap!=null) {
                 content.setRequestAttribute(ParamConstant.SUBJECTS,subjectsMap);
                 router.setPagePath(PageConstant.PAGE_USER_SUBJECTS);

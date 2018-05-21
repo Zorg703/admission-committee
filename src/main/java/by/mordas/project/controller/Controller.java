@@ -3,27 +3,25 @@ package by.mordas.project.controller;
 import by.mordas.project.command.Command;
 import by.mordas.project.command.CommandMap;
 import by.mordas.project.command.ParamConstant;
-import by.mordas.project.command.admin.ShowAllUserCommand;
 import by.mordas.project.pool.ConnectionPool;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.jms.Session;
-import javax.servlet.RequestDispatcher;
+import javax.naming.OperationNotSupportedException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Optional;
 
 @WebServlet(name = "controller", urlPatterns = "/controller")
 public class Controller extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       processRequest(req, resp);
+        processRequest(req, resp);
     }
 
     @Override
@@ -33,28 +31,25 @@ public class Controller extends HttpServlet {
 
     @Override
     public void destroy() {
-        ConnectionPool.closePool();
+        ConnectionPool.getInstance().closePool();
         super.destroy();
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Router router;
-        SessionRequestContent content=new SessionRequestContent(request);
-        content.extractValues();
-        Command command= CommandMap.getInstance().get(content.getRequestParameter(ParamConstant.COMMAND));
-        router=command.execute(content);
-        request=content.getRequest();
-        switch (router.getRouter()){
-            case FORWARD: request.getRequestDispatcher(router.getPagePath()).forward(request,response);
-            break;
-            case REDIRECT:response.sendRedirect(router.getPagePath());
-            break;
-            default: //
+
+        SessionRequestContent content = new SessionRequestContent(request);
+        Command command = CommandMap.getInstance().get(content.getRequestParameter(ParamConstant.COMMAND));
+        Router router = command.execute(content);
+        request = content.getRequest();
+        switch (router.getRouter()) {
+            case FORWARD:
+                request.getRequestDispatcher(router.getPagePath()).forward(request, response);
+                break;
+            case REDIRECT:
+                response.sendRedirect(router.getPagePath());
+                break;
+            default: throw new IllegalArgumentException ();
         }
-
-
-
-
 
 
     }

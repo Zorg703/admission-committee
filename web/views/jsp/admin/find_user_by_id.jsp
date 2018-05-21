@@ -56,6 +56,5 @@
 
 </table>
 </c:if>
-<c:remove var="message"/>
 </body>
 </html>

@@ -32,6 +32,5 @@
         </div>
     </div>
 </form>
-<c:remove var="message"/>
 </body>
 </html>

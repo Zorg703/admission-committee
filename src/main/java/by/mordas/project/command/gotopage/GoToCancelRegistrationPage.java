@@ -7,14 +7,15 @@ import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Speciality;
 import by.mordas.project.entity.User;
-import by.mordas.project.logic.AdminLogic;
-import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.UserLogic;
-import by.mordas.project.logic.impl.AdminLogicImpl;
-import by.mordas.project.logic.impl.UserLogicImpl;
+import by.mordas.project.service.LogicException;
+import by.mordas.project.service.SpecialityService;
+import by.mordas.project.service.factory.ServiceFactory;
 
 public class GoToCancelRegistrationPage implements Command {
-    private UserLogic userLogic=new UserLogicImpl();
+    private SpecialityService specialityService;
+    public GoToCancelRegistrationPage(){
+        specialityService= ServiceFactory.getInstance().getSpecialityService();
+    }
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
@@ -24,7 +25,7 @@ public class GoToCancelRegistrationPage implements Command {
         }
         else {
             try {
-                Speciality speciality=userLogic.findSpeciality(user.getSpecialityId());
+                Speciality speciality=specialityService.findSpeciality(user.getSpecialityId());
                 content.setRequestAttribute(ParamConstant.SPECIALITY,speciality);
                 router.setPagePath(PageConstant.PAGE_CANCEL_REGISTRATION);
             } catch (LogicException e) {

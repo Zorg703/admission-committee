@@ -5,29 +5,32 @@ import by.mordas.project.command.PageConstant;
 import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
-import by.mordas.project.entity.Speciality;
-import by.mordas.project.logic.AdminLogic;
-import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.impl.AdminLogicImpl;
+import by.mordas.project.service.LogicException;
+import by.mordas.project.service.SpecialityService;
+import by.mordas.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class UpdateSpecialityCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
-    private AdminLogic adminLogic=new AdminLogicImpl();
+    private SpecialityService specialityService;
+
+    public UpdateSpecialityCommand(){
+        specialityService= ServiceFactory.getInstance().getSpecialityService();
+    }
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         HashMap<String,String> parameters=content.getRequestParameters();
         try {
-            HashMap<String,String> errorMap=adminLogic.updateSpeciality(parameters);
+            Map<String,String> errorMap=specialityService.updateSpeciality(parameters);
             if(errorMap.isEmpty()){
-
-
-                    router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
+                router.setRouter(Router.RouteType.REDIRECT);
+                router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
                 }
                 else {
                     router.setPagePath(PageConstant.PAGE_UPDATE_SPECIALITY);

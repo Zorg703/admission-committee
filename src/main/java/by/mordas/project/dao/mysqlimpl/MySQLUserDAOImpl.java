@@ -5,7 +5,7 @@ import by.mordas.project.dao.UserDAO;
 import by.mordas.project.entity.Subject;
 import by.mordas.project.entity.User;
 import by.mordas.project.pool.ConnectionPool;
-import by.mordas.project.pool.DBConnection;
+import by.mordas.project.pool.PooledConnection;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,7 +52,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
     @Override
     public List<User> findAllEntity() throws DAOException {
         List<User> users =new ArrayList<>();
-        try(DBConnection conn= ConnectionPool.getInstance().getConnection();Statement statement=conn.createStatement();
+        try(PooledConnection conn= ConnectionPool.getInstance().getConnection(); Statement statement=conn.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_USER)) {
             if(rs!=null){
                 while (rs.next()) {
@@ -69,7 +69,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
     @Override
     public User findEntityById(long id) throws DAOException {
         User user = null;
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection()) {
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection()) {
             PreparedStatement pStatement=connection.prepareStatement(FIND_USER_BY_ID);
             pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
@@ -98,7 +98,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
     @Override
     public boolean delete(long id) throws DAOException {
-        DBConnection connection = ConnectionPool.getInstance().getConnection();
+        PooledConnection connection = ConnectionPool.getInstance().getConnection();
         try (PreparedStatement pStatement = connection.prepareStatement(DELETE_USER_BY_ID)) {
             pStatement.setLong(1,id);
             return pStatement.executeUpdate()==7;
@@ -109,7 +109,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
         @Override
     public void create(User user) throws DAOException {
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(INSERT_USER)){
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection(); PreparedStatement pStatement=connection.prepareStatement(INSERT_USER)){
             pStatement.setString(1, user.getFirstName());
             pStatement.setString(2, user.getLastName());
             pStatement.setDate(3, user.getBirthday());
@@ -133,7 +133,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
     @Override
     public User update(User user) throws DAOException {
-        DBConnection connection=null;
+        PooledConnection connection=null;
         try {
             connection=ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
@@ -164,7 +164,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
     public boolean findUserByLogin(String login) throws DAOException {
 
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
             PreparedStatement pStetement=connection.prepareStatement(FIND_USER_BY_LOGIN);){
             pStetement.setString(1,login);
             ResultSet rs=pStetement.executeQuery();
@@ -177,7 +177,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
     public User findUserByPasswordAndLogin(String login,String password) throws DAOException {
         User user=null;
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
             PreparedStatement pStatement=connection.prepareStatement(FIND_USER_BY_PASSWORD_AND_LOGIN)){
             pStatement.setString(1,login);
             pStatement.setString(2,password);
@@ -208,8 +208,8 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
     @Override
     public Map<Subject, Integer> findUserSubjectsAndScores(long id) throws DAOException {
         Map<Subject,Integer> subjects=new HashMap<>();
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
-        PreparedStatement pStatement=connection.prepareStatement(FIND_USER_SUBJECTS_AND_SCORE)){
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
+            PreparedStatement pStatement=connection.prepareStatement(FIND_USER_SUBJECTS_AND_SCORE)){
             pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
@@ -230,7 +230,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
     @Override
     public void changeUserPassword(Long userId, String password) throws DAOException {
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
             PreparedStatement pStatement=connection.prepareStatement(CHANGE_USER_PASSWORD)){
             pStatement.setString(1,password);
             pStatement.setLong(2,userId);
@@ -243,7 +243,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
     @Override
     public void updateUserSpeciality(User user) throws DAOException {
-        DBConnection connection=ConnectionPool.getInstance().getConnection();
+        PooledConnection connection=ConnectionPool.getInstance().getConnection();
         PreparedStatement pStatement=null;
         try{
             connection.setAutoCommit(false);
@@ -288,7 +288,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
     @Override
     public void clearUserScore(User user) throws DAOException {
-        DBConnection connection=ConnectionPool.getInstance().getConnection();
+        PooledConnection connection=ConnectionPool.getInstance().getConnection();
         PreparedStatement pStatement=null;
         try {
             connection.setAutoCommit(false);

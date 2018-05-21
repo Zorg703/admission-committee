@@ -133,7 +133,5 @@
         </div>
     </div>
 </form>
-<c:remove var="messages"/>
-<c:remove var="speciality"/>
 </body>
 </html>

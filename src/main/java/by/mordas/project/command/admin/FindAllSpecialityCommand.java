@@ -6,9 +6,9 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Speciality;
-import by.mordas.project.logic.AdminLogic;
-import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.impl.AdminLogicImpl;
+import by.mordas.project.service.LogicException;
+import by.mordas.project.service.SpecialityService;
+import by.mordas.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,13 +18,17 @@ import java.util.List;
 
 public class FindAllSpecialityCommand implements Command{
     private static Logger logger= LogManager.getRootLogger();
-    private AdminLogic adminLogic=new AdminLogicImpl();
+    private SpecialityService specialityService;
+
+    public FindAllSpecialityCommand(){
+        specialityService=ServiceFactory.getInstance().getSpecialityService();
+    }
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         List<Speciality> specialities=new ArrayList<>();
         try {
-            specialities=adminLogic.findAllSpecialities();
+            specialities=specialityService.findAllSpecialities();
             content.setRequestAttribute(ParamConstant.SPECIALITY_LIST,specialities);
             router.setPagePath(PageConstant.PAGE_SHOW_ALL_SPECIALITIES);
         } catch (LogicException e) {

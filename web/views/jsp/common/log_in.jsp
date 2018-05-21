@@ -35,8 +35,6 @@
     <c:if test= "${not empty message}">
     <fmt:message key="login.form.error_message"/>
     </c:if>
-    <c:remove var="message"/>
-    <c:remove var="params"/>
 </form>
 </body>
 </html>

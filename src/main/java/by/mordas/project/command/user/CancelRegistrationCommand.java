@@ -6,9 +6,9 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.User;
-import by.mordas.project.logic.AdminLogic;
-import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.impl.AdminLogicImpl;
+import by.mordas.project.service.LogicException;
+import by.mordas.project.service.UserService;
+import by.mordas.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,16 +16,18 @@ import org.apache.logging.log4j.Logger;
 
 public class CancelRegistrationCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
-    private AdminLogic adminLogic=new AdminLogicImpl();
+    private UserService userService;
 
+    public CancelRegistrationCommand(){
+        userService= ServiceFactory.getInstance().getUserService();
+    }
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         User user=(User)content.getSessionAttribute(ParamConstant.USER);
-        long userId=user.getUserId();
         try {
-            adminLogic.canceledUserRegistration(userId);
-            user.setSpecialityId(0);
+            user=userService.canceledUserRegistration(user);
+            router.setRouter(Router.RouteType.REDIRECT);
             content.setSessionAttribute(ParamConstant.USER,user);
             router.setPagePath(PageConstant.PAGE_USER_SUCCESS);
         } catch (LogicException e) {

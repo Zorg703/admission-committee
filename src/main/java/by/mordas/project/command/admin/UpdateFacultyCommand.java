@@ -6,9 +6,9 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Faculty;
-import by.mordas.project.logic.AdminLogic;
-import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.impl.AdminLogicImpl;
+import by.mordas.project.service.FacultyService;
+import by.mordas.project.service.LogicException;
+import by.mordas.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,9 +16,13 @@ import org.apache.logging.log4j.Logger;
 public class UpdateFacultyCommand implements Command{
     private static Logger logger= LogManager.getRootLogger();
 
-    private AdminLogic adminLogic=new AdminLogicImpl();
+    private FacultyService facultyService;
     private static final String ERROR_ID="error_id";
     private static final String ERROR_FACULTY_NAME="error_name";
+
+    public UpdateFacultyCommand(){
+        facultyService= ServiceFactory.getInstance().getFacultyService();
+    }
 
     @Override
     public Router execute(SessionRequestContent content) {
@@ -26,10 +30,11 @@ public class UpdateFacultyCommand implements Command{
         String facultyId=content.getRequestParameter(ParamConstant.FACULTY_ID);
         String facultyName=content.getRequestParameter(ParamConstant.FACULTY_NAME);
         try {
-            Faculty faculty=adminLogic.findFaculty(facultyId);
+            Faculty faculty=facultyService.findFaculty(facultyId);
             if(faculty!=null && faculty.getFacultyName()!=null){
                 faculty.setFacultyName(facultyName);
-                if(adminLogic.updateFaculty(faculty)) {
+                if(facultyService.updateFaculty(faculty)) {
+                    router.setRouter(Router.RouteType.REDIRECT);
                     router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
                 }
                 else {

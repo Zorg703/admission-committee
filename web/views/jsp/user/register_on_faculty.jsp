@@ -49,6 +49,9 @@
 <c:if test="${not empty message}">
     <fmt:message key="admin.delete_faculty.message"/>
 </c:if>
+<c:if test="${not empty error_messages}">
+    <fmt:message key="user.register_on_faculty.error_message"/>
+</c:if>
 </body>
-<c:remove var="message"/>
+
 </html>

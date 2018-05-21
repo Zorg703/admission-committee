@@ -5,38 +5,33 @@ import by.mordas.project.command.PageConstant;
 import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
-import by.mordas.project.entity.User;
-import by.mordas.project.logic.CommonLogic;
-import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.impl.CommonLogicImpl;
-import by.mordas.project.logic.impl.UserLogicImpl;
-import by.mordas.project.util.DataValidator;
+import by.mordas.project.service.LogicException;
+import by.mordas.project.service.UserService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-import java.sql.Date;
-import java.util.HashMap;
+import java.util.Map;
 
 public class RegistrationNewUserCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
-    private UserLogicImpl userLogicImpl =new UserLogicImpl();
+    private UserService userService;
+
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
-        HashMap<String,String> parameters=content.getRequestParameters();
-        HashMap<String,String> errorMessages= null;
+        Map<String,String> parameters=content.getRequestParameters();
+        Map<String,String> errorMessages= null;
         try {
-            errorMessages = userLogicImpl.registerUser(parameters);
+            errorMessages = userService.registerUser(parameters);
             if(errorMessages.isEmpty()){
                 router.setRouter(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.PAGE_SUCCESS_REGISTRATION);
             }
             else {
-                router.setRouter(Router.RouteType.REDIRECT);
-                content.setSessionAttribute(ParamConstant.USER_PARAMS,parameters);
-                content.setSessionAttribute(ParamConstant.ERROR_MESSAGES ,errorMessages);
+                content.setRequestAttribute(ParamConstant.USER_PARAMS,parameters);
+                content.setRequestAttribute(ParamConstant.ERROR_MESSAGES ,errorMessages);
                 router.setPagePath(PageConstant.PAGE_REGISTRATION);
             }
         } catch (LogicException e) {

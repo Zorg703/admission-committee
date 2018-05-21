@@ -20,7 +20,7 @@ public class CommandMap {
         this.put(CommandType.USER_REGISTRATION,new RegistrationNewUserCommand());
         this.put(CommandType.FIND_USER_SUBJECTS,new ShowUserSubjectsCommand());
         this.put(CommandType.CHANGE_USER_PASSWORD,new ChangePasswordCommand());
-        this.put(CommandType.CHOOSE_SPECIALITY,new ShowSpecialitySubjectsCommand());
+        this.put(CommandType.CHOOSE_SPECIALITY,new FindSpecialitySubjectsCommand());
         this.put(CommandType.REGISTER_ON_SPECIALITY,new RegisterOnSpecialityCommand());
         this.put(CommandType.ADD_FACULTY,new AddFacultyCommand());
         this.put(CommandType.DELETE_FACULTY,new DeleteFacultyCommand());
@@ -56,7 +56,7 @@ public class CommandMap {
     }
 
     };
-    private static CommandMap instance=new CommandMap();
+    private static CommandMap instance=new CommandMap();//????
     private CommandMap() {
     }
     public static CommandMap getInstance() {

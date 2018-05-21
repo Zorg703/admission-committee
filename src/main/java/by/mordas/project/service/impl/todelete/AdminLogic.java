@@ -1,8 +1,9 @@
-package by.mordas.project.logic;
+package by.mordas.project.service.impl.todelete;
 
 import by.mordas.project.entity.Faculty;
 import by.mordas.project.entity.Speciality;
 import by.mordas.project.entity.User;
+import by.mordas.project.service.LogicException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +15,6 @@ public interface AdminLogic extends Logic{
 
     boolean deleteFaculty(String id) throws LogicException;
 
-    Speciality addSpeciality(Speciality speciality) throws LogicException;
-
     User findUserById(String id) throws LogicException;
 
     boolean deleteSpeciality(String specialityId) throws LogicException;
@@ -23,6 +22,8 @@ public interface AdminLogic extends Logic{
     List<Speciality> findAllSpecialities() throws LogicException;
 
     List<User> findUsersRegisterOnSpeciality(String id) throws LogicException;
+
+    Faculty findFacultyOnSpeciality(Speciality speciality) throws LogicException;
 
     Faculty findFaculty(String facultyId) throws LogicException;
 
@@ -39,10 +40,6 @@ public interface AdminLogic extends Logic{
     List<Faculty> findAllFaculty() throws LogicException;
 
     List<Speciality> findSpecialitiesOnFaculty(String id) throws LogicException;
-
-    void canceledUserRegistration(long id) throws LogicException;
-
-    boolean updateRegisterOnSpecialityDate(String startDate, String endDate);
 
     HashMap<String,String> updateRegisterOnSpecialityDate(String startDate, String endDate, String specialityId) throws LogicException;
 }

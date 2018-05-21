@@ -1,4 +1,4 @@
-package by.mordas.project.logic;
+package by.mordas.project.service;
 
 public class LogicException extends Exception {
     public LogicException() {

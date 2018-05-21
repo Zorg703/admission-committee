@@ -5,7 +5,7 @@ import by.mordas.project.dao.FacultyDAO;
 import by.mordas.project.entity.Faculty;
 import by.mordas.project.entity.Speciality;
 import by.mordas.project.pool.ConnectionPool;
-import by.mordas.project.pool.DBConnection;
+import by.mordas.project.pool.PooledConnection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,10 +26,11 @@ public class MySQLFacultyDAOImpl implements FacultyDAO {
 
     @Override
     public List<Faculty> findAllEntity() throws DAOException {
-        List<Faculty> faculties=new ArrayList<>();
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();Statement statement=connection.createStatement();
+        List<Faculty> faculties=null;
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection(); Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_FACULTY)) {
             if (rs != null) {
+                faculties=new ArrayList<>();
                 while (rs.next()) {
                     Faculty faculty=new Faculty();
                     faculty.setFacultyId(rs.getInt("ID"));
@@ -46,7 +47,7 @@ public class MySQLFacultyDAOImpl implements FacultyDAO {
     @Override
     public Faculty findEntityById(long id) throws DAOException {
         Faculty faculty=null;
-        try(DBConnection conn= ConnectionPool.getInstance().getConnection();
+        try(PooledConnection conn= ConnectionPool.getInstance().getConnection();
             PreparedStatement pStatement=conn.prepareStatement(FIND_FACULTY_BY_ID)) {
             pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
@@ -65,7 +66,7 @@ public class MySQLFacultyDAOImpl implements FacultyDAO {
     @Override
     public boolean delete(long id) throws DAOException {
 
-        try (DBConnection connection = ConnectionPool.getInstance().getConnection();PreparedStatement pStatement = connection.prepareStatement(DELETE_FACULTY)) {
+        try (PooledConnection connection = ConnectionPool.getInstance().getConnection(); PreparedStatement pStatement = connection.prepareStatement(DELETE_FACULTY)) {
             pStatement.setLong(1,id);
             return pStatement.executeUpdate()==1;
         } catch (SQLException e) {
@@ -75,7 +76,7 @@ public class MySQLFacultyDAOImpl implements FacultyDAO {
 
     @Override
     public void create(Faculty faculty) throws DAOException {
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(CREATE_FACULTY,Statement.RETURN_GENERATED_KEYS)){
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection(); PreparedStatement pStatement=connection.prepareStatement(CREATE_FACULTY,Statement.RETURN_GENERATED_KEYS)){
             pStatement.setString(1,faculty.getFacultyName());
             pStatement.executeUpdate();
             ResultSet resultSet=pStatement.getGeneratedKeys();
@@ -89,7 +90,7 @@ public class MySQLFacultyDAOImpl implements FacultyDAO {
 
     @Override
     public Faculty update(Faculty faculty) throws DAOException {
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection();PreparedStatement pStatement=connection.prepareStatement(UPDATE_FACULTY)){
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection(); PreparedStatement pStatement=connection.prepareStatement(UPDATE_FACULTY)){
             pStatement.setString(1,faculty.getFacultyName());
             pStatement.setLong(2,faculty.getFacultyId());
             pStatement.executeUpdate();
@@ -101,7 +102,7 @@ public class MySQLFacultyDAOImpl implements FacultyDAO {
 
     public List<Speciality> findSpecialityFromFaculty() throws DAOException {
         List<Speciality> specialties=new ArrayList<>();
-        try(DBConnection connection=ConnectionPool.getInstance().getConnection()) {
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection()) {
             PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_SPECIALITY_BY_FACULTY_ID);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){

@@ -4,7 +4,7 @@
         <Property name="basePath">C:\\log\</Property>
     </Properties>
     <appenders>
-        <RollingFile name="FILE" fileName="${basePath}/logs/library-info.log" filePattern="${basePath}/training-info - %d{yyyy-MM-dd}.log">
+        <RollingFile name="FILE" fileName="${basePath}/logs/admission-committee.log">
             <PatternLayout pattern="%d{ISO8601} [%-5p] (%F:%L) - %m%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
@@ -15,7 +15,7 @@
         </Console>
     </appenders>
     <Loggers>
-        <root level="DEBUG">
+        <root level="INFO">
             <appender-ref ref="STDOUT"/>
             <appender-ref ref="FILE"/>
         </root>

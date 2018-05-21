@@ -1,16 +1,11 @@
 package by.mordas.project.pool;
 
-import by.mordas.project.dao.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Enumeration;
-import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
@@ -18,11 +13,11 @@ import java.util.concurrent.locks.ReentrantLock;
 
 
 public class ConnectionPool {
-    private final static Logger logger= LogManager.getRootLogger();
+    private final static Logger logger= LogManager.getLogger(ConnectionPool.class);
     private static final String URL=DBManager.getProperty("url");
     private static final String PASSWORD=DBManager.getProperty("password");
     private static final String USER=DBManager.getProperty("user");
-    private static ArrayBlockingQueue<DBConnection> connectionsStorage;
+    private ArrayBlockingQueue<PooledConnection> connectionsStorage;
     private static ConnectionPool instance;
     private static Lock lock=new ReentrantLock();
     private static AtomicBoolean isInstance=new AtomicBoolean(false);
@@ -34,18 +29,18 @@ public class ConnectionPool {
     }
 
     private void initializePool(){
-        DBConnection dbConnection;
+        PooledConnection pooledConnection;
     for (int i=0;i<POOL_SIZE;i++){
         try {
              DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-             dbConnection=new DBConnection(DriverManager.getConnection(URL, USER,PASSWORD));
+             pooledConnection =new PooledConnection(DriverManager.getConnection(URL, USER,PASSWORD));
 
-             connectionsStorage.offer(dbConnection);
+             connectionsStorage.offer(pooledConnection);
 
 //        } catch (DAOException e) {
 //            logger.log(Level.ERROR, e.getMessage());
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e.getMessage());
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -66,8 +61,8 @@ public class ConnectionPool {
         return instance;
     }
 
-    public  DBConnection getConnection(){
-            DBConnection connection = null;
+    public PooledConnection getConnection(){
+            PooledConnection connection = null;
         try {
             connection = connectionsStorage.take();
         } catch (InterruptedException e) {
@@ -78,14 +73,14 @@ public class ConnectionPool {
 
     }
 
-    public void closeConnection(DBConnection connection){
+    public void closeConnection(PooledConnection connection){
         connectionsStorage.offer(connection);
     }
 
-    public static void closePool() {
+    public void closePool() {
         try {
             for (int i = 0; i < POOL_SIZE; i++) {
-                DBConnection connection = connectionsStorage.take();
+                PooledConnection connection = connectionsStorage.take();
                 connection.closeConnection();
             }
         } catch (InterruptedException e) {

@@ -1,11 +1,7 @@
 package by.mordas.project.dao;
 import by.mordas.project.entity.User;
 import by.mordas.project.entity.Subject;
-import by.mordas.project.pool.ConnectionPool;
-import by.mordas.project.pool.DBConnection;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

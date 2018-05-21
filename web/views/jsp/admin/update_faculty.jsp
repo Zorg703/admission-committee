@@ -32,8 +32,6 @@
       <fmt:message key="admin.update_speciality.error_id"/>
             </div>
     </c:if>
-
-
     <input class="btn btn-success" type="submit" value=<fmt:message key="user.registration.confirm"/> >
         </div>
     </div>
@@ -43,8 +41,5 @@
         </div>
     </c:if>
 </form>
-
-<c:remove var="error_id"/>
-<c:remove var="error_name"/>
 </body>
 </html>

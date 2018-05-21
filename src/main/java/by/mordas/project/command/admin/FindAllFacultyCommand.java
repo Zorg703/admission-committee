@@ -6,9 +6,9 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Faculty;
-import by.mordas.project.logic.AdminLogic;
-import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.impl.AdminLogicImpl;
+import by.mordas.project.service.FacultyService;
+import by.mordas.project.service.LogicException;
+import by.mordas.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,13 +17,17 @@ import java.util.List;
 
 public class FindAllFacultyCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
-    private AdminLogic adminLogic=new AdminLogicImpl();
+    private FacultyService facultyService;
+
+    public FindAllFacultyCommand(){
+        facultyService=ServiceFactory.getInstance().getFacultyService();
+    }
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         try {
-            List<Faculty> faculties=adminLogic.findAllFaculty();
-            content.setSessionAttribute(ParamConstant.FACULTY_LIST,faculties);
+            List<Faculty> faculties=facultyService.findAllFaculties();
+            content.setRequestAttribute(ParamConstant.FACULTY_LIST,faculties);
             router.setPagePath(PageConstant.PAGE_FIND_ALL_FACULTY);
 
         } catch (LogicException e) {

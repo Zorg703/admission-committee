@@ -5,17 +5,14 @@ import by.mordas.project.dao.DAOException;
 import by.mordas.project.dao.DAOFactory;
 import by.mordas.project.dao.FacultyDAO;
 import by.mordas.project.dao.UserDAO;
-import by.mordas.project.dao.factoryimpl.MySQLDAOFactory;
 import by.mordas.project.entity.Faculty;
-import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.impl.UserLogicImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,8 +55,8 @@ public class DataValidator {
             return false;
     }
 
-    public HashMap<String,String> checkUserData(HashMap<String,String> parameterMap) throws DAOException {
-        HashMap<String,String> errorMessageMap=new HashMap<>();
+    public Map<String,String> checkUserData(Map<String,String> parameterMap) throws DAOException {
+        Map<String,String> errorMessageMap=new HashMap<>();
         if(!checkData(FIRST_NAME_REGEX,parameterMap.get(ParamConstant.FIRST_NAME))){
             errorMessageMap.put(ParamConstant.FIRST_NAME,parameterMap.get(ParamConstant.FIRST_NAME));
         }
@@ -122,8 +119,8 @@ public class DataValidator {
 
     public boolean checkId(String id){return checkData(ID_REGEX,id);}
 
-    public HashMap<String,String> checkSpecialtyData(HashMap<String,String> parameterMap) throws DAOException {
-        HashMap<String,String> errorMessageMap=new HashMap<>();
+    public Map<String,String> checkSpecialtyData(Map<String,String> parameterMap) throws DAOException {
+        Map<String,String> errorMessageMap=new HashMap<>();
 
         if(!checkId(parameterMap.get(ParamConstant.FACULTY_ID))){
             errorMessageMap.put(ParamConstant.FACULTY_ID,parameterMap.get(ParamConstant.FACULTY_ID));
@@ -169,8 +166,8 @@ public class DataValidator {
         return errorMessageMap;
     }
 
-    public HashMap<String,String> checkRegisterDate(String start,String end,String specialityId){
-        HashMap<String,String> errorMap=new HashMap<>();
+    public Map<String,String> checkRegisterDate(String start,String end,String specialityId){
+        Map<String,String> errorMap=new HashMap<>();
         if(!checkId(specialityId)){
             errorMap.put(ParamConstant.SPECIALITY_ID,specialityId);
         }

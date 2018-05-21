@@ -8,19 +8,24 @@ import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Faculty;
 import by.mordas.project.entity.Speciality;
 import by.mordas.project.entity.User;
-import by.mordas.project.logic.AdminLogic;
-import by.mordas.project.logic.LogicException;
-import by.mordas.project.logic.UserLogic;
-import by.mordas.project.logic.impl.AdminLogicImpl;
-import by.mordas.project.logic.impl.UserLogicImpl;
+import by.mordas.project.service.*;
+import by.mordas.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ShowUserStatusCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
-    private UserLogic userLogic=new UserLogicImpl();
+    private UserService userService;
+    private SpecialityService specialityService;
+    private FacultyService facultyService;
     private static final String IS_OPEN="is_open";
+
+    public ShowUserStatusCommand(){
+        specialityService=ServiceFactory.getInstance().getSpecialityService();
+        userService=ServiceFactory.getInstance().getUserService();
+        facultyService=ServiceFactory.getInstance().getFacultyService();
+    }
 
     @Override
     public Router execute(SessionRequestContent content) {
@@ -31,18 +36,18 @@ public class ShowUserStatusCommand implements Command {
             Speciality speciality;
             Faculty faculty;
             try {
-                speciality = userLogic.findSpeciality(specialityId);
+                speciality = specialityService.findSpeciality(specialityId);
                 long facultyId = speciality.getFacultyId();
-                faculty = userLogic.findFaculty(facultyId);
+                faculty = facultyService.findFaculty(facultyId);
 
-                boolean isRegistrationOpen=userLogic.checkEndOfSpecialityRegistrationDate(speciality);
+                boolean isRegistrationOpen=specialityService.checkEndOfSpecialityRegistrationDate(speciality);
                 if(isRegistrationOpen){
                     content.setRequestAttribute(ParamConstant.FACULTY, faculty);
                     content.setRequestAttribute(ParamConstant.SPECIALITY, speciality);
                     content.setRequestAttribute(IS_OPEN, isRegistrationOpen);
                 }
                 else {
-                    boolean isAccepted = userLogic.isAccepted(speciality, user);
+                    boolean isAccepted = userService.isAccepted(speciality, user);
                     content.setRequestAttribute(ParamConstant.FACULTY, faculty);
                     content.setRequestAttribute(ParamConstant.SPECIALITY, speciality);
                     content.setRequestAttribute(ParamConstant.IS_ACCEPTED, isAccepted);

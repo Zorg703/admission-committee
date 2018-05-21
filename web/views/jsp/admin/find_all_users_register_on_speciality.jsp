@@ -77,6 +77,5 @@
     <fmt:message key="admin.find_all_users_register_on_speciality.message"/>
     </div>
         </c:if>
-<c:remove var="message"/>
 </body>
 </html>
