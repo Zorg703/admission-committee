@@ -23,17 +23,17 @@ public class DeleteFacultyCommand implements Command {
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
-        String id=content.getRequestParameter(ParamConstant.FACULTY_ID);
+        String facutyId=content.getRequestParameter(ParamConstant.FACULTY_ID);
         try {
-            if(facultyService.deleteFaculty(id)){
-                router.setRouter(Router.RouteType.REDIRECT);
+            if(facultyService.deleteFaculty(facutyId)){
+               router.setRouter(Router.RouteType.REDIRECT);
                router.setPagePath(PageConstant.PAGE_ADMIN_SUCCESSFUL);
 
             }
             else {
                // router.setRouter(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.PAGE_DELETE_FACULTY);
-                content.setRequestAttribute(ParamConstant.MESSAGE,"Incorrect faculty id");
+                content.setRequestAttribute(ParamConstant.MESSAGE,facutyId);
             }
         } catch (LogicException e) {
             logger.log(Level.ERROR, e.getMessage());

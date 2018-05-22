@@ -24,8 +24,6 @@ public class DeleteSpecialityCommand implements Command{
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         String specialityId=content.getRequestParameter(ParamConstant.SPECIALITY_ID);
-
-
         try {
             if(specialityService.deleteSpeciality(specialityId)){
                 router.setRouter(Router.RouteType.REDIRECT);
@@ -35,7 +33,7 @@ public class DeleteSpecialityCommand implements Command{
             else {
                 //router.setRouter(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.PAGE_DELETE_SPECIALITY);
-                content.setRequestAttribute(ParamConstant.MESSAGE,"Incorrect speciality id");
+                content.setRequestAttribute(ParamConstant.MESSAGE,specialityId);
             }
         } catch (LogicException e) {
             logger.log(Level.ERROR, e.getMessage());

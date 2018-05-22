@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Optional;
 
 public class FindSpecialitySubjectsCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
@@ -29,9 +30,11 @@ public class FindSpecialitySubjectsCommand implements Command {
         Router router=new Router();
         String specialityId= content.getRequestParameter(ParamConstant.SPECIALITY_ID);
         try {
-            List<Subject> subjects= subjectService.findSubjectsForSpeciality(specialityId);
-            Speciality speciality=specialityService.findSpecialityById(specialityId);
-            if(speciality!=null) {
+            Optional<Speciality> optionalSpeciality=specialityService.findSpecialityById(specialityId);
+            Optional<List<Subject>> optionalSubjects=subjectService.findSubjectsForSpeciality(specialityId);
+            if(optionalSpeciality.isPresent() && optionalSubjects.isPresent()) {
+                Speciality speciality=optionalSpeciality.get();
+                List<Subject> subjects=optionalSubjects.get();
                 boolean isActiveRegistration = specialityService.checkEndOfSpecialityRegistrationDate(speciality);
                 if (isActiveRegistration) {
                     router.setPagePath(PageConstant.PAGE_REGISTER_ON_FACULTY);

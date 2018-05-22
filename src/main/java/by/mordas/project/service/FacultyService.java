@@ -11,8 +11,6 @@ public interface FacultyService {
 
     boolean deleteFaculty(String facultyId) throws LogicException;
 
-    Optional<Faculty> findFacultyOnSpeciality(Speciality speciality) throws LogicException;
-
     Optional<Faculty> findFaculty(String facultyId) throws LogicException;
 
     boolean updateFaculty(Faculty faculty) throws LogicException;

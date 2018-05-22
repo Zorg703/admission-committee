@@ -25,7 +25,7 @@ public class FacultyServiceImpl implements FacultyService {
                 faculty.setFacultyName(facultyName);
                 FacultyDAO facultyDAO = mysqlFactory.getFacultyDAO();
                 facultyDAO.create(faculty);
-                optional= Optional.of(faculty);
+                optional= Optional.ofNullable(faculty);
             } catch (DAOException e) {
                 throw new LogicException("Problems with addFaculty method", e);
             }
@@ -49,18 +49,6 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Optional<Faculty> findFacultyOnSpeciality(Speciality speciality) throws LogicException {
-        Optional<Faculty> optional;
-        try {
-           Faculty faculty=mysqlFactory.getFacultyDAO().findEntityById(speciality.getFacultyId());
-           optional=Optional.of(faculty);
-        } catch (DAOException e) {
-            throw new LogicException("Problems with findFacultyOnSpeciality method",e);
-        }
-        return optional;
-    }
-
-    @Override
     public Optional<Faculty> findFaculty(String facultyId) throws LogicException {
         Optional<Faculty> optional=Optional.empty();
         DataValidator validator=new DataValidator();
@@ -68,7 +56,7 @@ public class FacultyServiceImpl implements FacultyService {
             long id=Long.valueOf(facultyId);
             try {
                 Faculty faculty = mysqlFactory.getFacultyDAO().findEntityById(id);
-                optional=Optional.of(faculty);
+                optional=Optional.ofNullable(faculty);
             } catch (DAOException e) {
                 throw new LogicException("Problems with findFaculty method",e);
             }
@@ -96,7 +84,7 @@ public class FacultyServiceImpl implements FacultyService {
         FacultyDAO facultyDAO=mysqlFactory.getFacultyDAO();
         try {
             List<Faculty> list = facultyDAO.findAllEntity();
-            optional=Optional.of(list);
+            optional=Optional.ofNullable(list);
         } catch (DAOException e) {
             throw new LogicException("Problems with findAllFaculty method",e);
         }
@@ -108,7 +96,7 @@ public class FacultyServiceImpl implements FacultyService {
         Optional<Faculty> optional;
         try {
             Faculty faculty=mysqlFactory.getFacultyDAO().findEntityById(facultyId);
-            optional=Optional.of(faculty);
+            optional=Optional.ofNullable(faculty);
         } catch (DAOException e) {
             throw new LogicException("Problems with findFaculty method", e);
         }

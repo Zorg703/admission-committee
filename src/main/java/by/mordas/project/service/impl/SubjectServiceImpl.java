@@ -22,7 +22,7 @@ public class SubjectServiceImpl implements SubjectService {
         UserDAO userDAO = mysqlFactory.getUserDAO();
         try {
             Map<Subject,Integer> subjects= userDAO.findUserSubjectsAndScores(id);
-            optional=Optional.of(subjects);
+            optional=Optional.ofNullable(subjects);
         }
         catch (DAOException e) {
             throw new LogicException("Problems with findSubjects method", e);
@@ -39,7 +39,7 @@ public class SubjectServiceImpl implements SubjectService {
             try {
                 Long id=Long.valueOf(specialityId);
                 List<Subject> subjects= subjectDAO.findSubjectsBySpecialityId(id);
-                optional= Optional.of(subjects);
+                optional= Optional.ofNullable(subjects);
             } catch (DAOException e) {
                 throw new LogicException("Problems with findSubjectsForSpeciality method", e);
             }

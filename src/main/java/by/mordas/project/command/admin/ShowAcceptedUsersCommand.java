@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ShowAcceptedUsersCommand implements Command{
     private static Logger logger= LogManager.getRootLogger();
@@ -30,11 +31,16 @@ public class ShowAcceptedUsersCommand implements Command{
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         String specialityId = content.getRequestParameter(ParamConstant.SPECIALITY_ID);
+
         try {
-            Speciality speciality=specialityService.findSpecialityById(specialityId);
-            List<User> acceptedUsers=userService.findAllAcceptedUsersOnSpeciality(specialityId);
-            content.setRequestAttribute(ParamConstant.SPECIALITY,speciality);
-            content.setRequestAttribute(ParamConstant.USER_LIST,acceptedUsers);
+            Optional<Speciality> optionalSpeciality=specialityService.findSpecialityById(specialityId);
+            Optional<List<User>> optionalUsers=userService.findAllAcceptedUsersOnSpeciality(specialityId);
+            if(optionalSpeciality.isPresent() && optionalUsers.isPresent()) {
+                Speciality speciality =optionalSpeciality.get();
+                List <User> acceptedUsers =optionalUsers.get();
+                content.setRequestAttribute(ParamConstant.SPECIALITY, speciality);
+                content.setRequestAttribute(ParamConstant.USER_LIST, acceptedUsers);
+            }
             router.setPagePath(PageConstant.PAGE_SHOW_ACCEPTED_USERS);
 
         } catch (LogicException e) {

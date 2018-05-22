@@ -14,57 +14,52 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
+
 public class ShowUserStatusCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
     private UserService userService;
     private SpecialityService specialityService;
-    private FacultyService facultyService;
     private static final String IS_OPEN="is_open";
 
     public ShowUserStatusCommand(){
         specialityService=ServiceFactory.getInstance().getSpecialityService();
         userService=ServiceFactory.getInstance().getUserService();
-        facultyService=ServiceFactory.getInstance().getFacultyService();
     }
 
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         User user=(User)content.getSessionAttribute(ParamConstant.USER);
-        if(user.getSpecialityId()!=0) {
             long specialityId = user.getSpecialityId();
-            Speciality speciality;
-            Faculty faculty;
             try {
-                speciality = specialityService.findSpeciality(specialityId);
+                Optional<Speciality> optionalSpeciality=specialityService.findSpeciality(specialityId);
+                if(optionalSpeciality.isPresent()){
+                    Speciality speciality=optionalSpeciality.get();
                 long facultyId = speciality.getFacultyId();
-                faculty = facultyService.findFaculty(facultyId);
-
                 boolean isRegistrationOpen=specialityService.checkEndOfSpecialityRegistrationDate(speciality);
                 if(isRegistrationOpen){
-                    content.setRequestAttribute(ParamConstant.FACULTY, faculty);
                     content.setRequestAttribute(ParamConstant.SPECIALITY, speciality);
                     content.setRequestAttribute(IS_OPEN, isRegistrationOpen);
                 }
                 else {
                     boolean isAccepted = userService.isAccepted(speciality, user);
-                    content.setRequestAttribute(ParamConstant.FACULTY, faculty);
                     content.setRequestAttribute(ParamConstant.SPECIALITY, speciality);
                     content.setRequestAttribute(ParamConstant.IS_ACCEPTED, isAccepted);
-
                 }
                 router.setPagePath(PageConstant.PAGE_SHOW_USER_STATUS);
-            } catch (LogicException e) {
+            }
+                else {
+                    router.setPagePath(PageConstant.PAGE_SHOW_USER_STATUS);
+                    content.setRequestAttribute(ParamConstant.MESSAGE,"You are not registered on speciality");
+                }
+            }catch (LogicException e) {
                 logger.log(Level.ERROR,e.getMessage());
                 router.setRouter(Router.RouteType.REDIRECT);
                 content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE, e.getMessage());
                 router.setPagePath(PageConstant.PAGE_ERROR);
             }
-        }
-        else {
-            router.setPagePath(PageConstant.PAGE_SHOW_USER_STATUS);
-            content.setRequestAttribute(ParamConstant.MESSAGE,"You are not registered on speciality");
-        }
+
         return router;
     }
 }

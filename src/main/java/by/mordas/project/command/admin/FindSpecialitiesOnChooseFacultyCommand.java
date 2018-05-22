@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Optional;
 
 public class FindSpecialitiesOnChooseFacultyCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
@@ -31,10 +32,14 @@ public class FindSpecialitiesOnChooseFacultyCommand implements Command {
         Router router=new Router();
         String facultyId=content.getRequestParameter(ParamConstant.FACULTY_ID);
         try {
-            List<Speciality> specialities=specialityService.findSpecialitiesOnFaculty(facultyId);
-            Faculty faculty =facultyService.findFaculty(facultyId);
-            content.setRequestAttribute(ParamConstant.FACULTY,faculty);
-            content.setRequestAttribute(ParamConstant.SPECIALITY_LIST,specialities);
+            Optional<Faculty> optionalFaculty =facultyService.findFaculty(facultyId);
+            Optional<List<Speciality>> optionalSpecialities=specialityService.findSpecialitiesOnFaculty(facultyId);
+            if(optionalFaculty.isPresent() && optionalSpecialities.isPresent()){
+                List<Speciality> specialities=optionalSpecialities.get();
+                Faculty faculty=optionalFaculty.get();
+                content.setRequestAttribute(ParamConstant.SPECIALITY_LIST,specialities);
+                content.setRequestAttribute(ParamConstant.FACULTY,faculty);
+            }
             router.setPagePath(PageConstant.PAGE_CHOOSE_FACULTY_AND_SPECIALITY);
         } catch (LogicException e) {
             logger.log(Level.ERROR, e.getMessage());

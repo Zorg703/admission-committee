@@ -2,7 +2,7 @@ package by.mordas.project.dto;
 
 import by.mordas.project.entity.Speciality;
 
-public class SpecialityState {
+public class SpecialityDTO {
     private Speciality speciality;
     private boolean isRegisterEnd;
     private int countRegisterUser;
