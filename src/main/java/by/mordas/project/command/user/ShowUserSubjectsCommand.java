@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class ShowUserSubjectsCommand implements Command{
     private static Logger logger= LogManager.getRootLogger();
@@ -28,8 +29,10 @@ public class ShowUserSubjectsCommand implements Command{
         User user= (User) content.getSessionAttribute(ParamConstant.USER);
         Map<Subject,Integer> subjectsMap= null;
         try {
-            subjectsMap = subjectService.findSubjects(user.getUserId());
-            if(subjectsMap!=null) {
+            Optional<Map<Subject,Integer>> optionalMap=subjectService.findSubjects(user.getUserId());
+
+            if(optionalMap.isPresent()) {
+                subjectsMap = optionalMap.get();
                 content.setRequestAttribute(ParamConstant.SUBJECTS,subjectsMap);
                 router.setPagePath(PageConstant.PAGE_USER_SUBJECTS);
             }
