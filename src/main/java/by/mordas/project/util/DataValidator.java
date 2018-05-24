@@ -31,7 +31,7 @@ public class DataValidator {
     private static final String RECRUITMENT_PLAN="[1-9]\\d{0,4}";
     private static final String LOGIN_BUSY ="login_busy";
     private static final String DATE_TIME_REGEX="(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2})";
-
+    private static final String COUNTER_REGEX="\\d{0,6}";
     /*private void xc(String data){
         Pattern loginPattern = Pattern.compile(f);
         Matcher matcher = loginPattern.matcher(data);
@@ -187,6 +187,10 @@ public class DataValidator {
         return errorMap;
     }
 
+    public boolean checkCounter(String counter){
+        return checkData(COUNTER_REGEX, counter);
+    }
+
     private boolean isContainsFaculty(int id) throws DAOException {
         DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
 
@@ -200,4 +204,5 @@ public class DataValidator {
 
         return false;
     }
+
 }

@@ -29,4 +29,6 @@ public interface UserDAO extends AbstractDAO<User> {
     void updateUserSpeciality(User user) throws DAOException;
 
     void clearUserScore(User user) throws DAOException;
+
+    List<User> findUsersWithLimit(int count) throws DAOException;
 }

@@ -28,7 +28,7 @@
         </tr>
         <c:forEach var="user" items="${user_list}" varStatus="loop">
             <tr>
-                <td>${loop.index+1}</td>
+                <td>${(loop.index+1)+counter*5}</td>
                 <td><c:out value="${user.userId}"/></td>
                 <td><c:out value="${user.firstName}"/></td>
                 <td><c:out value="${user.lastName}"/></td>
@@ -36,6 +36,11 @@
 
         </c:forEach>
     </table>
+</c:if>
+<c:if test="${not empty pages}">
+    <c:forEach var="page" begin="0" end="${pages}">
+        <a href="${pageContext.request.contextPath}/controller?command=next_find_users_page&counter=${page}">${page+1}</a>
+    </c:forEach>
 </c:if>
 </body>
 </html>

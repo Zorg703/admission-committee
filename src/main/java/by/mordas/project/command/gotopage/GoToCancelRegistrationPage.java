@@ -11,6 +11,8 @@ import by.mordas.project.service.LogicException;
 import by.mordas.project.service.SpecialityService;
 import by.mordas.project.service.factory.ServiceFactory;
 
+import java.util.Optional;
+
 public class GoToCancelRegistrationPage implements Command {
     private SpecialityService specialityService;
     public GoToCancelRegistrationPage(){
@@ -20,20 +22,20 @@ public class GoToCancelRegistrationPage implements Command {
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         User user=(User)content.getSessionAttribute(ParamConstant.USER);
-        if(user.getSpecialityId()==0){
-            router.setPagePath(PageConstant.PAGE_SHOW_USER_STATUS);
-        }
-        else {
             try {
-                Speciality speciality=specialityService.findSpeciality(user.getSpecialityId());
-                content.setRequestAttribute(ParamConstant.SPECIALITY,speciality);
-                router.setPagePath(PageConstant.PAGE_CANCEL_REGISTRATION);
-            } catch (LogicException e) {
+                Optional<Speciality> optionalSpeciality = specialityService.findSpeciality(user.getSpecialityId());
+                if (user.getSpecialityId() == 0 || !optionalSpeciality.isPresent()) {
+                    router.setPagePath(PageConstant.PAGE_SHOW_USER_STATUS);
+                } else {
+                    Speciality speciality =optionalSpeciality.get();
+                    content.setRequestAttribute(ParamConstant.SPECIALITY, speciality);
+                    router.setPagePath(PageConstant.PAGE_CANCEL_REGISTRATION);
+                }
+            }catch (LogicException e) {
                 router.setRouter(Router.RouteType.REDIRECT);
                 content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
                 router.setPagePath(PageConstant.PAGE_ERROR);
             }
-        }
         return router;
     }
 }

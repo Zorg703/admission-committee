@@ -28,4 +28,6 @@ public interface UserService {
     Optional<User> findUserLoginAndPassword(String login, String password) throws LogicException;
 
     Map<String,String> registerUser(Map<String, String> parameters) throws LogicException;
+
+    Optional<List<User>> findUserLimitCount(String count) throws LogicException;
 }

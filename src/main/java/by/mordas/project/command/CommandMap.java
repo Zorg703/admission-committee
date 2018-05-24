@@ -1,6 +1,8 @@
 package by.mordas.project.command;
 
 import by.mordas.project.command.admin.*;
+import by.mordas.project.command.admin.navigation.ToNextFindUsersPage;
+import by.mordas.project.command.admin.navigation.ToPreviousFindUsersPage;
 import by.mordas.project.command.common.LogOutCommand;
 import by.mordas.project.command.common.LogInCommand;
 import by.mordas.project.command.common.RegistrationNewUserCommand;
@@ -53,6 +55,9 @@ public class CommandMap {
         this.put(CommandType.GO_TO_FIND_ALL_FACULTY_PAGE,new GoToFindAllFacultyPage());
         this.put(CommandType.CANCEL_REGISTRATION,new CancelRegistrationCommand());
         this.put(CommandType.GO_TO_CANCEL_REGISTRATION_PAGE,new GoToCancelRegistrationPage());
+        this.put(CommandType.SHOW_RESULT_OF_ADMISSION_COMMITTEE,new ShowResultOfAdmissionCommitteeCommand());
+        this.put(CommandType.NEXT_FIND_USERS_PAGE,new ToNextFindUsersPage());
+        this.put(CommandType.PREVIOUS_FIND_USERS_PAGE,new ToPreviousFindUsersPage());
     }
 
     };

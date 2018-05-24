@@ -15,7 +15,6 @@ public class ParamConstant {
     public final static String SPECIALITY_LIST ="speciality_list";
     public final static String MESSAGE="message";
     public final static String LOGIN_PARAM="params";
-
     public final static String FIRST_NAME="first_name";
     public final static String LAST_NAME="last_name";
     public final static String BIRTHDAY="birthday";
@@ -46,5 +45,8 @@ public class ParamConstant {
     public final static String RECRUITMENT_PLAN="recruitment_plan";
     public final static String START_REGISTRATION="start_registration";
     public final static String END_REGISTRATION="end_registration";
+    public final static String COUNTER="counter";
+    public final static String NEXT_PAGE="next";
+
 }
 
