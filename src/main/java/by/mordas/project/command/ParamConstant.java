@@ -47,6 +47,8 @@ public class ParamConstant {
     public final static String END_REGISTRATION="end_registration";
     public final static String COUNTER="counter";
     public final static String NEXT_PAGE="next";
+    public final static String PAGES="pages";
+    public final static String DTO_LIST="dto_list";
 
 }
 

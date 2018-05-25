@@ -28,28 +28,21 @@ public class ShowAllUserCommand implements Command {
         Router router=new Router();
         try {
             Optional<List<User>> optionalUsers=userService.findAllUser();
-           /* if(optionalUsers.isPresent()) {
-                List<User> userList=optionalUsers.get();
-                content.setRequestAttribute(ParamConstant.USER_LIST, userList);
-                if(userList.size()>=5){
-                    content.setRequestAttribute(ParamConstant.NEXT_PAGE,"next");
-                    content.setRequestAttribute(ParamConstant.COUNTER,0);
-                }
-            }
-            router.setPagePath(PageConstant.PAGE_SHOW_USERS);*/
-
            if(optionalUsers.isPresent()){
                List<User> userList=optionalUsers.get();
-               if(userList.size()>5){
-                   int pages=userList.size()/5;
-                   userList=userList.subList(0,5);
-                   content.setRequestAttribute(ParamConstant.NEXT_PAGE,"next");
-                   content.setSessionAttribute("pages",pages);
+               if(userList.size()>10){
+                   int pages=userList.size()/10;
+                   userList=userList.subList(0,10);
+                   content.setSessionAttribute(ParamConstant.PAGES,pages);
 
                }
                content.setRequestAttribute(ParamConstant.USER_LIST, userList);
-               router.setPagePath(PageConstant.PAGE_SHOW_USERS);
            }
+           else {
+               content.setRequestAttribute(ParamConstant.MESSAGE,optionalUsers);
+
+           }
+            router.setPagePath(PageConstant.PAGE_SHOW_USERS);
         } catch (LogicException e) {
             logger.log(Level.ERROR, e.getMessage());
             router.setRouter(Router.RouteType.REDIRECT);

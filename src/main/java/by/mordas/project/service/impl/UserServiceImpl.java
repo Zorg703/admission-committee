@@ -221,7 +221,7 @@ public class UserServiceImpl  implements UserService {
         Optional<List<User>> optionalUsers=Optional.empty();
         DataValidator dataValidator =new DataValidator();
         if(dataValidator.checkCounter(count)){
-            int counter=Integer.parseInt(count)*5;
+            int counter=Integer.parseInt(count)*10;
             try {
                 List<User> userList=mysqlFactory.getUserDAO().findUsersWithLimit(counter);
                 optionalUsers=Optional.ofNullable(userList);

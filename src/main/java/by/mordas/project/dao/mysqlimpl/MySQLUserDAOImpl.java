@@ -43,7 +43,7 @@ public class MySQLUserDAOImpl implements UserDAO {
     private static final String UPDATE_USER_SPECIALITY="UPDATE USER SET SPECIALITY_ID=?,CERTIFICATE_MARK=? WHERE ID=?";
     private static final String INSERT_USER_SCORES="INSERT INTO USER_SUBJECT_MARK (ID_USER, ID_SUBJECT,USER_MARK) VALUES(?,?,?)";
     private static final String DELETE_USER_SCORES="DELETE FROM USER_SUBJECT_MARK WHERE ID_USER=?";
-    private static final String FIND_USERS_WITH_LIMIT="SELECT * FROM user LIMIT ?,5";
+    private static final String FIND_USERS_WITH_LIMIT="SELECT * FROM user LIMIT ?,10";
 /*SELECT  q,r,recruitment_plan,speciality_name from speciality INNER JOIN
 (SELECT count(user.id) q,avg(m) r,speciality_id FROM user INNER JOIN
 (SELECT id u,avg(mark) m FROM (SELECT id, certificate_mark as mark from user
