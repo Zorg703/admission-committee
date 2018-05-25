@@ -27,7 +27,7 @@ public class SpecialityServiceImpl implements SpecialityService{
             Integer facultyId=Integer.valueOf(id);
             try {
                 List<Speciality> specialities = specialityDAO.findSpecialitiesByFacultyID(facultyId);
-                optional=Optional.of(specialities);
+                optional=Optional.ofNullable(specialities);
             } catch (DAOException e) {
                 throw new LogicException("Problems with findSpecialitiesOnFaculty method", e);
             }
@@ -106,7 +106,7 @@ public class SpecialityServiceImpl implements SpecialityService{
         Optional<List<Speciality>> optional;
         try {
             List<Speciality> specialities=mysqlFactory.getSpecialityDAO().findAllEntity();
-            optional=Optional.of(specialities);
+            optional=Optional.ofNullable(specialities);
         } catch (DAOException e) {
             throw new LogicException("Problems with findAllSpecialities method",e);
         }
@@ -122,7 +122,7 @@ public class SpecialityServiceImpl implements SpecialityService{
             Long id = Long.valueOf(specialityId);
             try {
                 speciality = mysqlFactory.getSpecialityDAO().findEntityById(id);
-                optional=Optional.of(speciality);
+                optional=Optional.ofNullable(speciality);
             } catch (DAOException e) {
                 throw new LogicException("Problems with findSpecialityById method", e);
             }
@@ -172,7 +172,7 @@ public class SpecialityServiceImpl implements SpecialityService{
             Integer facultyId=Integer.valueOf(id);
             try {
                 List<Speciality> specialities = specialityDAO.findSpecialitiesByFacultyID(facultyId);
-                optional=Optional.of(specialities);
+                optional=Optional.ofNullable(specialities);
             } catch (DAOException e) {
                 throw new LogicException("Problems with findSpecialitiesByFacultyId method", e);
             }
@@ -186,7 +186,7 @@ public class SpecialityServiceImpl implements SpecialityService{
         Optional<Speciality> optional;
         try {
             Speciality speciality = mysqlFactory.getSpecialityDAO().findEntityById(id);
-            optional=Optional.of(speciality);
+            optional=Optional.ofNullable(speciality);
         } catch (DAOException e) {
             throw new LogicException("Problems with findUserSpeciality method", e);
         }

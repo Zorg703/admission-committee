@@ -12,6 +12,7 @@ import by.mordas.project.service.factory.ServiceFactory;
 
 
 import java.util.List;
+import java.util.Optional;
 
 public class GoToChooseFacultyAndSpecialityPage implements Command {
     private FacultyService facultyService;
@@ -23,8 +24,11 @@ public class GoToChooseFacultyAndSpecialityPage implements Command {
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         try {
-            List<Faculty> faculties=facultyService.findAllFaculties();
-            content.setRequestAttribute(ParamConstant.FACULTY_LIST,faculties);
+            Optional<List<Faculty>> optionalFaculties=facultyService.findAllFaculties();
+            if(optionalFaculties.isPresent()) {
+                List<Faculty> faculties = optionalFaculties.get();
+                content.setRequestAttribute(ParamConstant.FACULTY_LIST, faculties);
+            }
             router.setPagePath(PageConstant.PAGE_CHOOSE_FACULTY_AND_SPECIALITY);
         } catch (LogicException e) {
             router.setRouter(Router.RouteType.REDIRECT);

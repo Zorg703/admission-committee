@@ -26,7 +26,7 @@ public class MySQLUserDAOImpl implements UserDAO {
     private static final String FIND_USER_BY_ID ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
             "SPECIALITY_ID,LOGIN,EMAIL,ROLE_ID FROM USER WHERE ID=?";
     private static final String FIND_ALL_USER="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY," +
-            "SPECIALITY_ID,EMAIL,LOGIN,ROLE_ID FROM USER ORDER BY LAST_NAME";
+            "SPECIALITY_ID,EMAIL,LOGIN,ROLE_ID FROM USER ORDER BY ID";
     private static final String INSERT_USER ="INSERT INTO USER(FIRST_NAME,LAST_NAME,BIRTHDAY," +
             "LOGIN,PASSWORD,EMAIL) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_USER ="UPDATE USER SET ID=?,FIRST_NAME=?,LAST_NAME=?," +
@@ -43,6 +43,7 @@ public class MySQLUserDAOImpl implements UserDAO {
     private static final String UPDATE_USER_SPECIALITY="UPDATE USER SET SPECIALITY_ID=?,CERTIFICATE_MARK=? WHERE ID=?";
     private static final String INSERT_USER_SCORES="INSERT INTO USER_SUBJECT_MARK (ID_USER, ID_SUBJECT,USER_MARK) VALUES(?,?,?)";
     private static final String DELETE_USER_SCORES="DELETE FROM USER_SUBJECT_MARK WHERE ID_USER=?";
+    private static final String FIND_USERS_WITH_LIMIT="SELECT * FROM user LIMIT ?,10";
 /*SELECT  q,r,recruitment_plan,speciality_name from speciality INNER JOIN
 (SELECT count(user.id) q,avg(m) r,speciality_id FROM user INNER JOIN
 (SELECT id u,avg(mark) m FROM (SELECT id, certificate_mark as mark from user
@@ -51,10 +52,11 @@ SELECT id_user, user_mark FROM user_subject_mark) as marks GROUP BY id) as s on 
 on speciality.id=w.speciality_id - просмотр среднего бала и кол-ва подонных заявлений*/
     @Override
     public List<User> findAllEntity() throws DAOException {
-        List<User> users =new ArrayList<>();
+        List<User> users =null;
         try(PooledConnection conn= ConnectionPool.getInstance().getConnection(); Statement statement=conn.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_USER)) {
             if(rs!=null){
+                users=new ArrayList<>();
                 while (rs.next()) {
                     User user =getUser(rs);
                     users.add(user);
@@ -162,6 +164,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
         return user;
     }
 
+    @Override
     public boolean findUserByLogin(String login) throws DAOException {
 
         try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
@@ -174,7 +177,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
         }
     }
 
-
+    @Override
     public User findUserByPasswordAndLogin(String login,String password) throws DAOException {
         User user=null;
         try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
@@ -324,4 +327,22 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
         }
     }
 
+    @Override
+    public List<User> findUsersWithLimit(int count) throws DAOException {
+        List<User> users =null;
+        try(PooledConnection conn= ConnectionPool.getInstance().getConnection(); PreparedStatement pStatement=conn.prepareStatement(FIND_USERS_WITH_LIMIT)){
+           pStatement.setInt(1,count);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs!=null){
+                users=new ArrayList<>();
+                while (rs.next()) {
+                    User user =getUser(rs);
+                    users.add(user);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Exception in findUsersWithLimit method",e);
+        }
+        return users;
+    }
 }

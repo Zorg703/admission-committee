@@ -18,6 +18,9 @@
 </head>
 <body>
 <h3><fmt:message key="admin.find_all_user.show"/>:</h3>
+<c:if test="${not empty message}">
+<h4><fmt:message key="admin.find_all_users.message"/></h4>
+</c:if>
 <c:if test="${not empty user_list}">
     <table class="table table-bordered table-hover" style="width: 50%">
         <tr>
@@ -28,7 +31,7 @@
         </tr>
         <c:forEach var="user" items="${user_list}" varStatus="loop">
             <tr>
-                <td>${loop.index+1}</td>
+                <td>${(loop.index+1)+counter*10}</td>
                 <td><c:out value="${user.userId}"/></td>
                 <td><c:out value="${user.firstName}"/></td>
                 <td><c:out value="${user.lastName}"/></td>
@@ -36,6 +39,12 @@
 
         </c:forEach>
     </table>
+</c:if>
+<c:if test="${not empty pages}">
+    <fmt:message key="admin.find_all_users.list_pages"/>
+    <c:forEach var="page" begin="0" end="${pages}">
+        <a href="${pageContext.request.contextPath}/controller?command=next_find_users_page&counter=${page}">${page+1}</a>
+    </c:forEach>
 </c:if>
 </body>
 </html>

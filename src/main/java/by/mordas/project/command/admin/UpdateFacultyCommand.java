@@ -13,6 +13,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
+
 public class UpdateFacultyCommand implements Command{
     private static Logger logger= LogManager.getRootLogger();
 
@@ -30,8 +32,9 @@ public class UpdateFacultyCommand implements Command{
         String facultyId=content.getRequestParameter(ParamConstant.FACULTY_ID);
         String facultyName=content.getRequestParameter(ParamConstant.FACULTY_NAME);
         try {
-            Faculty faculty=facultyService.findFaculty(facultyId);
-            if(faculty!=null && faculty.getFacultyName()!=null){
+            Optional<Faculty> optionalFaculty=facultyService.findFaculty(facultyId);
+            if(optionalFaculty.isPresent()){
+                Faculty faculty=optionalFaculty.get();
                 faculty.setFacultyName(facultyName);
                 if(facultyService.updateFaculty(faculty)) {
                     router.setRouter(Router.RouteType.REDIRECT);

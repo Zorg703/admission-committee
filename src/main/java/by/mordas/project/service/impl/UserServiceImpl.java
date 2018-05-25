@@ -214,6 +214,25 @@ public class UserServiceImpl  implements UserService {
 
         return errorMap;
     }
+
+
+    @Override
+    public Optional<List<User>> findUserLimitCount(String count) throws LogicException {
+        Optional<List<User>> optionalUsers=Optional.empty();
+        DataValidator dataValidator =new DataValidator();
+        if(dataValidator.checkCounter(count)){
+            int counter=Integer.parseInt(count)*10;
+            try {
+                List<User> userList=mysqlFactory.getUserDAO().findUsersWithLimit(counter);
+                optionalUsers=Optional.ofNullable(userList);
+            } catch (DAOException e) {
+                throw new LogicException("Problems with findUserLimitCount method", e);
+            }
+        }
+        return optionalUsers;
+
+
+    }
     private int calculateUserSumScore(User user){
         int score=user.getCertificateMark();
         for (Map.Entry<Subject,Integer> entry:user.getSubjectMark().entrySet()){

@@ -15,6 +15,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
+
 public class FindUserCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
     private UserService userService;
@@ -29,10 +31,12 @@ public class FindUserCommand implements Command {
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         String userId=content.getRequestParameter(ParamConstant.USER_ID);
+
             try {
-               User user= userService.findUserById(userId);
-                if(user!=null) {
-                    Speciality speciality=specialityService.findSpecialityById(String.valueOf(user.getSpecialityId()));
+                Optional<User> optionalUser=userService.findUserById(userId);
+                if(optionalUser.isPresent()) {
+                    User user=optionalUser.get();
+                    Speciality speciality=specialityService.findSpecialityById(String.valueOf(user.getSpecialityId())).get();
                     content.setRequestAttribute(USER_FIND, user);
                     content.setRequestAttribute(ParamConstant.SPECIALITY,speciality);
                     router.setPagePath(PageConstant.PAGE_FIND_USER_BY_ID);

@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ShowAllUserCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
@@ -25,10 +26,22 @@ public class ShowAllUserCommand implements Command {
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
-        List<User> userList;
         try {
-            userList= userService.findAllUser();
-            content.setRequestAttribute(ParamConstant.USER_LIST,userList);
+            Optional<List<User>> optionalUsers=userService.findAllUser();
+           if(optionalUsers.isPresent()){
+               List<User> userList=optionalUsers.get();
+               if(userList.size()>10){
+                   int pages=userList.size()/10;
+                   userList=userList.subList(0,10);
+                   content.setSessionAttribute(ParamConstant.PAGES,pages);
+
+               }
+               content.setRequestAttribute(ParamConstant.USER_LIST, userList);
+           }
+           else {
+               content.setRequestAttribute(ParamConstant.MESSAGE,optionalUsers);
+
+           }
             router.setPagePath(PageConstant.PAGE_SHOW_USERS);
         } catch (LogicException e) {
             logger.log(Level.ERROR, e.getMessage());

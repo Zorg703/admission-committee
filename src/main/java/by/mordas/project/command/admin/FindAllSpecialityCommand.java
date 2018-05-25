@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class FindAllSpecialityCommand implements Command{
     private static Logger logger= LogManager.getRootLogger();
@@ -26,10 +27,13 @@ public class FindAllSpecialityCommand implements Command{
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
-        List<Speciality> specialities=new ArrayList<>();
+
         try {
-            specialities=specialityService.findAllSpecialities();
-            content.setRequestAttribute(ParamConstant.SPECIALITY_LIST,specialities);
+            Optional<List<Speciality>> optionalSpecialities=specialityService.findAllSpecialities();
+            if(optionalSpecialities.isPresent()) {
+                List<Speciality> specialities = optionalSpecialities.get();
+                content.setRequestAttribute(ParamConstant.SPECIALITY_LIST, specialities);
+            }
             router.setPagePath(PageConstant.PAGE_SHOW_ALL_SPECIALITIES);
         } catch (LogicException e) {
             logger.log(Level.ERROR, e.getMessage());

@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Optional;
 
 public class FindAllFacultyCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
@@ -26,8 +27,11 @@ public class FindAllFacultyCommand implements Command {
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         try {
-            List<Faculty> faculties=facultyService.findAllFaculties();
-            content.setRequestAttribute(ParamConstant.FACULTY_LIST,faculties);
+            Optional<List<Faculty>> optionalFaculties=facultyService.findAllFaculties();
+            if(optionalFaculties.isPresent()) {
+                List<Faculty> faculties = optionalFaculties.get();
+                content.setRequestAttribute(ParamConstant.FACULTY_LIST, faculties);
+            }
             router.setPagePath(PageConstant.PAGE_FIND_ALL_FACULTY);
 
         } catch (LogicException e) {

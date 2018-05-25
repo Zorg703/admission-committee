@@ -13,8 +13,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Optional;
-
 public class LogInCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
     private UserService userService;
@@ -25,14 +23,12 @@ public class LogInCommand implements Command {
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
-
+        User user=null;
         String login=content.getRequestParameter(ParamConstant.LOG_IN);
         String password= content.getRequestParameter(ParamConstant.PASSWORD);
         try {
-            Optional<User> optionalUser=userService.findUserLoginAndPassword(login,password);
-
-            if(optionalUser.isPresent()){
-                User user=optionalUser.get();
+            user= userService.findUserLoginAndPassword(login,password);
+            if(user!=null){
                 router.setRouter(Router.RouteType.REDIRECT);
                 content.setSessionAttribute(ParamConstant.USER,user);
                 router.setPagePath(PageConstant.PAGE_MAIN);
