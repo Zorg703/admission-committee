@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Enumeration;
 import java.util.MissingResourceException;
 import java.util.Properties;
@@ -23,6 +24,13 @@ public class DBManager {
 
     private static ResourceBundle  resourceBundle=ResourceBundle.getBundle("configuration");
 
+    static {
+        try {
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+        } catch (SQLException e) {
+            logger.log(Level.ERROR,e.getMessage());
+        }
+    }
 
     public DBManager() {
 

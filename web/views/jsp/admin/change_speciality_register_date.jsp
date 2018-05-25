@@ -16,15 +16,18 @@
 </head>
 <body>
 <h2><fmt:message key="admin.delete_faculty.head"/> </h2>
-<form name="delete-faculty" method="post" action="${pageContext.request.contextPath}/controller">
+<fmt:message key="admin.add_speciality_on_faculty.speciality_name"/>${speciality.specialityName}
+<fmt:message key="admin.add_speciality_on_faculty.start_registration"/>
+<fmt:parseDate value="${speciality.startRegistration}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedStartDateTime" type="both" />
+<fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedStartDateTime}" />
+<fmt:message key="admin.add_speciality_on_faculty.end_registration"/>
+<fmt:parseDate value="${speciality.endRegistration}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedEndDateTime" type="both" />
+    <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedEndDateTime}" />
+<form name="change-speciality" method="post" action="${pageContext.request.contextPath}/controller">
     <div class="card shadow">
         <div class="card-block">
             <input type="hidden" name="command" value="update_speciality_register_date">
-            <label for="id"><fmt:message key="admin.delete_speciality.id"/> </label>
-            <input type="text" id="id"  class="form-control" name="speciality_id" value="" required pattern="[1-9]\d*">
-            <c:if test="${not empty messages.speciality_id}">
-                <fmt:message key="admin.delete_speciality.message"/>
-            </c:if>
+            <input type="hidden" name="speciality_id" value="${speciality.specialityId}">
             <label for="startDate"> <fmt:message key="admin.add_speciality_on_faculty.start_registration"/></label>
             <input type="datetime-local" id="startDate" class="form-control" name="start_registration" required min="2018-05-01T00:00" max="2018-12-31T23:30">
             <c:if test="${not empty messages.start_registration}">

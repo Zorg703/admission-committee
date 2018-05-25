@@ -32,9 +32,7 @@ public class ConnectionPool {
         PooledConnection pooledConnection;
     for (int i=0;i<POOL_SIZE;i++){
         try {
-             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
              pooledConnection =new PooledConnection(DriverManager.getConnection(URL, USER,PASSWORD));
-
              connectionsStorage.offer(pooledConnection);
 
 //        } catch (DAOException e) {

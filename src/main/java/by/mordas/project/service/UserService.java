@@ -30,4 +30,6 @@ public interface UserService {
     Map<String,String> registerUser(Map<String, String> parameters) throws LogicException;
 
     Optional<List<User>> findUserLimitCount(String count) throws LogicException;
+
+    int definePassingScore(Speciality speciality) throws LogicException;
 }

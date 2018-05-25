@@ -40,7 +40,7 @@ public class ShowUserStatusCommand implements Command {
                 boolean isRegistrationOpen=specialityService.checkEndOfSpecialityRegistrationDate(speciality);
                 if(isRegistrationOpen){
                     content.setRequestAttribute(ParamConstant.SPECIALITY, speciality);
-                    content.setRequestAttribute(IS_OPEN, isRegistrationOpen);
+                    content.setRequestAttribute(IS_OPEN, specialityId);
                 }
                 else {
                     boolean isAccepted = userService.isAccepted(speciality, user);

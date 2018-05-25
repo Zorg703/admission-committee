@@ -6,8 +6,10 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.dto.SpecialityDTO;
+import by.mordas.project.entity.Faculty;
 import by.mordas.project.entity.Speciality;
 import by.mordas.project.entity.User;
+import by.mordas.project.service.FacultyService;
 import by.mordas.project.service.LogicException;
 import by.mordas.project.service.SpecialityService;
 import by.mordas.project.service.UserService;
@@ -24,9 +26,11 @@ public class ShowResultOfAdmissionCommitteeCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
     private SpecialityService specialityService;
     private UserService userService;
+    private FacultyService facultyService;
     public ShowResultOfAdmissionCommitteeCommand(){
         specialityService= ServiceFactory.getInstance().getSpecialityService();
         userService=ServiceFactory.getInstance().getUserService();
+        facultyService=ServiceFactory.getInstance().getFacultyService();
     }
     @Override
     public Router execute(SessionRequestContent content) {
@@ -35,19 +39,21 @@ public class ShowResultOfAdmissionCommitteeCommand implements Command {
         List<SpecialityDTO> dtoList=new ArrayList<>();
 
         try {
+            Optional<Faculty> optionalFaculty=facultyService.findFaculty(facultyId);
             Optional<List<Speciality>> optionalList=specialityService.findSpecialitiesByFacultyId(facultyId);
-            if(optionalList.isPresent()){
+            if(optionalFaculty.isPresent() && optionalList.isPresent()){
                 List<Speciality> specialityList=optionalList.get();
                 for(Speciality speciality:specialityList){
-                    SpecialityDTO specialityDTO=new SpecialityDTO();
-                    specialityDTO.setSpeciality(speciality);
+                    SpecialityDTO specialityDTO=new SpecialityDTO(speciality);
                     String specialityID= String.valueOf(speciality.getSpecialityId());
                     Optional<List<User>> optionalUsers=userService.findUsersRegisterOnSpeciality(specialityID);
                     optionalUsers.ifPresent(users -> specialityDTO.setCountRegisterUser(users.size()));
                     specialityDTO.setRegisterEnd(specialityService.checkEndOfSpecialityRegistrationDate(speciality));
                     specialityDTO.setSpecialityFull(specialityDTO.getCountRegisterUser()>=speciality.getRecruitmentPlan());
+                    specialityDTO.setPassingScore(userService.definePassingScore(speciality));
                     dtoList.add(specialityDTO);
                 }
+                content.setRequestAttribute(ParamConstant.FACULTY,optionalFaculty.get());
                 content.setRequestAttribute(ParamConstant.DTO_LIST,dtoList);
                 router.setPagePath(PageConstant.PAGE_SHOW_STATE_OF_ADMISSION_COMMITTEE);
             }

@@ -85,7 +85,7 @@ public class UserServiceImpl  implements UserService {
                         int score = calculateUserSumScore(user);
                         scores.add(score);
                     }
-                    int acceptedScore = calculateSpecialityAcceptedScore(scores, recruitmentPlan);
+                    int acceptedScore = definePassingScore(speciality);
                     List<User> acceptedUsers = new ArrayList<>();
                     for (User user : users) {
                         int score = calculateUserSumScore(user);
@@ -152,14 +152,10 @@ public class UserServiceImpl  implements UserService {
     }
     @Override
     public boolean isAccepted(Speciality speciality, User user) throws LogicException {
-        try {
-            List<Integer> score = mysqlFactory.getSpecialityDAO().defineUsersSumScoreRegisterOnSpeciality(speciality.getSpecialityId());
-            int recruitmentPlan = speciality.getRecruitmentPlan();
-            return calculateUserAvgScore(user) >= calculateSpecialityAcceptedScore(score, recruitmentPlan);
 
-        } catch (DAOException e) {
-            throw new LogicException("Problems with isAccepted method",e);
-        }
+            return calculateUserAvgScore(user) >= definePassingScore(speciality);
+
+
     }
 
     @Override
@@ -230,9 +226,23 @@ public class UserServiceImpl  implements UserService {
             }
         }
         return optionalUsers;
-
-
     }
+
+    @Override
+    public int definePassingScore(Speciality speciality) throws LogicException {
+        try {
+            List<Integer> scores = mysqlFactory.getSpecialityDAO().defineUsersSumScoreRegisterOnSpeciality(speciality.getSpecialityId());
+            int counter=0;
+            for (Integer score:scores){
+                counter+=score;
+            }
+            return counter/speciality.getRecruitmentPlan();
+        } catch (DAOException e) {
+            throw new LogicException("Problems with define passing score  method");
+        }
+    }
+
+
     private int calculateUserSumScore(User user){
         int score=user.getCertificateMark();
         for (Map.Entry<Subject,Integer> entry:user.getSubjectMark().entrySet()){
@@ -241,13 +251,6 @@ public class UserServiceImpl  implements UserService {
         return score;
     }
 
-    private int calculateSpecialityAcceptedScore(List<Integer> scores,int recruitmentPlan){
-        int counter=0;
-        for (Integer score:scores){
-            counter+=score;
-        }
-        return counter/recruitmentPlan;
-    }
 
     private int calculateUserAvgScore(User user){
         int score=user.getCertificateMark();
