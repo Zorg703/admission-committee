@@ -18,9 +18,8 @@
 </head>
 <body>
 <c:if test="${not empty faculty_list && user.specialityId==0}">
-    <fmt:message key="admin.choose_faculty_and_speciality.faculty"/>
+   <h3> <fmt:message key="admin.choose_faculty_and_speciality.faculty"/></h3>
 <table>
-
     <c:forEach var="faculty" items="${faculty_list}" varStatus="status">
         <tr>
             <td><a href="${pageContext.request.contextPath}/controller?command=find_speciality&id=${faculty.facultyId}"><c:out value="${faculty.facultyName}"/></a></td>

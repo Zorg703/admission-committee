@@ -27,8 +27,10 @@ public class GoToChangeRegisterDatePage implements Command {
             optionalSpeciality.ifPresent(speciality -> content.setRequestAttribute(ParamConstant.SPECIALITY, speciality));
             router.setPagePath(PageConstant.PAGE_CHANGE_REGISTRATION_DATE);
         } catch (LogicException e) {
-            e.printStackTrace();
+            router.setRouter(Router.RouteType.REDIRECT);
+            content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
+            router.setPagePath(PageConstant.PAGE_ERROR);
         }
-        return null;
+        return router;
     }
 }

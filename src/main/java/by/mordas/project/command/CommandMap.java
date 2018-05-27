@@ -10,6 +10,7 @@ import by.mordas.project.command.gotopage.*;
 import by.mordas.project.command.user.*;
 
 import java.util.EnumMap;
+import java.util.Optional;
 
 public class CommandMap {
     private EnumMap<CommandType,Command> map=new EnumMap<CommandType, Command>(CommandType.class){{
@@ -57,9 +58,9 @@ public class CommandMap {
         this.put(CommandType.SHOW_RESULT_OF_ADMISSION_COMMITTEE,new ShowResultOfAdmissionCommitteeCommand());
         this.put(CommandType.NEXT_FIND_USERS_PAGE,new ToNextFindUsersPage());
         this.put(CommandType.GO_TO_CHOOSE_FACULTY_TO_RESULT,new GoToChooseFacultyToResultPage());
-
+        this.put(CommandType.GO_TO_CHANGE_SPECIALITY_REGISTER_DATE_PAGE,new GoToChangeRegisterDatePage());
+        this.put(CommandType.SHOW_USER_SUBJECTS,new ShowUserSubjectsCommand());
     }
-
     };
     private static CommandMap instance=new CommandMap();//????
     private CommandMap() {
@@ -70,17 +71,21 @@ public class CommandMap {
     public Command get(String cmd){
         try {
             CommandType key = CommandType.valueOf(CommandType.class, cmd.toUpperCase());
-
-            return map.get(key);
+            Command command=map.get(key);
+            Optional<Command> optionalCommand=Optional.ofNullable(command);
+            return optionalCommand.orElseGet(this::getOrDefault);
         }
         catch (IllegalArgumentException e){
-            return map.get(CommandType.GO_TO_MAIN_PAGE);
+            return getOrDefault();
         }
 
     }
     public Command get(CommandType key){
         return map.get(key);
     }
+private Command getOrDefault(){
 
+    return map.get(CommandType.GO_TO_MAIN_PAGE);
+}
 
 }

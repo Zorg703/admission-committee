@@ -210,16 +210,17 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
     @Override
     public Map<Subject, Integer> findUserSubjectsAndScores(long id) throws DAOException {
-        Map<Subject,Integer> subjects=new HashMap<>();
+        Map<Subject,Integer> subjects=null;
         try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
             PreparedStatement pStatement=connection.prepareStatement(FIND_USER_SUBJECTS_AND_SCORE)){
             pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
+                subjects=new HashMap<>();
                 while (rs.next()){
                     Subject subject=new Subject();
                     subject.setSubjectId(rs.getLong("ID"));
-                    subject.setSubjectName("SUBJECT_NAME");
+                    subject.setSubjectName( rs.getString("SUBJECT_NAME"));
                     int score=rs.getInt("USER_MARK");
                     subjects.put(subject,score);
                 }
@@ -303,6 +304,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
             pStatement=connection.prepareStatement(DELETE_USER_SCORES);
             pStatement.setLong(1,user.getUserId());
             pStatement.executeUpdate();
+            connection.commit();
 
         } catch (SQLException e) {
            try{

@@ -11,13 +11,13 @@
 <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
 <c:import url="/views/jsp/admin/include/menu.jsp"/>
 <html>
-fmt:setLocale value="${sessionScope.locale}" scope="request"/>
+<fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
 <head>
     <title><fmt:message key="admin.show_state_of_admission_committee.title"/> </title>
 </head>
 <body>
-<h3> : ${faculty.facultyName}</h3>
+<h3> <fmt:message key="admin.show_state_of_admission_committee.head"/> : ${faculty.facultyName}</h3>
 <c:if test="${not empty dto_list}">
     <table class="table table-bordered table-hover"style="width: 70%">
         <tr>
@@ -29,9 +29,6 @@ fmt:setLocale value="${sessionScope.locale}" scope="request"/>
                 <fmt:message key="admin.add_speciality_on_faculty.speciality_name"/>
             </th>
             <th>
-                <fmt:message key="admin.show_state_of_admission_committee.speciality_set"/>
-            </th>
-            <th>
                 <fmt:message key="admin.add_speciality_on_faculty.recruitment_plan"/>
             </th>
             <th>
@@ -41,7 +38,10 @@ fmt:setLocale value="${sessionScope.locale}" scope="request"/>
                 <fmt:message key="admin.show_state_of_admission_committee.passing_score"/>
             </th>
             <th>
-                <fmt:message key="admin.change_register.date"/>
+                <fmt:message key="admin.show_state_of_admission_committee.speciality_set"/>
+            </th>
+            <th>
+                <fmt:message key="admin.change_register_date.title"/>
             </th>
         </tr>
         <c:forEach items="${dto_list}" var="speciality_dto" varStatus="loop">
@@ -63,24 +63,25 @@ fmt:setLocale value="${sessionScope.locale}" scope="request"/>
                     ${speciality_dto.countRegisterUser}
                 </td>
                 <td>
-                    ${speciality_dto.passingScore}
+                    <c:if test="${speciality_dto.passingScore!=0}">
+                        ${speciality_dto.passingScore}
+                    </c:if>
                 </td>
                   <td>
                     <c:choose>
-                        <c:when test="${speciality_dto.isSpecialityFull=true && speciality_dto.isRegistrationEnd=true}">
+                        <c:when test="${speciality_dto.specialityFull==true and speciality_dto.registerEnd==true}">
                             <fmt:message key="admin.show_state_of_admission_committee.full"/>
                         </c:when>
-                        <c:when test="${speciality_dto.isSpecialityFull=false && speciality_dto.isRegistrationEnd=true}">
+                        <c:when test="${speciality_dto.specialityFull==false and speciality_dto.registerEnd==true}">
                             <fmt:message key="admin.show_state_of_admission_committee.not_full"/>
                         </c:when>
                         <c:otherwise>
                             <fmt:message key="admin.show_state_of_admission_committee.activ"/>
                         </c:otherwise>
                     </c:choose>
-                    ${speciality_dto.isSpecialityFull}
                 </td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/controller?command=change_register_date&id=${speciality_dto.specialityId}"><fmt:message key="admin.show_state_of_admission_committee.change"></fmt:message> </a>
+                    <a href="${pageContext.request.contextPath}/controller?command=go_to_change_speciality_register_date_page&speciality_id=${speciality_dto.specialityId}"><fmt:message key="admin.show_state_of_admission_committee.change"/> </a>
                 </td>
             </tr>
         </c:forEach>

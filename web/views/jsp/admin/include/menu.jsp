@@ -5,12 +5,12 @@
   Time: 21:38
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <link href="${pageContext.request.contextPath}/views/css/bootstrap.css" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
 <body>
@@ -29,7 +29,7 @@
     <a class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=show_all_users"><fmt:message key="admin.menu.show_all_users"/> </a>
     <a class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=go_to_find_user_by_id_page"><fmt:message key="admin.menu.find_user_by_id"/> </a>
     <a class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=go_to_choose_faculty_and_speciality_page"><fmt:message key="admin.menu.find_register_users_on_speciality"/> </a>
-    <a class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=update_speciality_register_date"><fmt:message key=""></fmt:message> </a>
+    <a class="list-group-item" href="${pageContext.servletContext.contextPath}/controller?command=go_to_choose_faculty_to_result"><fmt:message key="admin.menu.state_of_admission_committee"/> </a>
 
     </div>
 </nav>

@@ -14,33 +14,43 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
 <head>
-    <title><fmt:message key="user.change_user_data.title"/> </title>
+    <title><fmt:message key="user.change_user_password.title"/> </title>
 </head>
 <body>
+<h3><fmt:message key="user.change_user_password.head"/> </h3>
 <form name="changing-form" method="post" action="${pageContext.request.contextPath}/controller">
-  <input type="hidden" name="command" value="change_user_password">
-    <label><fmt:message key="user.registration.password"/>:<br>
-        <input type="password" required name="password1" id="password1"pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}" value=""> </label>
+    <div class="card shadow">
+        <div class="card-block">
+    <input type="hidden" name="command" value="change_user_password">
+   <label for="old"><fmt:message key="user.change_user_password.old_password"/></label>
+        <input type="password" class="form-control" name="old_password" id="old" required value="">
+            <c:if test="${not empty message}">
+                <div class="alert alert-danger">
+                    <fmt:message key="user.change_user_password.error"/>
+                </div>
+            </c:if>
+    <label for="password1"><fmt:message key="user.change_user_password.new_password"/></label>
+        <input type="password" class="form-control" required name="password1" id="password1"pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}" value="">
+            <small id="passwordHelpBlock" class="form-text text-muted">
+                <fmt:message key="user.registration.password_helper"/>
+            </small>
+            <c:if test="${not empty messages.password1}">
+                <div class="alert alert-danger">
+                    <fmt:message key="user.registration.message.password1"/>
+                </div>
+            </c:if>
+            <label for="password2"><fmt:message key="user.registration.password_confirm"/></label>
+        <input type="password" class="form-control" required name="password2" id="password2"pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}" value=""> </label>
+            <c:if test="${not empty messages.password2}">
+                <div class="alert alert-danger">
+                     <fmt:message key="user.registration.message.password2"/>
+                </div>
+            </c:if>
 
-    <br>
-    <label><fmt:message key="user.registration.password_confirm"/>:<br>
-        <input type="password" required name="password2" id="password2"pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}" value=""> </label>
-    <c:if test="${not empty messages.password2}">
-        <fmt:message key="user.registration.message.password2"/>
-    </c:if>
-    <c:if test="${not empty messages.password1}">
-        <fmt:message key="user.registration.message.password1"/>
-    </c:if>
-    <br>
-    <input class="button" type="submit"value=<fmt:message key="user.registration.confirm"/>>
-    <input class="button" type="reset" value=<fmt:message key="user.registration.cancel"/>>
-    <c:if test="${not empty changed}">
-        <fmt:message key="user.success.changed"/>
-    </c:if>
+    <input class="btn btn-success" type="submit"value=<fmt:message key="user.registration.confirm"/>>
+        </div>
+    </div>
 </form>
-<c:remove var="messages"/>
-<c:remove var="user_params"/>
-<c:remove var="changed"/>
 
 <script type="text/javascript">
     window.onload = function () {

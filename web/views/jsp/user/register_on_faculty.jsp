@@ -20,38 +20,42 @@
 
 <body>
 <c:if test="${not empty subjects}">
-<fmt:message key="user.register_on_faculty.name"/>:
+<h3><fmt:message key="user.register_on_faculty.name"/>:</h3>
 <form name="subject_marks" method="post" action="${pageContext.request.contextPath}/controller">
 <input type="hidden" name="command" value="register_on_speciality">
-    <fmt:message key="user.registration.subjects_name"/>:
-    <c:out value="${subjects[0].subjectName}"/><br>
-    <input type="hidden" name="first_subject" value="${subjects[0].subjectId}">
-    <fmt:message key="user.registration.mark"/>:
-    <input type="number" required min="0" max="100" name="mark1" value=""><br>
-    <fmt:message key="user.registration.subjects_name"/>:
-    <c:out value="${subjects[1].subjectName}"/><br>
+    <div class="card shadow">
+        <div class="card-block">
+            <h4>${subjects[0].subjectName}</h4>
+            <input type="hidden"  name="first_subject" value="${subjects[0].subjectId}">
+            <label for="first"><fmt:message key="user.registration.mark"/>:</label>
+            <input type="number" id="first" class="form-control" required min="0" max="100" name="mark1" value="">
+            <h4>${subjects[1].subjectName}</h4>
     <input type="hidden" name="second_subject" value="${subjects[1].subjectId}">
-    <fmt:message key="user.registration.mark"/>:
-    <input type="number" required min="0" max="100" name="mark2" value=""><br>
-    <fmt:message key="user.registration.subjects_name"/>:
-    <c:out value="${subjects[2].subjectName}"/><br>
+    <label for="second"><fmt:message key="user.registration.mark"/>:</label>
+    <input type="number" class="form-control"id="second" required min="0" max="100" name="mark2" value=""><br>
+            <h4>${subjects[2].subjectName}</h4>
     <input type="hidden" name="third_subject" value="${subjects[2].subjectId}">
-    <fmt:message key="user.registration.mark"/>:
-    <input type="number" required min="0" max="100" name="mark3" value=""><br>
-    <fmt:message key="user.registration.certificate"/>:
-    <input type="number"required min="0" max="100" name="avg" value="">
+    <label for="third"><fmt:message key="user.registration.mark"/>:</label>
+            <input type="number" id="third" class="form-control" required min="0" max="100" name="mark3" value=""><br>
+    <label for="avg"><fmt:message key="user.registration.certificate"/>:</label>
+    <input type="number" id="avg" class="form-control" required min="0" max="100" name="avg" value="">
     <c:if test="${not empty message}">
+        <div class="alert alert-danger">
         <fmt:message key="user.registration.message.mark"/>
+        </div>
     </c:if>
-    <input class="button" type="submit">
+    <input class="btn btn-success" type="submit" value=<fmt:message key="user.registration.confirm"/>>
+        </div>
+    </div>
 </form>
 </c:if>
 <c:if test="${not empty message}">
-    <fmt:message key="admin.delete_faculty.message"/>
+    <div class="alert alert-danger">
+        <fmt:message key="admin.delete_faculty.message"/>
+    </div>
 </c:if>
-<c:if test="${not empty error_messages}">
-    <fmt:message key="user.register_on_faculty.error_message"/>
+<c:if test="${not empty messages}">
+    <h3><fmt:message key="user.register_on_faculty.error_message"/></h3>
 </c:if>
 </body>
-
 </html>

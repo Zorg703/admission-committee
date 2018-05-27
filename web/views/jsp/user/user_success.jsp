@@ -17,6 +17,6 @@
     <title><fmt:message key="admin.successful.title"/> </title>
 </head>
 <body>
-<fmt:message key="admin.successful.success"/>
+<h3><fmt:message key="admin.successful.success"/></h3>
 </body>
 </html>

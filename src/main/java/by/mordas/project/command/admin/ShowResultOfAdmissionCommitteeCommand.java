@@ -55,8 +55,9 @@ public class ShowResultOfAdmissionCommitteeCommand implements Command {
                 }
                 content.setRequestAttribute(ParamConstant.FACULTY,optionalFaculty.get());
                 content.setRequestAttribute(ParamConstant.DTO_LIST,dtoList);
-                router.setPagePath(PageConstant.PAGE_SHOW_STATE_OF_ADMISSION_COMMITTEE);
+
             }
+            router.setPagePath(PageConstant.PAGE_SHOW_STATE_OF_ADMISSION_COMMITTEE);
         } catch (LogicException e) {
             logger.log(Level.ERROR, e.getMessage());
             router.setRouter(Router.RouteType.REDIRECT);

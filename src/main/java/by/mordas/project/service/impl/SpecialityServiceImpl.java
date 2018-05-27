@@ -43,8 +43,8 @@ public class SpecialityServiceImpl implements SpecialityService{
             try {
                 Speciality speciality=new Speciality();
                 speciality.setSpecialityId(Long.valueOf(specialityId));
-                speciality.setEndRegistration(DateConverter.getLocaleDateTime(startDate));
-                speciality.setStartRegistration(DateConverter.getLocaleDateTime(endDate));
+                speciality.setStartRegistration(DateConverter.getLocaleDateTime(startDate));
+                speciality.setEndRegistration(DateConverter.getLocaleDateTime(endDate));
                 mysqlFactory.getSpecialityDAO().updateSpecialityRegisterDate(speciality);
             }
             catch (DAOException e) {

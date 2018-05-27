@@ -180,6 +180,7 @@ public class DataValidator {
         if(checkData(DATE_TIME_REGEX,start) && checkData(DATE_TIME_REGEX,end)){
             LocalDateTime startDateTime=DateConverter.getLocaleDateTime(start);
             LocalDateTime endDateTime=DateConverter.getLocaleDateTime(start);
+            LocalDateTime now=LocalDateTime.now();
             if(endDateTime.isBefore(startDateTime)){
                 errorMap.put(ParamConstant.END_REGISTRATION,end);
             }

@@ -36,8 +36,9 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         SessionRequestContent content = new SessionRequestContent(request);
+        String d=request.getCharacterEncoding();
+        String s=request.getParameter("faculty_name");
         Command command = CommandMap.getInstance().get(content.getRequestParameter(ParamConstant.COMMAND));
         Router router = command.execute(content);
         request = content.getRequest();

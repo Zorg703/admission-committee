@@ -29,14 +29,14 @@ public class ShowUserSubjectsCommand implements Command{
         User user= (User) content.getSessionAttribute(ParamConstant.USER);
         try {
             Optional<Map<Subject,Integer>> optionalMap=subjectService.findSubjects(user.getUserId());
-            if(optionalMap.isPresent()) {
+            if(optionalMap.isPresent() &&!optionalMap.get().isEmpty()) {
                 Map<Subject,Integer> subjectsMap= optionalMap.get();
                 content.setRequestAttribute(ParamConstant.SUBJECTS,subjectsMap);
                 router.setPagePath(PageConstant.PAGE_USER_SUBJECTS);
             }
             else {
                 router.setPagePath(PageConstant.PAGE_USER_SUBJECTS);
-                content.setRequestAttribute(ParamConstant.EMPTY_SUBJECTS,ParamConstant.EMPTY_SUBJECTS);
+                content.setRequestAttribute(ParamConstant.EMPTY_SUBJECTS,user.getSpecialityId());
             }
         } catch (LogicException e) {
             logger.log(Level.ERROR,e.getMessage());

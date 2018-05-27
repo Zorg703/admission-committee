@@ -16,12 +16,15 @@
 <head>
     <title><fmt:message key="user.cancel_registration.title"/> </title>
 </head>
-<body>
-<fmt:message key="user.cancel_registration.text"/> ${speciality.specialityName} <fmt:message key="user.cancel_registration.button"/>
-<form name="cancel_registration" method="get" action="${pageContext.servletContext.contextPath}/controller">
-    <input type="hidden" name="command" value="cancel_registration">
-    <input class="button" type="submit">
-</form>
 
+<h3><fmt:message key="user.cancel_registration.text"/> ${speciality.specialityName} <fmt:message key="user.cancel_registration.button"/></h3>
+<form name="cancel_registration" method="get" action="${pageContext.servletContext.contextPath}/controller">
+    <div class="card shadow">
+        <div class="card-block">
+    <input type="hidden" name="command" value="cancel_registration">
+    <input class="btn btn-danger" type="submit" value=<fmt:message key="user.registration.confirm"/>>
+        </div>
+    </div>
+</form>
 </body>
 </html>

@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class ChangePasswordCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
@@ -25,20 +26,30 @@ public class ChangePasswordCommand implements Command {
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
+        User user=(User)content.getSessionAttribute(ParamConstant.USER);
+        String oldPassword=content.getRequestParameter(ParamConstant.OLD_PASSWORD);
+        String login=user.getLogin();
         String password1=content.getRequestParameter(ParamConstant.PASSWORD_ONE);
         String password2=content.getRequestParameter(ParamConstant.PASSWORD_TWO);
-        Long userID=((User)content.getSessionAttribute(ParamConstant.USER)).getUserId();
+
+        Long userID=user.getUserId();
         Map<String,String> errorMap= null;
         try {
-            errorMap = userService.changePassword(userID,password1,password2);
-            if(errorMap.isEmpty()){
-                router.setPagePath(PageConstant.PAGE_USER_SUCCESS);
-                router.setRouter(Router.RouteType.REDIRECT);
-               // content.setSessionAttribute(SUCCESS_CHANGED,SUCCESS_CHANGED);
+            Optional<User> optionalUser=userService.findUserLoginAndPassword(login,oldPassword);
+            if(optionalUser.isPresent()) {
+                errorMap = userService.changePassword(userID, password1, password2);
+                if (errorMap.isEmpty()) {
+                    router.setPagePath(PageConstant.PAGE_USER_SUCCESS);
+                    router.setRouter(Router.RouteType.REDIRECT);
+                    // content.setSessionAttribute(SUCCESS_CHANGED,SUCCESS_CHANGED);
+                } else {
+                    router.setPagePath(PageConstant.PAGE_CHANGE_PASSWORD);
+                    content.setRequestAttribute(ParamConstant.ERROR_MESSAGES, errorMap);
+                }
             }
             else {
                 router.setPagePath(PageConstant.PAGE_CHANGE_PASSWORD);
-                content.setRequestAttribute(ParamConstant.ERROR_MESSAGES,errorMap);
+                content.setRequestAttribute(ParamConstant.MESSAGE, oldPassword);
             }
         } catch (LogicException e) {
             logger.log(Level.ERROR,e.getMessage());

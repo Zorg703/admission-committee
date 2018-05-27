@@ -31,7 +31,7 @@ public class PageConstant {
     public static final String PAGE_CANCEL_REGISTRATION="views/jsp/user/cancel_registration.jsp";
     public static final String PAGE_CHANGE_REGISTRATION_DATE="views/jsp/admin/change_speciality_register_date.jsp";
     public static final String PAGE_CHOOSE_FACULTY_TO_RESULT="views/jsp/admin/choose_faculty_to_result.jsp";
-    public static final String PAGE_SHOW_STATE_OF_ADMISSION_COMMITTEE="views/jsp/admin/choose_faculty_to_result.jsp";
+    public static final String PAGE_SHOW_STATE_OF_ADMISSION_COMMITTEE="views/jsp/admin/show_state_of_admission_committee.jsp";
 }
 
 

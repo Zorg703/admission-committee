@@ -12,6 +12,8 @@
 <c:import url="${pageContext.request.contextPath}/views/jsp/admin/include/menu.jsp"/>
 
 <html>
+<fmt:setLocale value="${sessionScope.locale}" scope="request"/>
+<fmt:setBundle basename="localization"/>
 <head>
     <title>Title</title>
 </head>
@@ -20,9 +22,10 @@
 <table>
     <c:forEach var="faculty" items="${faculty_list}" varStatus="status">
         <tr>
-            <td><a href="${pageContext.request.contextPath}/controller?command=show_result_of_admission_committee&id=${faculty.facultyId}"><c:out value="${faculty.facultyName}"/></a></td>
+            <td><a href="${pageContext.request.contextPath}/controller?command=show_result_of_admission_committee&faculty_id=${faculty.facultyId}"><c:out value="${faculty.facultyName}"/></a></td>
         </tr>
     </c:forEach>
 </table>
+</c:if>
 </body>
 </html>

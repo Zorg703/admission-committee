@@ -41,10 +41,12 @@
     </table>
 </c:if>
 <c:if test="${not empty pages}">
-    <fmt:message key="admin.find_all_users.list_pages"/>
-    <c:forEach var="page" begin="0" end="${pages}">
-        <a href="${pageContext.request.contextPath}/controller?command=next_find_users_page&counter=${page}">${page+1}</a>
+   <h5><fmt:message key="admin.find_all_users.list_pages"/></h5>
+<ul class="pagination">
+<c:forEach var="page" begin="0" end="${pages}">
+        <li><a href="${pageContext.request.contextPath}/controller?command=next_find_users_page&counter=${page}">${page+1}</a></li>
     </c:forEach>
+</ul>
 </c:if>
 </body>
 </html>

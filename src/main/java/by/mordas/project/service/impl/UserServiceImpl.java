@@ -152,7 +152,6 @@ public class UserServiceImpl  implements UserService {
     }
     @Override
     public boolean isAccepted(Speciality speciality, User user) throws LogicException {
-
             return calculateUserAvgScore(user) >= definePassingScore(speciality);
 
 
@@ -163,6 +162,7 @@ public class UserServiceImpl  implements UserService {
         try {
             mysqlFactory.getUserDAO().clearUserScore(user);
             user.setSpecialityId(0);
+            user.setSubjectMark(new HashMap<>(3));
             return user;
         } catch (DAOException e) {
             throw new LogicException("Problems with canceledRegistration method", e);
@@ -233,10 +233,17 @@ public class UserServiceImpl  implements UserService {
         try {
             List<Integer> scores = mysqlFactory.getSpecialityDAO().defineUsersSumScoreRegisterOnSpeciality(speciality.getSpecialityId());
             int counter=0;
-            for (Integer score:scores){
-                counter+=score;
+
+            if(scores.size()>=speciality.getRecruitmentPlan() && speciality.getRecruitmentPlan()!=0) {
+                for (Integer score:scores){
+                    counter+=score;
+                }
+                return counter / speciality.getRecruitmentPlan();
             }
-            return counter/speciality.getRecruitmentPlan();
+            else {
+                return 0;
+            }
+
         } catch (DAOException e) {
             throw new LogicException("Problems with define passing score  method");
         }

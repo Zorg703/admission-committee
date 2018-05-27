@@ -17,11 +17,40 @@
     <title><fmt:message key="user.subjects.title"/></title>
 </head>
 <body>
-<c:forEach var="subject" items="${subjects}">
-    <fmt:message key="user.subjects.name"/> <c:out value="${subject.key.subjectName}"/><fmt:message key="user.subjects.score"/> <c:out value="${subject.value}"/>
-</c:forEach>
+<c:if test="${not empty subjects}">
+    <h3><fmt:message key="user.subject_scores.head"/></h3>
+<table class="table table-bordered table-hover"style="width: 50%">
+    <tr>
+        <th>
+            <fmt:message key="user.subjects.name"/>
+        </th>
+        <th>
+            <fmt:message key="user.subjects.score"/>
+        </th>
+    </tr>
+    <c:forEach var="subject" items="${subjects}">
+    <tr>
+        <td>
+                ${subject.key.subjectName}
+        </td>
+        <td>
+                ${subject.value}
+        </td>
+    </tr>
+    </c:forEach>
+    <tr>
+        <td>
+            <fmt:message key="user.registration.certificate"/>
+        </td>
+        <td>
+            ${user.certificateMark}
+        </td>
+    </tr>
+
+</table>
+</c:if>
 <c:if test="${not empty empty_subjects}">
-    <fmt:message key="user.subjects.empty"/>
+    <h3><fmt:message key="user.subjects.empty"/></h3>
 </c:if>
 </body>
 </html>

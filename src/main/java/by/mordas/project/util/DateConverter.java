@@ -10,6 +10,7 @@ public class DateConverter {
         return Timestamp.valueOf(localDateTime);
     }
     public static LocalDateTime getLocaleDateTime(String dateTime){
+        dateTime=dateTime.replace('T',' ');
         return LocalDateTime.parse(dateTime,formatter);
     }
 

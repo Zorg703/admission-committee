@@ -22,7 +22,7 @@
         <fmt:message key="user.show_status.register"/><fmt:message key="user.show_status.faculty"/> ${faculty.facultyName}
         <fmt:message key="user.show_status.speciality"/>${speciality.specialityName}
         <c:choose>
-            <c:when test="${is_accepted=true}">
+            <c:when test="${is_accepted=true }">
                 <fmt:message key="user.show_status.hired"/>
             </c:when>
             <c:when test="${is_open=true}">
@@ -34,7 +34,7 @@
         </c:choose>
     </c:when>
     <c:otherwise>
-        <fmt:message key="user.show_status.empty"/>
+       <h3><fmt:message key="user.show_status.empty"/></h3>
     </c:otherwise>
 </c:choose>
 </body>

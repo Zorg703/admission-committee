@@ -31,7 +31,9 @@ public class RegisterOnSpecialityCommand implements Command {
 
 
         try {
-            if(userService.setUserSpeciality(user,specialityId,parameters)!=null){
+             user=userService.setUserSpeciality(user,specialityId,parameters);
+           if(user.getSpecialityId()!=0)
+            {
                 router.setRouter(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.PAGE_USER_SUCCESS);
                 content.setSessionAttribute(ParamConstant.USER,user);

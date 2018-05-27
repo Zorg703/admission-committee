@@ -22,7 +22,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-<form novalidate name="registration-form" method="post" action="${pageContext.request.contextPath}/controller" >
+<form name="registration-form" method="post" action="${pageContext.request.contextPath}/controller" >
     <input type="hidden" name="command" value="user_registration">
     <h3><fmt:message key="user.registration.h3"/></h3>
 <div class="row">
@@ -30,9 +30,10 @@
         <label  for="firstName"><fmt:message key="user.registration.first_name"/> </label>
         <input class="form-control" id=firstName type="text" name="first_name"  placeholder="" required pattern="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}"  value="${user_params.first_name}">
     </div>
-
         <c:if test="${not empty messages.first_name}">
+            <div class="alert alert-danger">
                 <fmt:message key="user.registration.message.first_name"/>
+             </div>
         </c:if>
     <div class="col-md-6 mb-3">
         <label  for="lastName"><fmt:message key="user.registration.last_name"/> </label>
@@ -40,7 +41,9 @@
     </div>
 
         <c:if test="${not empty messages.last_name}">
-            <fmt:message key="user.registration.message.last_name"/>
+            <div class="alert alert-danger">
+                <fmt:message key="user.registration.message.last_name"/>
+            </div>
         </c:if>
 </div>
     <div class="row">
@@ -48,7 +51,9 @@
             <label for="birthDay"><fmt:message key="user.registration.birthday"/></label>
             <input type="date" name="birthday" class="form-control" id="birthDay" placeholder="01-01-2000" required min="1900-01-01" max="2010-12-12" value="${user_params.birthday}"></label>
                 <c:if test="${not empty messages.birthday}">
-                    <fmt:message key="user.registration.message.birthday"/>
+                    <div class="alert alert-danger">
+                        <fmt:message key="user.registration.message.birthday"/>
+                    </div>
                 </c:if>
         </div>
     </div>
@@ -80,12 +85,15 @@
             <fmt:message key="user.registration.login_helper"/>
         </small>
             <c:if test="${not empty messages.login}">
-                <fmt:message key="user.registration.message.login"/>
+                 <div class="alert alert-danger">
+                    <fmt:message key="user.registration.message.login"/>
+                 </div>
             </c:if>
             <c:if test="${not empty messages.login_busy}">
-                <fmt:message key="user.registration.message.login_busy"/>
+                 <div class="alert alert-danger">
+                    <fmt:message key="user.registration.message.login_busy"/>
+                 </div>
             </c:if>
-
     </div>
 
     <div class="mb-3">
@@ -95,26 +103,27 @@
             <fmt:message key="user.registration.password_helper"/>
         </small>
           <c:if test="${not empty messages.password1}">
+            <div class="alert alert-danger">
               <fmt:message key="user.registration.message.password1"/>
+            </div>
           </c:if>
     </div>
-
-
     <div class="mb-3">
         <label for="password2"><fmt:message key="user.registration.password_confirm"/> </label>
             <input class="form-control" type="password" required name="password2" id="password2"pattern= "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}" value="">
             <c:if test="${not empty messages.password2}">
-                <fmt:message key="user.registration.message.password2"/>
+                 <div class="alert alert-danger">
+                     <fmt:message key="user.registration.message.password2"/>
+                 </div>
             </c:if>
-
     </div>
-
-
     <div class="mb-3">
         <label for="email"><fmt:message key="user.registration.email"/></label>
             <input class="form-control" id="email" type="email" required name="email" placeholder="your@email.com" value="${user_params.email}">
             <c:if test="${not empty messages.email}">
+            <div class="alert alert-danger">
                 <fmt:message key="user.registration.message.email"/>
+            </div>
             </c:if>
     </div>
     <c:set var="count" value="0" scope="page"/>
@@ -139,8 +148,6 @@
         </div>
     </div>
 </div>
-<c:remove var="messages" scope="session"/>
-<c:remove var="user_params" scope="session"/>
 <script type="text/javascript">
     window.onload = function () {
 

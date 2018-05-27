@@ -8,11 +8,14 @@ import java.util.List;
 
 public class SpecialityDTO {
     private Speciality speciality;
-    private boolean isRegisterEnd;
+    private boolean registerEnd;
     private int countRegisterUser;
-    private boolean isSpecialityFull;
+    private boolean specialityFull;
     private int passingScore;
 
+    public SpecialityDTO(){
+
+    }
     public SpecialityDTO(Speciality speciality){
         this.speciality=speciality;
     }
@@ -65,14 +68,6 @@ public class SpecialityDTO {
         speciality.setEndRegistration(endRegistration);
     }
 
-    public boolean isRegisterEnd() {
-        return isRegisterEnd;
-    }
-
-    public void setRegisterEnd(boolean registerEnd) {
-        isRegisterEnd = registerEnd;
-    }
-
     public int getCountRegisterUser() {
         return countRegisterUser;
     }
@@ -81,19 +76,27 @@ public class SpecialityDTO {
         this.countRegisterUser = countRegisterUser;
     }
 
-    public boolean isSpecialityFull() {
-        return isSpecialityFull;
-    }
-
-    public void setSpecialityFull(boolean specialityFull) {
-        isSpecialityFull = specialityFull;
-    }
-
     public int getPassingScore() {
         return passingScore;
     }
 
     public void setPassingScore(int passingScore) {
         this.passingScore = passingScore;
+    }
+
+    public boolean isRegisterEnd() {
+        return registerEnd;
+    }
+
+    public void setRegisterEnd(boolean registerEnd) {
+        this.registerEnd = registerEnd;
+    }
+
+    public boolean isSpecialityFull() {
+        return specialityFull;
+    }
+
+    public void setSpecialityFull(boolean specialityFull) {
+        this.specialityFull = specialityFull;
     }
 }

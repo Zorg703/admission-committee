@@ -17,9 +17,7 @@
     <title><fmt:message key="user.show_specialities.title"/></title>
 </head>
 <body>
-<fmt:message key="admin.choose_faculty_and_speciality.speciality"/>
-<form name="choose speciality" action="${pageContext.request.contextPath}/controller" method="get">
-    <input type="hidden" name="command" value="register_on_speciality">
+<h3><fmt:message key="admin.choose_faculty_and_speciality.speciality"/></h3>
 <table>
 <c:forEach var="speciality" items="${speciality_list}" varStatus="status">
     <tr>
@@ -27,13 +25,5 @@
     </tr>
 </c:forEach>
 </table>
-<select name="speciality">
-    <option disabled><fmt:message key="user.show_specialities.choose"/> </option>
-    <c:forEach var="speciality" items="${speciality_list}" >
-        <option value="${speciality.specialityId}">${speciality.specialityName}</option>
-    </c:forEach>
-</select>
-    <input class="button" type="submit">
-    </form>
 </body>
 </html>

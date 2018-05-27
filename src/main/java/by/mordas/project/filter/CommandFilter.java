@@ -21,6 +21,7 @@ public class CommandFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
+        servletRequest.setCharacterEncoding("utf-8");
         try {
             String cmd = request.getParameter(ParamConstant.COMMAND);
             if (cmd != null) {

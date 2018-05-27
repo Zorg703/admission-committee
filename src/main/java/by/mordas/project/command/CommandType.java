@@ -2,7 +2,6 @@ package by.mordas.project.command;
 
 public enum CommandType {
     SHOW_ALL_USERS(ClientType.ADMIN),
-    FIND_SPECIALITY(ClientType.ADMIN),
     FIND_USER_SUBJECTS(ClientType.ADMIN),
     ADD_FACULTY(ClientType.ADMIN),
     DELETE_FACULTY(ClientType.ADMIN),
@@ -47,7 +46,9 @@ public enum CommandType {
     GO_TO_USER_DATA_PAGE(ClientType.USER),
     GO_TO_USER_STATUS_PAGE(ClientType.USER),
     CANCEL_REGISTRATION(ClientType.USER),
-    GO_TO_CANCEL_REGISTRATION_PAGE(ClientType.USER);
+    GO_TO_CANCEL_REGISTRATION_PAGE(ClientType.USER),
+    SHOW_USER_SUBJECTS(ClientType.USER),
+    FIND_SPECIALITY(ClientType.USER);
 
     CommandType(ClientType type) {
     this.type=type;

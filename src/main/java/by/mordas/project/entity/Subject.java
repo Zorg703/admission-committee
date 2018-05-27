@@ -25,11 +25,9 @@ public class Subject extends Entity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Subject subject = (Subject) o;
 
-        if (subjectId != subject.subjectId) return false;
-        return subjectName != null ? subjectName.equals(subject.subjectName) : subject.subjectName == null;
+        return subjectId == subject.subjectId && (subjectName != null ? subjectName.equals(subject.subjectName) : subject.subjectName == null);
     }
 
     @Override

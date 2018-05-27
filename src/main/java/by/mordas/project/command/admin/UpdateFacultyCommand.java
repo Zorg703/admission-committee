@@ -47,8 +47,7 @@ public class UpdateFacultyCommand implements Command{
             }
             else {
                 router.setPagePath(PageConstant.PAGE_UPDATE_FACULTY);
-                content.setSessionAttribute(ERROR_ID,facultyId);
-                router.setRouter(Router.RouteType.REDIRECT);
+                content.setRequestAttribute(ERROR_ID,facultyId);
             }
         } catch (LogicException e) {
             logger.log(Level.ERROR, e.getMessage());

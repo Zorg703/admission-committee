@@ -17,11 +17,40 @@
     <title><fmt:message key="user.data.title"/></title>
 </head>
 <body>
-<fmt:message key="user.data.first_name"/>: ${user.firstName}
-<fmt:message key="user.data.last_name"/>: ${user.lastName}
-<fmt:message key="user.data.birthday"/>: ${user.birthday}
-<fmt:message key="user.data.email"/> ${user.email}
-<br>${user.specialityId}<br>
-${user.userId}
+<h2><fmt:message key="user.data.head"/>: </h2>
+<div class="container" style="width: 70%">
+<table class="table table-bordered table-hover"style="width: 70%">
+    <tr>
+        <th><fmt:message key="user.data.first_name"/>:</th>
+        <td> ${user.firstName}</td>
+    </tr>
+    <tr>
+        <th>
+            <fmt:message key="user.data.last_name"/>:
+        </th>
+        <td>
+            ${user.lastName}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            <fmt:message key="user.data.birthday"/>:
+        </th>
+        <td>
+            ${user.birthday}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            <fmt:message key="user.data.email"/>:
+        </th>
+        <td>
+            ${user.email}
+        </td>
+    </tr>
+
+
+</table>
+</div>
 </body>
 </html>

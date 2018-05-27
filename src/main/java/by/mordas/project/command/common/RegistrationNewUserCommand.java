@@ -7,6 +7,7 @@ import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.service.LogicException;
 import by.mordas.project.service.UserService;
+import by.mordas.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +18,9 @@ import java.util.Map;
 public class RegistrationNewUserCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
     private UserService userService;
-
+    public RegistrationNewUserCommand(){
+        userService= ServiceFactory.getInstance().getUserService();
+    }
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
