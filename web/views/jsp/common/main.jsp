@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <c:choose>
 <c:when test="${not empty user}">
         <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
@@ -37,7 +38,7 @@
    <body>
 
   <div class="container col-md-8" style="width: 100%">
-   <h2><fmt:message key="main.page.header"/>, ${user.firstName} </h2>
+   <h2><fmt:message key="main.page.header"/>, ${user.firstName}, <fmt:message key="main.page.date"/>0 <ctg:date-tag/></h2>
    <div id="UniversityCarousel" class="carousel slide" data-ride="carousel">
        <!-- Indicators -->
        <ol class="carousel-indicators">

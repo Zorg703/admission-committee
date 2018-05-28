@@ -23,17 +23,17 @@ import java.util.Optional;
  ***/
 public class ShowSpecialitiesCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
-    private FacultyService facultyService;
+    private SpecialityService specialityService;
 
     public ShowSpecialitiesCommand(){
-        facultyService=ServiceFactory.getInstance().getFacultyService();
+        specialityService=ServiceFactory.getInstance().getSpecialityService();
     }
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         String id=content.getRequestParameter(ParamConstant.ID);
         try {
-            Optional<List<Speciality>> optionalSpecialities=facultyService.findSpecialitiesByFacultyId(id);
+            Optional<List<Speciality>> optionalSpecialities=specialityService.findSpecialitiesOnFaculty(id);
             if(optionalSpecialities.isPresent()) {
                 List<Speciality> specialities=optionalSpecialities.get();
                 content.setRequestAttribute(ParamConstant.SPECIALITY_LIST, specialities);

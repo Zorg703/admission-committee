@@ -8,6 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <html>
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
@@ -16,7 +17,6 @@
     <link href="${pageContext.request.contextPath}/views/css/bootstrap.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/views/css/styler.css" rel="stylesheet" type="text/css" >
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
     </head>
     <body>
 
@@ -51,6 +51,7 @@
                 <li><a href="${pageContext.servletContext.contextPath}/views/jsp/common/log_in.jsp"><span class="glyphicon glyphicon-log-in"></span><fmt:message key="login.form.sign_in"/> </a></li>
             </ul>
         </div>
+
     </nav>
 
 

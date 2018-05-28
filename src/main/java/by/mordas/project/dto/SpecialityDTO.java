@@ -10,7 +10,9 @@ import java.util.List;
  Author: Sergei Mordas
  Date: 18.04.2018
  ***/
+
 public class SpecialityDTO {
+
     private Speciality speciality;
     private boolean registerEnd;
     private int countRegisterUser;

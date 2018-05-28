@@ -43,7 +43,7 @@ public class ShowResultOfAdmissionCommitteeCommand implements Command {
 
         try {
             Optional<Faculty> optionalFaculty=facultyService.findFaculty(facultyId);
-            Optional<List<Speciality>> optionalList=facultyService.findSpecialitiesByFacultyId(facultyId);
+            Optional<List<Speciality>> optionalList=specialityService.findSpecialitiesOnFaculty(facultyId);
             if(optionalFaculty.isPresent() && optionalList.isPresent()){
                 List<Speciality> specialityList=optionalList.get();
                 for(Speciality speciality:specialityList){

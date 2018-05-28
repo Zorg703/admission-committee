@@ -11,8 +11,23 @@ import java.util.Optional;
  Date: 20.04.2018
  ***/
 public interface SubjectService {
-    Optional<Map<Subject, Integer>> findSubjects(Long id) throws LogicException;
 
+    /**
+     * Find user's subjects score by user id.
+     *
+     * @param id the user id
+     * @return map of subjects and scores
+     * @throws LogicException the Logic exception
+     */
+    Optional<Map<Subject, Integer>> findUserSubjectsScore(Long id) throws LogicException;
+
+    /**
+     * Find subjects for speciality to user able to register by speciality id.
+     *
+     * @param specialityId the speciality id
+     * @return optional of subjects list
+     * @throws LogicException the logic exception
+     */
     Optional<List<Subject>> findSubjectsForSpeciality(String specialityId) throws LogicException;
 
 

@@ -21,7 +21,7 @@ public class SubjectServiceImpl implements SubjectService {
     private DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
 
     @Override
-    public Optional<Map<Subject, Integer>> findSubjects(Long id) throws LogicException {
+    public Optional<Map<Subject, Integer>> findUserSubjectsScore(Long id) throws LogicException {
         Optional<Map<Subject, Integer>> optional;
         UserDAO userDAO = mysqlFactory.getUserDAO();
         try {

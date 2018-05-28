@@ -108,20 +108,4 @@ public class FacultyServiceImpl implements FacultyService {
         return optional;
     }
 
-    @Override
-    public Optional<List<Speciality>> findSpecialitiesByFacultyId(String id) throws LogicException {
-        Optional<List<Speciality>> optional = Optional.empty();
-        DataValidator validator = new DataValidator();
-        if (validator.checkId(id)) {
-            FacultyDAO facultyDAO = mysqlFactory.getFacultyDAO();
-            Long facultyId = Long.valueOf(id);
-            try {
-                List<Speciality> specialities = facultyDAO.findSpecialityFromFaculty(facultyId);
-                optional = Optional.ofNullable(specialities);
-            } catch (DAOException e) {
-                throw new LogicException("Problems with findSpecialitiesByFacultyId method", e);
-            }
-        }
-        return optional;
-    }
 }

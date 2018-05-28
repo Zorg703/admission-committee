@@ -32,7 +32,7 @@ public class ShowUserSubjectsCommand implements Command{
         Router router=new Router();
         User user= (User) content.getSessionAttribute(ParamConstant.USER);
         try {
-            Optional<Map<Subject,Integer>> optionalMap=subjectService.findSubjects(user.getUserId());
+            Optional<Map<Subject,Integer>> optionalMap=subjectService.findUserSubjectsScore(user.getUserId());
             if(optionalMap.isPresent() &&!optionalMap.get().isEmpty()) {
                 Map<Subject,Integer> subjectsMap= optionalMap.get();
                 content.setRequestAttribute(ParamConstant.SUBJECTS,subjectsMap);

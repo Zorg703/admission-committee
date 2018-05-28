@@ -23,6 +23,7 @@ import java.util.Optional;
  ***/
 public class SpecialityServiceImpl implements SpecialityService{
     private DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
+
     @Override
     public Optional<List<Speciality>> findSpecialitiesOnFaculty(String id) throws LogicException {
         Optional<List<Speciality>> optional=Optional.empty();
