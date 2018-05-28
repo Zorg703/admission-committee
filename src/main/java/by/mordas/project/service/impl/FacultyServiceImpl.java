@@ -3,6 +3,7 @@ package by.mordas.project.service.impl;
 import by.mordas.project.dao.DAOException;
 import by.mordas.project.dao.DAOFactory;
 import by.mordas.project.dao.FacultyDAO;
+import by.mordas.project.dao.SpecialityDAO;
 import by.mordas.project.entity.Faculty;
 import by.mordas.project.entity.Speciality;
 import by.mordas.project.service.FacultyService;
@@ -12,6 +13,10 @@ import by.mordas.project.util.DataValidator;
 import java.util.List;
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 20.05.2018
+ ***/
 public class FacultyServiceImpl implements FacultyService {
     private DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
 
@@ -99,6 +104,23 @@ public class FacultyServiceImpl implements FacultyService {
             optional=Optional.ofNullable(faculty);
         } catch (DAOException e) {
             throw new LogicException("Problems with findFaculty method", e);
+        }
+        return optional;
+    }
+
+    @Override
+    public Optional<List<Speciality>> findSpecialitiesByFacultyId(String id) throws LogicException {
+        Optional<List<Speciality>> optional = Optional.empty();
+        DataValidator validator = new DataValidator();
+        if (validator.checkId(id)) {
+            FacultyDAO facultyDAO = mysqlFactory.getFacultyDAO();
+            Long facultyId = Long.valueOf(id);
+            try {
+                List<Speciality> specialities = facultyDAO.findSpecialityFromFaculty(facultyId);
+                optional = Optional.ofNullable(specialities);
+            } catch (DAOException e) {
+                throw new LogicException("Problems with findSpecialitiesByFacultyId method", e);
+            }
         }
         return optional;
     }

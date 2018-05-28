@@ -1,6 +1,6 @@
 package by.mordas.project.filter;
 
-import by.mordas.project.command.ClientType;
+
 import by.mordas.project.command.CommandType;
 import by.mordas.project.command.PageConstant;
 import by.mordas.project.command.ParamConstant;

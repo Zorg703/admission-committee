@@ -1,27 +1,26 @@
 package by.mordas.project.pool;
 
-import by.mordas.project.dao.DAOException;
-import by.mordas.project.entity.User;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.Connection;
+
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.time.LocalDate;
+
 import java.util.Enumeration;
 import java.util.MissingResourceException;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
-
+/***
+ Author: Sergei Mordas
+ Date: 06.04.2018
+ ***/
 public class DBManager {
     private static Logger logger= org.apache.logging.log4j.LogManager.getRootLogger();
 
+    /** The resource bundle. */
     private static ResourceBundle  resourceBundle=ResourceBundle.getBundle("configuration");
 
     static {
@@ -32,9 +31,19 @@ public class DBManager {
         }
     }
 
+    /**
+     * Instantiates a new DB manager.
+     */
     public DBManager() {
 
     }
+
+    /**
+     * Gets the property  to connect DB
+     *
+     * @param key the key
+     * @return the property
+     */
     public static String getProperty(String key){
         String value;
 
@@ -48,6 +57,9 @@ public class DBManager {
         return value;
     }
 
+    /**
+     * Deregister all drivers
+     */
     public static void deregisterDriver(){
         try {
             Enumeration<Driver> drivers = DriverManager.getDrivers();

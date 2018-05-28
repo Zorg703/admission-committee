@@ -1,5 +1,13 @@
 package by.mordas.project.command;
 
+/***
+ Author: Sergei Mordas
+ Date: 17.04.2018
+ ***/
+
+/**
+ * CommandType(the type of client)
+ */
 public enum CommandType {
     SHOW_ALL_USERS(ClientType.ADMIN),
     FIND_USER_SUBJECTS(ClientType.ADMIN),

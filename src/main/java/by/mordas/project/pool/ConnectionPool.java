@@ -11,7 +11,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-
+/***
+ Author: Sergei Mordas
+ Date: 06.04.2018
+ ***/
 public class ConnectionPool {
     private final static Logger logger= LogManager.getLogger(ConnectionPool.class);
     private static final String URL=DBManager.getProperty("url");
@@ -23,11 +26,21 @@ public class ConnectionPool {
     private static AtomicBoolean isInstance=new AtomicBoolean(false);
     private static int POOL_SIZE=Integer.parseInt(DBManager.getProperty("poolSize"));
 
+    /**
+     * Instantiates a new connection pool.
+     */
     private ConnectionPool() {
+        if (instance != null) {
+            throw new RuntimeException("Reflection is forbidden");
+        }
         connectionsStorage=new ArrayBlockingQueue<>(POOL_SIZE);
         initializePool();
     }
 
+
+    /**
+     * Initialization connection pool
+     */
     private void initializePool(){
         PooledConnection pooledConnection;
     for (int i=0;i<POOL_SIZE;i++){
@@ -44,6 +57,11 @@ public class ConnectionPool {
 
     }
 
+    /**
+     * Gets the single instance of ConnectionPool.
+     *
+     * @return single instance of ConnectionPool
+     */
     public static ConnectionPool getInstance() {
         if(!isInstance.get()) {
             try {
@@ -59,6 +77,12 @@ public class ConnectionPool {
         return instance;
     }
 
+
+    /**
+     * Gets the connection.
+     *
+     * @return the connection
+     */
     public PooledConnection getConnection(){
             PooledConnection connection = null;
         try {
@@ -71,10 +95,29 @@ public class ConnectionPool {
 
     }
 
+    /**
+     * Close connection.
+     * Return connection in the connections storage.
+     *
+     * @param connection the connection
+     */
     public void closeConnection(PooledConnection connection){
         connectionsStorage.offer(connection);
     }
 
+    /**
+     * return pool size
+     *
+     * @return  int pool size
+     */
+    public int getPoolSize() {
+        return connectionsStorage.size();
+    }
+
+
+    /**
+     * Close connection pool.
+     */
     public void closePool() {
         try {
             for (int i = 0; i < POOL_SIZE; i++) {
@@ -88,5 +131,11 @@ public class ConnectionPool {
             DBManager.deregisterDriver();
         }
     }
-
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
+    }
 }

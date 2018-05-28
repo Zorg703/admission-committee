@@ -15,6 +15,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
+/***
+ Author: Sergei Mordas
+ Date: 09.03.2018
+ ***/
 public class AddSpecialtyCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
     private SpecialityService specialityService;

@@ -4,19 +4,19 @@ import by.mordas.project.entity.Subject;
 
 import java.util.List;
 
+/***
+ Author: Sergei Mordas
+ Date: 06.04.2018
+ ***/
 public interface SubjectDAO extends AbstractDAO<Subject> {
 
-    List<Subject> findAllEntity() throws DAOException;
-
-    Subject findEntityById(long id) throws DAOException;
-
-    boolean delete(long id) throws DAOException;
-
-    void create(Subject subject) throws DAOException;
-
-    Subject update(Subject subject) throws DAOException;
-
-    List<Subject> findSubjectByUserId(long id) throws DAOException;
+    /**
+     * Find subjects for speciality to register
+     *
+     * @param id the speciality id
+     * @return the list of subjects
+     * @throws DAOException the dao exception
+     */
     List<Subject> findSubjectsBySpecialityId(long id) throws DAOException;
 
 }

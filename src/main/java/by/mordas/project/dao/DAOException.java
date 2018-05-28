@@ -1,9 +1,11 @@
 package by.mordas.project.dao;
 
-/**
- * Created by Enginer on 06.03.2018.
- */
+/***
+ Author: Sergei Mordas
+ Date: 06.03.2018
+ ***/
 public class DAOException extends Exception {
+
     public DAOException() {
         super();
     }

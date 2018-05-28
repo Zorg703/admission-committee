@@ -14,7 +14,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
-
+/***
+ Author: Sergei Mordas
+ Date: 30.03.2018
+ ***/
 public class LogInCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
     private UserService userService;

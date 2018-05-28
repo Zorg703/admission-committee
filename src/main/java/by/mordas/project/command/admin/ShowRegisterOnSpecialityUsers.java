@@ -17,6 +17,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 06.05.2018
+ ***/
 public class ShowRegisterOnSpecialityUsers implements Command {
     private static Logger logger= LogManager.getRootLogger();
 

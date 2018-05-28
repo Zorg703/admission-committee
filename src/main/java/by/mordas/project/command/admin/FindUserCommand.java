@@ -18,6 +18,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 
 public class FindUserCommand implements Command {
+    /***
+     Author: Sergei Mordas
+     Date: 22.04.2018
+     ***/
     private static Logger logger= LogManager.getRootLogger();
     private UserService userService;
     private SpecialityService specialityService;

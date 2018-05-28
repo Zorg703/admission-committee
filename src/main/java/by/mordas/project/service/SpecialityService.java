@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 20.04.2018
+ ***/
+
 public interface SpecialityService {
     Optional<List<Speciality>> findSpecialitiesOnFaculty(String id) throws LogicException;
 
@@ -20,8 +25,6 @@ public interface SpecialityService {
     Optional<Speciality> findSpecialityById(String specialityId) throws LogicException;
 
     Map<String, String> updateSpeciality(Map<String, String> parameters) throws LogicException;
-
-    Optional<List<Speciality>> findSpecialitiesByFacultyId(String id) throws LogicException;
 
     Optional<Speciality> findSpeciality(Long id) throws LogicException;
 

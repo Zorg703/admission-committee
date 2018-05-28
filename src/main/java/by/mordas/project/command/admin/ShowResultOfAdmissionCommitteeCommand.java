@@ -21,16 +21,19 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+/***
+ Author: Sergei Mordas
+ Date: 06.05.2018
+ ***/
 public class ShowResultOfAdmissionCommitteeCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
     private SpecialityService specialityService;
     private UserService userService;
     private FacultyService facultyService;
     public ShowResultOfAdmissionCommitteeCommand(){
-        specialityService= ServiceFactory.getInstance().getSpecialityService();
         userService=ServiceFactory.getInstance().getUserService();
         facultyService=ServiceFactory.getInstance().getFacultyService();
+        specialityService=ServiceFactory.getInstance().getSpecialityService();
     }
     @Override
     public Router execute(SessionRequestContent content) {
@@ -40,7 +43,7 @@ public class ShowResultOfAdmissionCommitteeCommand implements Command {
 
         try {
             Optional<Faculty> optionalFaculty=facultyService.findFaculty(facultyId);
-            Optional<List<Speciality>> optionalList=specialityService.findSpecialitiesByFacultyId(facultyId);
+            Optional<List<Speciality>> optionalList=facultyService.findSpecialitiesByFacultyId(facultyId);
             if(optionalFaculty.isPresent() && optionalList.isPresent()){
                 List<Speciality> specialityList=optionalList.get();
                 for(Speciality speciality:specialityList){

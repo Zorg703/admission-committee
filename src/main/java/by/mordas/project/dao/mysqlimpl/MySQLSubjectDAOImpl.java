@@ -100,24 +100,6 @@ public class MySQLSubjectDAOImpl implements SubjectDAO {
 
     }
 
-    @Override
-    public List<Subject> findSubjectByUserId(long id) throws DAOException {
-        List<Subject> subjects=null;
-        try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
-            PreparedStatement pStatement=connection.prepareStatement(FIND_USER_SUBJECTS)){
-            pStatement.setLong(1,id);
-            ResultSet rs=pStatement.executeQuery();
-            if(rs!=null){
-                while (rs.next()){
-                    Subject subject=new Subject();
-                    //todo
-                }
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Exception in findSubjectByUserId method",e);
-        }
-        return subjects;
-    }
 
     @Override
     public List<Subject> findSubjectsBySpecialityId(long id) throws DAOException {

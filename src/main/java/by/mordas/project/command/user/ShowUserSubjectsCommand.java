@@ -17,6 +17,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.Map;
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 12.04.2018
+ ***/
 public class ShowUserSubjectsCommand implements Command{
     private static Logger logger= LogManager.getRootLogger();
     private SubjectService subjectService;

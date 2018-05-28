@@ -1,5 +1,9 @@
 package by.mordas.project.service;
 
+/***
+ Author: Sergei Mordas
+ Date: 20.04.2018
+ ***/
 public class LogicException extends Exception {
     public LogicException() {
         super();

@@ -12,6 +12,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/***
+ Author: Sergei Mordas
+ Date: 06.04.2018
+ ***/
 public class DeleteFacultyCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
     private FacultyService facultyService;

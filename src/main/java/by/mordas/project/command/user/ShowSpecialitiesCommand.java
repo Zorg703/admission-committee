@@ -6,6 +6,7 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Speciality;
+import by.mordas.project.service.FacultyService;
 import by.mordas.project.service.LogicException;
 import by.mordas.project.service.SpecialityService;
 import by.mordas.project.service.factory.ServiceFactory;
@@ -16,19 +17,23 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 16.05.2018
+ ***/
 public class ShowSpecialitiesCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
-    private SpecialityService specialityService;
+    private FacultyService facultyService;
 
     public ShowSpecialitiesCommand(){
-        specialityService=ServiceFactory.getInstance().getSpecialityService();
+        facultyService=ServiceFactory.getInstance().getFacultyService();
     }
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
         String id=content.getRequestParameter(ParamConstant.ID);
         try {
-            Optional<List<Speciality>> optionalSpecialities=specialityService.findSpecialitiesByFacultyId(id);
+            Optional<List<Speciality>> optionalSpecialities=facultyService.findSpecialitiesByFacultyId(id);
             if(optionalSpecialities.isPresent()) {
                 List<Speciality> specialities=optionalSpecialities.get();
                 content.setRequestAttribute(ParamConstant.SPECIALITY_LIST, specialities);

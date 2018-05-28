@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 20.04.2018
+ ***/
 public interface UserService {
     Optional<List<User>> findAllUser() throws LogicException;
 

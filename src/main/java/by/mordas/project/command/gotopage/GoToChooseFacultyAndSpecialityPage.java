@@ -14,6 +14,10 @@ import by.mordas.project.service.factory.ServiceFactory;
 import java.util.List;
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 12.05.2018
+ ***/
 public class GoToChooseFacultyAndSpecialityPage implements Command {
     private FacultyService facultyService;
 

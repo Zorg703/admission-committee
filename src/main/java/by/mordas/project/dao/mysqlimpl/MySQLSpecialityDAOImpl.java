@@ -22,7 +22,6 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     private static final String FIND_SPECIALITY_BY_ID="SELECT ID,SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID,START_REGISTRATION,END_REGISTRATION FROM SPECIALITY WHERE ID=?";
     private static final String CREATE_SPECIALITY="INSERT INTO SPECIALITY(SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID,START_REGISTRATION,END_REGISTRATION) VALUES(?,?,?,?,?)";
     private static final String UPDATE_SPECIALITY="UPDATE SPECIALITY SET SPECIALITY_NAME=?,RECRUITMENT_PLAN=?,FACULTY_ID=?,START_REGISTRATION=?,END_REGISTRATION=? WHERE ID=?";
-    private static final String UPDATE_SPECIALITY_SUBJECT="UPDATE SUBJECT_FOR_SPECIALITY SET ID_SUBJECT=? WHERE ID_SPECIALITY=?";
     private static final String DELETE_SPECIALITY="DELETE FROM SPECIALITY WHERE ID=?";
     private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, FACULTY_ID,START_REGISTRATION,END_REGISTRATION FROM SPECIALITY WHERE FACULTY_ID=?";
     private static final String FIND_ALL_USERS_ON_SPECIALITY_BY_ID ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
@@ -71,27 +70,6 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
             throw new DAOException("Exception in findAllEntity method",e);
         }
         return speciality;
-    }
-
-    public List<Speciality> findSpecialitiesByFacultyID(long id) throws DAOException {
-        List<Speciality> specialities=null;
-        try(PooledConnection connection=ConnectionPool.getInstance().getConnection(); PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_SPECIALITY_BY_FACULTY_ID);
-        ) {
-            pStatement.setLong(1,id);
-            ResultSet rs=pStatement.executeQuery();
-            if(rs!=null){
-                specialities=new ArrayList<>();
-                while (rs.next()) {
-                    Speciality speciality=new Speciality();
-                    setSpeciality(rs,speciality);
-                    specialities.add(speciality);
-                }
-                }
-        } catch (SQLException e) {
-            throw new DAOException("Exception in findSpecialitesByFacultyId method",e);
-        }
-
-        return specialities;
     }
 
     @Override

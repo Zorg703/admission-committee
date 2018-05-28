@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 20.04.2018
+ ***/
 public interface SubjectService {
     Optional<Map<Subject, Integer>> findSubjects(Long id) throws LogicException;
 

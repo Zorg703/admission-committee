@@ -15,6 +15,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 
+/***
+ Author: Sergei Mordas
+ Date: 13.05.2018
+ ***/
 public class RegisterOnSpecialityCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
     private UserService userService;
@@ -27,7 +31,6 @@ public class RegisterOnSpecialityCommand implements Command {
         HashMap<String,String> parameters=content.getRequestParameters();
         Long specialityId=Long.valueOf((String) content.getSessionAttribute(ParamConstant.SPECIALITY_ID));
         User user=(User) content.getSessionAttribute(ParamConstant.USER);
-        //user.getSpecialityId==0 ???  проверка
 
 
         try {

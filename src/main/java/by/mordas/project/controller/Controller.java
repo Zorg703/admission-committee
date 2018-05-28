@@ -16,6 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/***
+ Author: Sergei Mordas
+ Date: 18.04.2018
+ ***/
+
 @WebServlet(name = "controller", urlPatterns = "/controller")
 public class Controller extends HttpServlet {
 

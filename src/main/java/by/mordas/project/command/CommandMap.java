@@ -12,6 +12,12 @@ import by.mordas.project.command.user.*;
 import java.util.EnumMap;
 import java.util.Optional;
 
+
+/***
+ Author: Sergei Mordas
+ Date: 18.04.2018
+ ***/
+
 public class CommandMap {
     private EnumMap<CommandType,Command> map=new EnumMap<CommandType, Command>(CommandType.class){{
         this.put(CommandType.SHOW_ALL_USERS,new ShowAllUserCommand());
@@ -60,14 +66,35 @@ public class CommandMap {
         this.put(CommandType.GO_TO_CHOOSE_FACULTY_TO_RESULT,new GoToChooseFacultyToResultPage());
         this.put(CommandType.GO_TO_CHANGE_SPECIALITY_REGISTER_DATE_PAGE,new GoToChangeRegisterDatePage());
         this.put(CommandType.SHOW_USER_SUBJECTS,new ShowUserSubjectsCommand());
-    }
-    };
-    private static CommandMap instance=new CommandMap();//????
+    }};
+
+    /**
+     * Instance the command map
+     *
+     */
+    private static CommandMap instance=new CommandMap();
+
+    /**
+     * Instance the new CommandMap
+     */
     private CommandMap() {
     }
+
+    /**
+     * Gets the single instance of CommandMap.
+     *
+     * @return single instance of CommandMap
+     */
     public static CommandMap getInstance() {
         return instance;
     }
+
+    /**
+     * Get the command
+     *
+     * @param cmd sting of command
+     * @return command
+     */
     public Command get(String cmd){
         try {
             CommandType key = CommandType.valueOf(CommandType.class, cmd.toUpperCase());
@@ -78,12 +105,24 @@ public class CommandMap {
         catch (IllegalArgumentException e){
             return getOrDefault();
         }
-
     }
+
+    /**
+     * Get the command
+     *
+     * @param key the CommandType
+     * @return the command
+     */
     public Command get(CommandType key){
         return map.get(key);
     }
-private Command getOrDefault(){
+
+    /***
+     * Get or deffault command
+     *
+     * @return the default command
+     */
+    private Command getOrDefault(){
 
     return map.get(CommandType.GO_TO_MAIN_PAGE);
 }

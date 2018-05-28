@@ -13,6 +13,10 @@ import by.mordas.project.service.factory.ServiceFactory;
 
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 02.05.2018
+ ***/
 public class GoToCancelRegistrationPage implements Command {
     private SpecialityService specialityService;
     public GoToCancelRegistrationPage(){

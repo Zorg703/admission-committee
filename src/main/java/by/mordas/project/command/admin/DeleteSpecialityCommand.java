@@ -12,7 +12,13 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/***
+ Author: Sergei Mordas
+ Date: 06.05.2018
+ ***/
+
 public class DeleteSpecialityCommand implements Command{
+
     private static Logger logger= LogManager.getRootLogger();
     private SpecialityService specialityService;
 

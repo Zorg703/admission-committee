@@ -3,6 +3,7 @@ package by.mordas.project.service.impl;
 import by.mordas.project.command.ParamConstant;
 import by.mordas.project.dao.DAOException;
 import by.mordas.project.dao.DAOFactory;
+import by.mordas.project.dao.FacultyDAO;
 import by.mordas.project.dao.SpecialityDAO;
 import by.mordas.project.entity.Speciality;
 import by.mordas.project.entity.Subject;
@@ -16,6 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 20.05.2018
+ ***/
 public class SpecialityServiceImpl implements SpecialityService{
     private DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
     @Override
@@ -23,10 +28,10 @@ public class SpecialityServiceImpl implements SpecialityService{
         Optional<List<Speciality>> optional=Optional.empty();
         DataValidator validator=new DataValidator();
         if(validator.checkId(id)) {
-            SpecialityDAO specialityDAO = mysqlFactory.getSpecialityDAO();
-            Integer facultyId=Integer.valueOf(id);
+            FacultyDAO facultyDAO= mysqlFactory.getFacultyDAO();
+            Long facultyId=Long.valueOf(id);
             try {
-                List<Speciality> specialities = specialityDAO.findSpecialitiesByFacultyID(facultyId);
+                List<Speciality> specialities = facultyDAO.findSpecialityFromFaculty(facultyId);
                 optional=Optional.ofNullable(specialities);
             } catch (DAOException e) {
                 throw new LogicException("Problems with findSpecialitiesOnFaculty method", e);
@@ -163,23 +168,7 @@ public class SpecialityServiceImpl implements SpecialityService{
         return errorMap;
     }
 
-    @Override
-    public Optional<List<Speciality>> findSpecialitiesByFacultyId(String id) throws LogicException {
-        Optional<List<Speciality>> optional=Optional.empty();
-        DataValidator validator=new DataValidator();
-        if(validator.checkId(id)) {
-            SpecialityDAO specialityDAO = mysqlFactory.getSpecialityDAO();
-            Integer facultyId=Integer.valueOf(id);
-            try {
-                List<Speciality> specialities = specialityDAO.findSpecialitiesByFacultyID(facultyId);
-                optional=Optional.ofNullable(specialities);
-            } catch (DAOException e) {
-                throw new LogicException("Problems with findSpecialitiesByFacultyId method", e);
-            }
-        }
-        return optional;
 
-    }
 
     @Override
     public Optional<Speciality> findSpeciality(Long id) throws LogicException {

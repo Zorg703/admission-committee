@@ -8,6 +8,10 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/***
+ Author: Sergei Mordas
+ Date: 20.05.2018
+ ***/
 @WebFilter(urlPatterns = "/views/jsp/admin/*")
 public class AdminFilter implements Filter{
     @Override

@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 10.05.2018
+ ***/
 public class SubjectServiceImpl implements SubjectService {
     private DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
 

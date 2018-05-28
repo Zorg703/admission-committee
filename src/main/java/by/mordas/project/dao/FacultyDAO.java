@@ -5,17 +5,16 @@ import by.mordas.project.entity.Speciality;
 
 import java.util.List;
 
+/***
+ Author: Sergei Mordas
+ Date: 06.04.2018
+ ***/
 public interface FacultyDAO extends AbstractDAO<Faculty> {
 
-    List<Faculty> findAllEntity() throws DAOException;
-
-    Faculty findEntityById(long id) throws DAOException;
-
-    boolean delete(long id) throws DAOException;
-
-    void create(Faculty faculty) throws DAOException;
-
-    Faculty update(Faculty faculty) throws DAOException;
-
-    List<Speciality> findSpecialityFromFaculty() throws DAOException;
+    /**
+     * Find speciality from faculty
+     * @return list of speciality
+     * @throws DAOException the DAO exception
+     */
+    List<Speciality> findSpecialityFromFaculty(long id) throws DAOException;
 }

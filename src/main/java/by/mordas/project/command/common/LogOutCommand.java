@@ -5,6 +5,10 @@ import by.mordas.project.command.PageConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 
+/***
+ Author: Sergei Mordas
+ Date: 15.04.2018
+ ***/
 public class LogOutCommand implements Command {
     @Override
     public Router execute(SessionRequestContent content) {

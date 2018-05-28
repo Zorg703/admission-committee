@@ -1,5 +1,9 @@
 package by.mordas.project.command;
 
+/***
+ Author: Sergei Mordas
+ Date: 18.04.2018
+ ***/
 public class PageConstant {
     public static final String PAGE_LOGIN="views/jsp/common/log_in.jsp";
     public static final String PAGE_SHOW_USERS="views/jsp/admin/find_all_users.jsp";

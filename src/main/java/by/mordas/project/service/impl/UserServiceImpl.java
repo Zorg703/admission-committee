@@ -16,6 +16,10 @@ import by.mordas.project.util.PasswordEncoder;
 import java.sql.Date;
 import java.util.*;
 
+/***
+ Author: Sergei Mordas
+ Date: 10.05.2018
+ ***/
 public class UserServiceImpl  implements UserService {
     private DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
 

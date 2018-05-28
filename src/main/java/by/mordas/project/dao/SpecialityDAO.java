@@ -5,24 +5,35 @@ import by.mordas.project.entity.Speciality;
 
 import java.util.List;
 
+/***
+ Author: Sergei Mordas
+ Date: 06.04.2018
+ ***/
 public interface SpecialityDAO extends AbstractDAO<Speciality> {
 
-    List<Speciality> findAllEntity() throws DAOException;
-
-    Speciality findEntityById(long id) throws DAOException;
-
-    List<Speciality> findSpecialitiesByFacultyID(long id) throws DAOException;
-
-    boolean delete(long id) throws DAOException;
-
-    void create(Speciality specialty) throws DAOException;
-
-    Speciality update(Speciality specialty) throws DAOException;
-
+    /**
+     * Find users register on speciality
+     *
+     * @param id user id
+     * @return listo of users
+     * @throws DAOException the DAO exception
+     */
     List<User> findUsersOnSpeciality(long id) throws DAOException;
 
-    public List<Integer> defineUsersSumScoreRegisterOnSpeciality(long specialityId) throws DAOException;
+    /**
+     * Define summ of users scores
+     *
+     * @param specialityId the speciality id
+     * @return list of scores
+     * @throws DAOException the DAO exception
+     */
+    List<Integer> defineUsersSumScoreRegisterOnSpeciality(long specialityId) throws DAOException;
 
-
+    /**
+     * Update date to register on speciality
+     *
+     * @param speciality the speciality
+     * @throws DAOException the DAO exception
+     */
     void updateSpecialityRegisterDate(Speciality speciality) throws DAOException;
 }

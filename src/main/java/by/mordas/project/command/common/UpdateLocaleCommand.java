@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
+/***
+ Author: Sergei Mordas
+ Date: 15.05.2018
+ ***/
 public class UpdateLocaleCommand implements Command {
 
     @Override

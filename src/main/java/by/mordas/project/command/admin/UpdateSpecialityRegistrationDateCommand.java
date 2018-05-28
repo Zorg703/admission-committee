@@ -13,6 +13,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.Map;
 
+/***
+ Author: Sergei Mordas
+ Date: 13.05.2018
+ ***/
 public class UpdateSpecialityRegistrationDateCommand implements Command
 {
     private static Logger logger= LogManager.getRootLogger();

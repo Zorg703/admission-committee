@@ -5,6 +5,10 @@ import by.mordas.project.command.PageConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 
+/***
+ Author: Sergei Mordas
+ Date: 05.04.2018
+ ***/
 public class GoToUserStatusPage implements Command {
     @Override
     public Router execute(SessionRequestContent content) {

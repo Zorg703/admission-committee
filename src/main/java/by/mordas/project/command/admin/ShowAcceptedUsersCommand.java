@@ -19,6 +19,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class ShowAcceptedUsersCommand implements Command{
+    /***
+     Author: Sergei Mordas
+     Date: 22.04.2018
+     ***/
     private static Logger logger= LogManager.getRootLogger();
     private UserService userService;
     private SpecialityService specialityService;

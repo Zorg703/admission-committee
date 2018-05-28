@@ -100,10 +100,11 @@ public class MySQLFacultyDAOImpl implements FacultyDAO {
         return faculty;
     }
 
-    public List<Speciality> findSpecialityFromFaculty() throws DAOException {
+    public List<Speciality> findSpecialityFromFaculty(long facultyId) throws DAOException {
         List<Speciality> specialties=new ArrayList<>();
         try(PooledConnection connection=ConnectionPool.getInstance().getConnection()) {
             PreparedStatement pStatement=connection.prepareStatement(FIND_ALL_SPECIALITY_BY_FACULTY_ID);
+            pStatement.setLong(1,facultyId);
             ResultSet rs=pStatement.executeQuery();
             if(rs!=null){
                 while (rs.next()){

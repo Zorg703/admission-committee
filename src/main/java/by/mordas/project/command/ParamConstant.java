@@ -1,5 +1,9 @@
 package by.mordas.project.command;
 
+/***
+ Author: Sergei Mordas
+ Date: 18.04.2018
+ ***/
 public class ParamConstant {
     public final static String COMMAND="command";
     public final static String SHOW_ALL_USERS="show_all_users";

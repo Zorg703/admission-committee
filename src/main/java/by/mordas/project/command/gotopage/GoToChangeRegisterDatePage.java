@@ -12,6 +12,10 @@ import by.mordas.project.service.factory.ServiceFactory;
 
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 03.05.2018
+ ***/
 public class GoToChangeRegisterDatePage implements Command {
     private SpecialityService specialityService;
 
