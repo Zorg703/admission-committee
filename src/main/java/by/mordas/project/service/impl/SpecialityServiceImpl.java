@@ -184,6 +184,22 @@ public class SpecialityServiceImpl implements SpecialityService{
     }
 
     @Override
+    public Optional<List<Speciality>> findAllSpecialitiesWithLimit(String count) throws LogicException {
+        Optional<List<Speciality>> optional=Optional.empty();
+        DataValidator dataValidator=new DataValidator();
+        try {
+            if(dataValidator.checkCounter(count)) {
+                Integer counter=Integer.parseInt(count);
+                List<Speciality> specialities = mysqlFactory.getSpecialityDAO().findSpecialitiesWithLimit(counter);
+                optional = Optional.ofNullable(specialities);
+            }
+        } catch (DAOException e) {
+            throw new LogicException("Problems with findAllSpecialities method",e);
+        }
+        return optional;
+    }
+
+    @Override
     public boolean checkEndOfSpecialityRegistrationDate(Speciality speciality) {
         LocalDateTime now=LocalDateTime.now();
         return speciality.getEndRegistration().isAfter(now);

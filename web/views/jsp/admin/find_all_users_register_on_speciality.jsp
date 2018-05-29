@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Enginer
-  Date: 27.03.2018
-  Time: 8:55
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -39,8 +31,11 @@
         <td>${fn:length(user_list)}</td>
     </tr>
 </table>
-    <h3><a href="${pageContext.request.contextPath}/controller?command=show_accepted_users&speciality_id=${speciality.specialityId}">
-        <fmt:message key="admin.find_all_users_register_on_speciality.link"/></a></h3>
+    <c:if test="${is_registration_open==false}">
+        <h3><a href="${pageContext.request.contextPath}/controller?command=show_accepted_users&speciality_id=${speciality.specialityId}">
+            <fmt:message key="admin.find_all_users_register_on_speciality.link"/></a></h3>
+    </c:if>
+
 <table class="table table-bordered table-hover" style="width: 50%">
     <tr>
         <th>#</th>
@@ -59,7 +54,7 @@
     </tr>
     <c:forEach var="user" items="${user_list}" varStatus="loop">
         <tr>
-            <td>${loop.index+1}</td>
+            <td>${loop.index+1+counter*10}</td>
             <td>${user.userId}</td>
             <td>${user.firstName}</td>
             <td>${user.lastName}</td>
@@ -71,6 +66,14 @@
         </tr>
     </c:forEach>
 </table>
+</c:if>
+<c:if test="${not empty pages}">
+    <h5><fmt:message key="admin.find_all_users.list_pages"/></h5>
+    <ul class="pagination">
+        <c:forEach var="page" begin="0" end="${pages}">
+            <li><a href="${pageContext.request.contextPath}/controller?command=next_find_register_users_page&counter=${page}&${speciality.specialityId}">${page+1}</a></li>
+        </c:forEach>
+    </ul>
 </c:if>
 <c:if test="${not empty message}">
     <div class="alert alert-danger">

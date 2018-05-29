@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/***
+ Author: Sergei Mordas
+ Date: 21.05.2018
+ ***/
 public class DateTag extends TagSupport {
 
     @Override

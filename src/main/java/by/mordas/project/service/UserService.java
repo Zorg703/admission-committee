@@ -131,6 +131,20 @@ public interface UserService {
     Optional<List<User>> findUserLimitCount(String count) throws LogicException;
 
     /**
+     * Find users registered on speciality with limit count
+     *
+     * If a value is present, returns the value, else return Optional.empty.
+     *
+     * @param id is the speciality id
+     * @param count is the count of return users
+     * @return optional list of users
+     * @throws LogicException the Logic exception
+     */
+    Optional<List<User>> findUsersRegisterOnSpecialityWithLimit(String id,String count) throws LogicException;
+
+
+
+    /**
      *
      * Define passing score on speciality
      *

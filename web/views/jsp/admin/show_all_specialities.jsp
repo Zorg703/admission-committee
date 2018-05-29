@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 21.04.2018
-  Time: 20:41
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -42,7 +35,7 @@
     </tr>
         <c:forEach items="${speciality_list}" var="speciality" varStatus="loop">
             <tr>
-                <td>${loop.index+1}</td>
+                <td>${loop.index+1+counter*10}</td>
             <td>${speciality.specialityId}</td>
             <td>${speciality.specialityName}</td>
             <td>${speciality.recruitmentPlan}</td>
@@ -55,5 +48,14 @@
             </tr>
         </c:forEach>
 </table>
+<c:if test="${not empty pages}">
+    <h5><fmt:message key="admin.find_all_users.list_pages"/></h5>
+    <ul class="pagination">
+        <c:forEach var="page" begin="0" end="${pages}">
+            <li><a href="${pageContext.request.contextPath}/controller?command=next_find_specialities_page&counter=${page}">${page+1}</a></li>
+        </c:forEach>
+    </ul>
+</c:if>
+
 </body>
 </html>

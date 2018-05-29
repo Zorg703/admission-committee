@@ -42,6 +42,11 @@ public class ShowAcceptedUsersCommand implements Command{
             if(optionalSpeciality.isPresent() && optionalUsers.isPresent()) {
                 Speciality speciality =optionalSpeciality.get();
                 List <User> acceptedUsers =optionalUsers.get();
+                if(acceptedUsers.size()>10){
+                    int pages=acceptedUsers.size()/10;
+                    acceptedUsers=acceptedUsers.subList(0,10);
+                    content.setSessionAttribute(ParamConstant.PAGES,pages);
+                }
                 content.setRequestAttribute(ParamConstant.SPECIALITY, speciality);
                 content.setRequestAttribute(ParamConstant.USER_LIST, acceptedUsers);
             }

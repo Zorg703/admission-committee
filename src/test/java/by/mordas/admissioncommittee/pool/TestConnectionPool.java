@@ -5,6 +5,10 @@ import by.mordas.project.pool.PooledConnection;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+/***
+ Author: Sergei Mordas
+ Date: 06.03.2018
+ ***/
 public class TestConnectionPool {
     @Test
     public void getInstanceBySize() throws Exception {
@@ -22,8 +26,8 @@ public class TestConnectionPool {
     public void getConnection() throws Exception {
         PooledConnection connection = ConnectionPool.getInstance().getConnection();
         Assert.assertNotNull(connection);
-        if (connection != null) {
-            connection.close();
-        }
+        connection.close();
+
     }
+
 }

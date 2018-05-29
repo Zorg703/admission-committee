@@ -36,6 +36,11 @@ public class FindAllSpecialityCommand implements Command{
             Optional<List<Speciality>> optionalSpecialities=specialityService.findAllSpecialities();
             if(optionalSpecialities.isPresent()) {
                 List<Speciality> specialities = optionalSpecialities.get();
+                if(specialities.size()>10){
+                    int pages=specialities.size()/10;
+                    specialities.subList(0,10);
+                    content.setSessionAttribute(ParamConstant.PAGES,pages);
+                }
                 content.setRequestAttribute(ParamConstant.SPECIALITY_LIST, specialities);
             }
             router.setPagePath(PageConstant.PAGE_SHOW_ALL_SPECIALITIES);

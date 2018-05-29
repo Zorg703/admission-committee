@@ -16,7 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
  Date: 06.04.2018
  ***/
 public class ConnectionPool {
-    private final static Logger logger= LogManager.getLogger(ConnectionPool.class);
+    private final static Logger logger= LogManager.getRootLogger();
     private static final String URL=DBManager.getProperty("url");
     private static final String PASSWORD=DBManager.getProperty("password");
     private static final String USER=DBManager.getProperty("user");

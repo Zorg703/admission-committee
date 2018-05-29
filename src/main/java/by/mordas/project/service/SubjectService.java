@@ -24,6 +24,8 @@ public interface SubjectService {
     /**
      * Find subjects for speciality to user able to register by speciality id.
      *
+     * If a value is present, returns the value, else return Optional.empty
+     *
      * @param specialityId the speciality id
      * @return optional of subjects list
      * @throws LogicException the logic exception

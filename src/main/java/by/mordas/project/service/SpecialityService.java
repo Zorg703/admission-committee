@@ -16,6 +16,8 @@ public interface SpecialityService {
     /**
      * Find specialities on faculty by faculty id
      *
+     * If a value is present, returns the value, else return Optional.empty
+     *
      * @param id the faculty id
      * @return optional of the speciality list
      * @throws LogicException the Logic exception
@@ -24,6 +26,8 @@ public interface SpecialityService {
 
     /**
      * Update date of register on speciality(date start registration and date end registration)
+     *
+     * If a value is present, returns the value, else return Optional.empty
      *
      * @param startDate the new start date
      * @param endDate the new end date
@@ -61,6 +65,8 @@ public interface SpecialityService {
     /**
      * Find speciality by speciality id
      *
+     * If a value is present, returns the value, else return Optional.empty
+     *
      * @param specialityId the speciality
      * @return optional of speciality
      * @throws LogicException the Logic exception
@@ -79,6 +85,8 @@ public interface SpecialityService {
     /**
      * Find speciality by speciality id
      *
+     * If a value is present, returns the value, else return Optional.empty
+     *
      * @param id the speciality id
      * @return optional of speciality
      * @throws LogicException the Logic exception
@@ -93,4 +101,14 @@ public interface SpecialityService {
      */
     boolean checkEndOfSpecialityRegistrationDate(Speciality speciality);
 
+    /**
+     * Find all speciality
+     *
+     * If a value is present, returns the value, else return Optional.empty
+     *
+     * @param count the count of returns users
+     * @return the optional of specialities
+     * @throws LogicException the Logic exception
+     */
+    Optional<List<Speciality>> findAllSpecialitiesWithLimit(String count) throws LogicException;
 }

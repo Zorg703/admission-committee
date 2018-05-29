@@ -262,6 +262,28 @@ public class UserServiceImpl  implements UserService {
         return score;
     }
 
+    @Override
+    public Optional<List<User>> findUsersRegisterOnSpecialityWithLimit(String id, String count) throws LogicException {
+
+        Optional<List<User>> optional=Optional.empty();
+        DataValidator validator=new DataValidator();
+        if(validator.checkId(id) && validator.checkCounter(count)){
+            try {
+                Long specialityId=Long.valueOf(id);
+                Integer counter=Integer.parseInt(count);
+                List<User> userList=mysqlFactory.getSpecialityDAO().findUsersOnSpecialityWithLimit(specialityId,counter);
+                optional=Optional.ofNullable(userList);
+            } catch (DAOException e) {
+                throw new LogicException("Problems with findUsersRegisterOnFaculty method",e);
+            }
+        }
+        return optional;
+    }
+
+    @Override
+    public Optional<List<User>> findAllAcceptedUsersOnSpecialityWithLimit(String specialityId, String count) throws LogicException {
+        return Optional.empty();
+    }
 
     private int calculateUserAvgScore(User user){
         int score=user.getCertificateMark();

@@ -16,6 +16,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/***
+ Author: Sergei Mordas
+ Date: 20.04.2018
+ ***/
+
 public class DataValidator {
     private static Logger logger= LogManager.getRootLogger();
     private static final String FACULTY_SPECIALITY_NAME_REGEX="([А-Я]{1}([а-я]{2,50}(\\s)?)+)|[A-Z]{1}([a-z]{2,50}(\\s)?)+";
@@ -32,20 +37,39 @@ public class DataValidator {
     private static final String LOGIN_BUSY ="login_busy";
     private static final String DATE_TIME_REGEX="(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2})";
     private static final String COUNTER_REGEX="\\d{0,6}";
-    /*private void xc(String data){
-        Pattern loginPattern = Pattern.compile(f);
-        Matcher matcher = loginPattern.matcher(data);
-    }*/
-    public boolean checkLogin(String login) throws DAOException {
+
+
+    /**
+     *Check user login contains in data base.
+     *
+     * @param login the login
+     * @return true if it contains
+     * @throws DAOException the DAO exception
+     */
+    private boolean checkLogin(String login) throws DAOException {
         DAOFactory mysqlFactory=DAOFactory.getFactory(DAOFactory.MySQL);
         UserDAO userDAO=mysqlFactory.getUserDAO();
         return userDAO.findUserByLogin(login);
     }
 
+    /**
+     * Check login and password for compliance with pattern
+     *
+     * @param login the login
+     * @param password the password
+     * @return true if password and login compliance
+     */
     public boolean checkLoginPassword(String login,String password){
         return checkData(LOGIN_REGEX,login) && checkData(PASSWORD_REGEX,password);
     }
 
+    /**
+     * Check data for compliance with pattern
+     *
+     * @param REGEX is the regex
+     * @param data is the data
+     * @return true if compliance
+     */
     private boolean checkData(final String REGEX, String data){
         if(data!=null) {
             Pattern loginPattern = Pattern.compile(REGEX);
@@ -55,6 +79,13 @@ public class DataValidator {
             return false;
     }
 
+    /**
+     *Validate user data
+     *
+     * @param parameterMap the param map
+     * @return empty map if successful
+     * @throws DAOException the DAO exception
+     */
     public Map<String,String> checkUserData(Map<String,String> parameterMap) throws DAOException {
         Map<String,String> errorMessageMap=new HashMap<>();
         if(!checkData(FIRST_NAME_REGEX,parameterMap.get(ParamConstant.FIRST_NAME))){
@@ -67,25 +98,11 @@ public class DataValidator {
             errorMessageMap.put(ParamConstant.LOG_IN, parameterMap.get(ParamConstant.LOG_IN));
         }
         if(checkData(LOGIN_REGEX,parameterMap.get(ParamConstant.LOG_IN)) && !checkLogin(parameterMap.get(ParamConstant.LOG_IN))) {
-            errorMessageMap.put(LOGIN_BUSY,LOGIN_BUSY);
+            errorMessageMap.put(LOGIN_BUSY,parameterMap.get(ParamConstant.LOG_IN));
         }
         if(!checkData(DATE_REGEX,parameterMap.get(ParamConstant.BIRTHDAY))){
             errorMessageMap.put(ParamConstant.BIRTHDAY,parameterMap.get(ParamConstant.BIRTHDAY));
         }
-        /*if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.CERTIFICATE_AVG))){
-            errorMessageMap.put(ParamConstant.CERTIFICATE_AVG,parameterMap.get(ParamConstant.CERTIFICATE_AVG));
-        }
-        if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.FIRST_SUBJECT_MARK))){
-            errorMessageMap.put(ParamConstant.FIRST_SUBJECT_MARK,parameterMap.get(ParamConstant.FIRST_SUBJECT_MARK));
-        }
-        if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.SECOND_SUBJECT_MARK))){
-            errorMessageMap.put(ParamConstant.SECOND_SUBJECT_MARK,parameterMap.get(ParamConstant.SECOND_SUBJECT_MARK));
-        }
-        if(!checkData(MARK_REGEX,parameterMap.get(ParamConstant.THIRD_SUBJECT_MARK))){
-            errorMessageMap.put(ParamConstant.THIRD_SUBJECT_MARK,parameterMap.get(ParamConstant.THIRD_SUBJECT_MARK));
-        }
-
-        */
         if(!checkData(EMAIL_REGEX,parameterMap.get(ParamConstant.EMAIL))){
             errorMessageMap.put(ParamConstant.EMAIL,parameterMap.get(ParamConstant.EMAIL));
         }
@@ -97,6 +114,14 @@ public class DataValidator {
         }
         return errorMessageMap;
     }
+
+    /**
+     * Validate passwords
+     *
+     * @param password1 the password one
+     * @param password2 the password two
+     * @return empty map if successful
+     */
     public HashMap<String,String> checkChangedPassword(String password1,String password2){
         HashMap<String,String> errorMap=new HashMap<>();
         if(!checkData(PASSWORD_REGEX,password1)){
@@ -107,25 +132,54 @@ public class DataValidator {
         }
         return errorMap;
     }
+
+    /**
+     * Validate user marks
+     *
+     * @param first the first mark
+     * @param second the second mark
+     * @param third the third mark
+     * @param certificate the sertificate mark
+     * @return true if validate
+     */
     public boolean validateUserMarks(String first, String second, String third,String certificate) {
         return checkData(MARK_REGEX, first) && checkData(MARK_REGEX, second) && checkData(MARK_REGEX, third)&& checkData(MARK_REGEX,certificate) ;
 
     }
 
+    /**
+     * Check faculty or speciality name
+     *
+     * @param name the name
+     * @return return true if name is correct
+     */
     public boolean checkFacultyOrSpecialityName(String name){
         return checkData(FACULTY_SPECIALITY_NAME_REGEX,name);
     }
 
 
+    /**
+     *Check id
+     *
+     * @param id is the id
+     * @return true if id is correct
+     */
     public boolean checkId(String id){return checkData(ID_REGEX,id);}
 
+    /**
+     * Validate date of new speciality
+     *
+     * @param parameterMap the param map
+     * @return empty map if it correct
+     * @throws DAOException the DAO exception
+     */
     public Map<String,String> checkSpecialtyData(Map<String,String> parameterMap) throws DAOException {
         Map<String,String> errorMessageMap=new HashMap<>();
 
         if(!checkId(parameterMap.get(ParamConstant.FACULTY_ID))){
             errorMessageMap.put(ParamConstant.FACULTY_ID,parameterMap.get(ParamConstant.FACULTY_ID));
         }
-        if( !isContainsFaculty(Integer.parseInt(parameterMap.get(ParamConstant.FACULTY_ID)))){
+        if( checkId(parameterMap.get(ParamConstant.FACULTY_ID)) && !isContainsFaculty(Integer.parseInt(parameterMap.get(ParamConstant.FACULTY_ID)))){
             errorMessageMap.put(ParamConstant.FACULTY_ID,parameterMap.get(ParamConstant.FACULTY_ID));
         }
         if(!checkData(RECRUITMENT_PLAN,parameterMap.get(ParamConstant.RECRUITMENT_PLAN))){
@@ -166,6 +220,14 @@ public class DataValidator {
         return errorMessageMap;
     }
 
+    /**
+     * Validate date registration on speciality
+     *
+     * @param start the start registration date
+     * @param end the end registration date
+     * @param specialityId the speciality id
+     * @return empty map if it validate
+     */
     public Map<String,String> checkRegisterDate(String start,String end,String specialityId){
         Map<String,String> errorMap=new HashMap<>();
         if(!checkId(specialityId)){
@@ -180,7 +242,6 @@ public class DataValidator {
         if(checkData(DATE_TIME_REGEX,start) && checkData(DATE_TIME_REGEX,end)){
             LocalDateTime startDateTime=DateConverter.getLocaleDateTime(start);
             LocalDateTime endDateTime=DateConverter.getLocaleDateTime(start);
-            LocalDateTime now=LocalDateTime.now();
             if(endDateTime.isBefore(startDateTime)){
                 errorMap.put(ParamConstant.END_REGISTRATION,end);
             }
@@ -188,6 +249,12 @@ public class DataValidator {
         return errorMap;
     }
 
+    /**
+     * Check page counter
+     *
+     * @param counter is the counter
+     * @return true if it correct
+     */
     public boolean checkCounter(String counter){
         return checkData(COUNTER_REGEX, counter);
     }

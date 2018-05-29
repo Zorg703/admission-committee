@@ -12,10 +12,23 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+/***
+ Author: Sergei Mordas
+ Date: 20.03.2018
+ ***/
 public class PasswordEncoder {
     private static Logger logger= LogManager.getRootLogger();
+    /**
+     * The constant SECRET_KEY
+     */
     private static final String SECRET_KEY="1234SECURITY@key";
 
+    /**
+     * Encode password.
+     *
+     * @param password the password
+     * @return the string
+     */
     public static String encodePassword(String password){
         StringBuilder secretPassword= new StringBuilder();
         try {

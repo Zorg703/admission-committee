@@ -70,4 +70,6 @@ public interface UserDAO extends AbstractDAO<User> {
      * @throws DAOException the DAO exception
      */
     List<User> findUsersWithLimit(int count) throws DAOException;
+
+
 }

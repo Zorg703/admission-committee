@@ -1,6 +1,8 @@
 package by.mordas.project.command;
 
 import by.mordas.project.command.admin.*;
+import by.mordas.project.command.admin.navigation.ToNextFindSpecialitiesPage;
+import by.mordas.project.command.admin.navigation.ToNextFindUserRegisterOnSpecialityPage;
 import by.mordas.project.command.admin.navigation.ToNextFindUsersPage;
 import by.mordas.project.command.common.LogOutCommand;
 import by.mordas.project.command.common.LogInCommand;
@@ -66,6 +68,8 @@ public class CommandMap {
         this.put(CommandType.GO_TO_CHOOSE_FACULTY_TO_RESULT,new GoToChooseFacultyToResultPage());
         this.put(CommandType.GO_TO_CHANGE_SPECIALITY_REGISTER_DATE_PAGE,new GoToChangeRegisterDatePage());
         this.put(CommandType.SHOW_USER_SUBJECTS,new ShowUserSubjectsCommand());
+        this.put(CommandType.NEXT_FIND_REGISTER_USERS_PAGE,new ToNextFindUserRegisterOnSpecialityPage());
+        this.put(CommandType.NEXT_FIND_SPECIALITES_PAGE,new ToNextFindSpecialitiesPage());
     }};
 
     /**
