@@ -13,10 +13,11 @@
 <html>
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
+
 <head>
     <title><fmt:message key="user.cancel_registration.title"/> </title>
 </head>
-
+<body>
 <h3><fmt:message key="user.cancel_registration.text"/> ${speciality.specialityName} <fmt:message key="user.cancel_registration.button"/></h3>
 <form name="cancel_registration" method="get" action="${pageContext.servletContext.contextPath}/controller">
     <div class="card shadow">
