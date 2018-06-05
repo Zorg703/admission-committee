@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Enginer
-  Date: 03.03.2018
-  Time: 8:56
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -18,23 +11,6 @@
 </head>
 <body>
 <header>
-<%--<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb00-3 bg-dark border-bottom box-shadow">
-    <h5 class="my-0 mr-md-auto font-weight-normal " style="color: white">Admission</h5>
-    <nav class="my-2 my-md-0 mr-md-2 ">
-        <div class="top-links">
-        <a  href="${pageContext.request.contextPath}/controller?command=update_locale&locale=ru_RU">Русский</a>
-        <a  href="${pageContext.request.contextPath}/controller?command=update_locale&locale=en_EN">English</a>
-        </div>
-
-<c:if test="${not empty user}">
-    <form class="form-inline col-md-1">
-    <input type="hidden" name="command" value="log_out">
-        <button class="btn btn-outline-success my-2 mr-md-4" type="submit"><fmt:message key="common.menu.log_out"/></button>
-    </form>
-</c:if>
-    </nav>
-        </div>--%>
-
             <nav class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -49,9 +25,8 @@
                         <li><a href="${pageContext.servletContext.contextPath}/views/jsp/common/log_in.jsp"><span class="glyphicon glyphicon-log-in"></span><fmt:message key="login.form.sign_in"/> </a></li>
                     </ul>
                 </div>
-            </nav>
-        </div>
-    </nav>
+
+             </nav>
 </header>
     </body>
 </html>

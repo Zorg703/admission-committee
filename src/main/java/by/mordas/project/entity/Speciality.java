@@ -42,7 +42,7 @@ public class Speciality extends Entity {
     }
 
     /**
-     * Instantiates a new faculty.
+     * Instantiates a new speciality.
      *
      * @param specialityId the speciality id
      * @param specialityName the speciality name

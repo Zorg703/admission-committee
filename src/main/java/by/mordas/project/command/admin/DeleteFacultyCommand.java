@@ -35,7 +35,6 @@ public class DeleteFacultyCommand implements Command {
 
             }
             else {
-               // router.setRouter(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.PAGE_DELETE_FACULTY);
                 content.setRequestAttribute(ParamConstant.MESSAGE,facutyId);
             }

@@ -10,13 +10,13 @@ import java.io.IOException;
  Date: 20.05.2018
  ***/
 
-@WebFilter(urlPatterns = {"/*"}, initParams = {@WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param")})
+@WebFilter(urlPatterns = {"/*"}, initParams = {@WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param")},filterName = "encoding")
 public class EncodingFilter implements Filter {
     private static final String ENCODING = "encoding";
     /*Character encoding*/
     private String code;
 
-    public void init(FilterConfig config) throws ServletException {
+    public void init(FilterConfig config) {
         code = config.getInitParameter(ENCODING);
     }
 

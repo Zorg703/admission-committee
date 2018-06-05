@@ -2,7 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
-<c:import url="/views/jsp/admin/include/menu.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/admin/include/menu.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/footer.jsp"/>
 <html>
 <head>
     <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
@@ -10,6 +11,7 @@
     <title><fmt:message key="admin.show_all_specialities.title"/> </title>
 </head>
 <body>
+<div class="container col-md-3" >
 <h3><fmt:message key="admin.show_all_specialities.table"/></h3>
 <table class="table table-bordered table-hover" style="width: 60%">
     <tr>
@@ -35,7 +37,7 @@
     </tr>
         <c:forEach items="${speciality_list}" var="speciality" varStatus="loop">
             <tr>
-                <td>${loop.index+1+counter*10}</td>
+                <td>${(loop.index+1)+counter*10}</td>
             <td>${speciality.specialityId}</td>
             <td>${speciality.specialityName}</td>
             <td>${speciality.recruitmentPlan}</td>
@@ -51,11 +53,11 @@
 <c:if test="${not empty pages}">
     <h5><fmt:message key="admin.find_all_users.list_pages"/></h5>
     <ul class="pagination">
-        <c:forEach var="page" begin="0" end="${pages}">
+        <c:forEach var="page" begin="0" end="${pages-1}">
             <li><a href="${pageContext.request.contextPath}/controller?command=next_find_specialities_page&counter=${page}">${page+1}</a></li>
         </c:forEach>
     </ul>
 </c:if>
-
+</div>
 </body>
 </html>

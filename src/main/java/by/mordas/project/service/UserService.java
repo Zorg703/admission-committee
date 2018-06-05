@@ -153,4 +153,6 @@ public interface UserService {
      * @throws LogicException the Logic exception
      */
     int definePassingScore(Speciality speciality) throws LogicException;
+
+    int calculateUserScore(User user) throws LogicException;
 }

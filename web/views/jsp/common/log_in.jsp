@@ -10,7 +10,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar.jsp"/>
-
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/footer.jsp"/>
 <html>
 
 <head>
@@ -33,7 +33,9 @@
     <input class="btn btn-lg btn-primary btn-block" type="submit" value=<fmt:message key="login.form.submit"/> />
     <br/>
     <c:if test= "${not empty message}">
+        <div class="alert alert-danger">
     <fmt:message key="login.form.error_message"/>
+        </div>
     </c:if>
 </form>
 </body>

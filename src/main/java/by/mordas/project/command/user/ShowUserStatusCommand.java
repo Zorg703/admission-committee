@@ -6,6 +6,7 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.dto.SpecialityDTO;
+import by.mordas.project.dto.UserDTO;
 import by.mordas.project.entity.Faculty;
 import by.mordas.project.entity.Speciality;
 import by.mordas.project.entity.User;
@@ -27,8 +28,6 @@ public class ShowUserStatusCommand implements Command {
     private UserService userService;
     private SpecialityService specialityService;
     private FacultyService facultyService;
-
-    private static final String IS_OPEN="is_open";
 
     public ShowUserStatusCommand(){
         specialityService=ServiceFactory.getInstance().getSpecialityService();
@@ -52,21 +51,19 @@ public class ShowUserStatusCommand implements Command {
                     specialityDTO.setRegisterEnd(specialityService.checkEndOfSpecialityRegistrationDate(speciality));
                     specialityDTO.setSpecialityFull(specialityDTO.getCountRegisterUser()>=speciality.getRecruitmentPlan());
                     specialityDTO.setPassingScore(userService.definePassingScore(speciality));
+                    UserDTO userDTO=new UserDTO();
+                    userDTO.setUser(user);
+                    userDTO.setSumScores(userService.calculateUserScore(userDTO.getUser()));
+                    if(specialityDTO.isRegisterEnd()) {
+                        userDTO.setAccepted(userService.isAccepted(speciality, user));
+                    }
                     long facultyId = speciality.getFacultyId();
-                    //boolean isRegistrationOpen=specialityService.checkEndOfSpecialityRegistrationDate(speciality);
                     Optional<Faculty> optionalFaculty=facultyService.findFaculty(facultyId);
                     optionalFaculty.ifPresent(faculty -> content.setRequestAttribute(ParamConstant.FACULTY, faculty));
-                    content.setRequestAttribute(ParamConstant.SPECIALITY, speciality);
-                   /* if(isRegistrationOpen){
-                    content.setRequestAttribute(IS_OPEN, specialityId);
-                }*/
-                   if( specialityDTO.isRegisterEnd()) {
-
-                       boolean isAccepted = userService.isAccepted(speciality, user);
-                       content.setRequestAttribute(ParamConstant.IS_ACCEPTED, isAccepted);
-                   }
-                router.setPagePath(PageConstant.PAGE_SHOW_USER_STATUS);
-            }
+                    content.setRequestAttribute(ParamConstant.DTO_SPECIALITY, specialityDTO);
+                    content.setRequestAttribute(ParamConstant.DTO_USER,userDTO);
+                    router.setPagePath(PageConstant.PAGE_SHOW_USER_STATUS);
+                }
                 else {
                     router.setPagePath(PageConstant.PAGE_SHOW_USER_STATUS);
                     content.setRequestAttribute(ParamConstant.MESSAGE,specialityId);

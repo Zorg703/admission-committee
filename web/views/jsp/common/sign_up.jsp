@@ -8,7 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<link href="${pageContext.request.contextPath}/views/fonts/css/fontawesome-all.css" rel="stylesheet" type="text/css"/>
 <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/footer.jsp"/>
 <html>
 <head>
     <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
@@ -16,7 +18,7 @@
     <title><fmt:message key="user.registration.title"/> </title>
 </head>
 <body>
-<div class="py-5 text-center">
+<div class="py-5 text-center" style="font-size: 3em; text-shadow: 1px 1px 1px #999999; ">
 <h2><fmt:message key="user.registration.h2"/> </h2>
 </div>
 <div class="container">

@@ -11,17 +11,16 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "/controller")
+@WebFilter(urlPatterns = "/controller",filterName = "CommandFilter")
 public class CommandFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        servletRequest.setCharacterEncoding("utf-8");
         try {
             String cmd = request.getParameter(ParamConstant.COMMAND);
             if (cmd != null) {

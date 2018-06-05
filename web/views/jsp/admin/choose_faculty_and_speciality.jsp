@@ -1,15 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 03.05.2018
-  Time: 11:04
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
-<c:import url="/views/jsp/admin/include/menu.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/admin/include/menu.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/footer.jsp"/>
 <html>
 <fmt:setLocale value="${locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
@@ -37,7 +31,10 @@
     </div>
 </form>
 </c:if>
-<h3>${faculty.facultyName}</h3>
+<c:if test="${not empty faculty}">
+    <h3><fmt:message key="admin.successful.faculty_name"/> ${faculty.facultyName}</h3>
+</c:if>
+
 <c:if test="${not empty speciality_list}">
 <fmt:message key="admin.choose_faculty_and_speciality.speciality"/>
 <form name="find_users_on_current_speciality" method="get">

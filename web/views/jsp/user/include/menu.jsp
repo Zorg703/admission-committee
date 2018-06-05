@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 06.03.2018
-  Time: 20:18
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -25,7 +18,7 @@
     <a class="list-group-item list-group-item-action" href="${pageContext.request.contextPath}/controller?command=go_to_change_password_page"><fmt:message key="user.menu.change_password"/></a>
     <a class="list-group-item list-group-item-action" href="${pageContext.request.contextPath}/controller?command=go_to_cancel_registration_page"><fmt:message key="user.menu.cancel"/> </a>
     <a class="list-group-item list-group-item-action" href="${pageContext.request.contextPath}/controller?command=go_to_user_data_page"><fmt:message key="user.menu.user_data"/> </a>
-            <a class="list-group-item list-group-item-action" href="${pageContext.request.contextPath}/controller?command=show_user_subjects"><fmt:message key="user.registration.message.subjects"/> </a>
+            <a class="list-group-item list-group-item-action" href="${pageContext.request.contextPath}/controller?command=show_user_subjects"><fmt:message key="user.menu.show_subject"/> </a>
         </div>
     </nav>
 </div>

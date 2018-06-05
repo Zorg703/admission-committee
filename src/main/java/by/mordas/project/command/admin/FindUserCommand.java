@@ -17,11 +17,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
+/***
+ Author: Sergei Mordas
+ Date: 22.04.2018
+ ***/
 public class FindUserCommand implements Command {
-    /***
-     Author: Sergei Mordas
-     Date: 22.04.2018
-     ***/
     private static Logger logger= LogManager.getRootLogger();
     private UserService userService;
     private SpecialityService specialityService;
@@ -40,7 +40,11 @@ public class FindUserCommand implements Command {
                 Optional<User> optionalUser=userService.findUserById(userId);
                 if(optionalUser.isPresent()) {
                     User user=optionalUser.get();
-                    Speciality speciality=specialityService.findSpecialityById(String.valueOf(user.getSpecialityId())).get();
+                    Optional<Speciality>  optionalSpeciality=specialityService.findSpecialityById(String.valueOf(user.getSpecialityId()));
+                    Speciality speciality =null;
+                    if(optionalSpeciality.isPresent()) {
+                        speciality = optionalSpeciality.get();
+                    }
                     content.setRequestAttribute(USER_FIND, user);
                     content.setRequestAttribute(ParamConstant.SPECIALITY,speciality);
                     router.setPagePath(PageConstant.PAGE_FIND_USER_BY_ID);

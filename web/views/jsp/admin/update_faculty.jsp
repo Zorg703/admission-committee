@@ -1,15 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 21.04.2018
-  Time: 20:01
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
-<c:import url="/views/jsp/admin/include/menu.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/admin/include/menu.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/footer.jsp"/>
 <html>
 <head>
     <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
@@ -24,9 +18,14 @@
         <div class="card-block">
             <label for="id"><fmt:message key="admin.update_speciality.faculty_id"/></label>
     <input id="id" type="text" class="form-control" name="faculty_id" pattern="[1-9]\d*" required value=""/>
+            <small id="idHelpBlock" class="form-text text-muted">
+                <fmt:message key="admin.delete_faculty.helper"/>
+            </small>
             <label for="name"><fmt:message key="admin.add_faculty.name"/></label>
     <input id="name" class="form-control" type="text" name="faculty_name" required pattern="([А-Я]{1}([а-я]{2,50}(\s)?)+)|[A-Z]{1}([a-z]{2,50}(\s)?)+" value=""/>
-
+            <small id="nameHelpBlock" class="form-text text-muted">
+                <fmt:message key="admin.add_faculty.helper"/>
+            </small>
             <c:if test="${not empty error_id}">
             <div class="alert alert-danger">
       <fmt:message key="admin.update_speciality.error_id"/>

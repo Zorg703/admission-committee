@@ -20,11 +20,11 @@ import java.util.Optional;
  Author: Sergei Mordas
  Date: 26.04.2018
  ***/
-public class ShowAllUserCommand implements Command {
+public class ShowAllUsersCommand implements Command {
     private static Logger logger= LogManager.getRootLogger();
     private UserService userService;
 
-    public ShowAllUserCommand(){
+    public ShowAllUsersCommand(){
         userService=ServiceFactory.getInstance().getUserService();
     }
     @Override
@@ -35,9 +35,9 @@ public class ShowAllUserCommand implements Command {
            if(optionalUsers.isPresent()){
                List<User> userList=optionalUsers.get();
                if(userList.size()>10){
-                   int pages=userList.size()/10;
+                   int pages= (int) Math.ceil((double)userList.size()/10);
                    userList=userList.subList(0,10);
-                   content.setSessionAttribute(ParamConstant.PAGES,pages);
+                   content.setSessionAttribute(ParamConstant.USER_PAGES,pages);
 
                }
                content.setRequestAttribute(ParamConstant.USER_LIST, userList);

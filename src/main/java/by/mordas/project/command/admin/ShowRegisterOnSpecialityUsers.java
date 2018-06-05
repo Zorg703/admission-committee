@@ -23,6 +23,7 @@ import java.util.Optional;
  ***/
 public class ShowRegisterOnSpecialityUsers implements Command {
     private static Logger logger= LogManager.getRootLogger();
+    private static final String REGISTER_USER_PAGES="register_user_pages";
     private static final String IS_REGISTRATION_OPEN="is_registration_open";
     private UserService userService;
     private SpecialityService specialityService;
@@ -41,11 +42,11 @@ public class ShowRegisterOnSpecialityUsers implements Command {
             if(optionalSpeciality.isPresent() && optionalUsers.isPresent()){
                 Speciality speciality=optionalSpeciality.get();
                 List<User> users=optionalUsers.get();
-                boolean isRegistrationOpen=specialityService.checkEndOfSpecialityRegistrationDate(speciality);
+                boolean isRegistrationOpen=!specialityService.checkEndOfSpecialityRegistrationDate(speciality);
                 if(users.size()>10){
-                    int pages=users.size()/10;
+                    int pages=(int) Math.ceil((double)users.size()/10);
                     users=users.subList(0,10);
-                    content.setSessionAttribute(ParamConstant.PAGES,pages);
+                    content.setSessionAttribute(REGISTER_USER_PAGES,pages);
                 }
                 content.setRequestAttribute(IS_REGISTRATION_OPEN,isRegistrationOpen);
                 content.setRequestAttribute(ParamConstant.SPECIALITY,speciality);

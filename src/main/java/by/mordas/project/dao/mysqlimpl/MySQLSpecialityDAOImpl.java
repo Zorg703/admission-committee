@@ -30,14 +30,14 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     private static final String DELETE_SPECIALITY="DELETE FROM SPECIALITY WHERE ID=?";
     private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, FACULTY_ID,START_REGISTRATION,END_REGISTRATION FROM SPECIALITY WHERE FACULTY_ID=?";
     private static final String FIND_ALL_USERS_ON_SPECIALITY_BY_ID ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
-            "SPECIALITY_ID FROM USER  WHERE SPECIALITY_ID=?";
+            "SPECIALITY_ID,EMAIL FROM USER  WHERE SPECIALITY_ID=?";
     private static final String INSERT_SPECIALITY_SUBJECTS="INSERT INTO SUBJECT_FOR_SPECIALITY(ID_SPECIALITY,ID_SUBJECT) VALUES (?,?)";
     private static final String FIND_SUBJECT_USER="SELECT * FROM USER_SUBJECT_MARK WHERE ID_USER=?";
     private static final String DEFINE_SUMMARY_USER_SCORE="SELECT sum(user_mark) as sum FROM user INNER JOIN (SELECT id_user, user_mark FROM user_subject_mark UNION SELECT id,certificate_mark FROM user)as marks ON user.id=marks.id_user WHERE speciality_id= ? GROUP BY id";
     private static final String DELETE_SPECIALITY_SUBJECTS="DELETE FROM SUBJECT_FOR_SPECIALITY WHERE ID_SPECIALITY=?";
     private static final String UPDATE_REGISTER_DATE="UPDATE SPECIALITY SET START_REGISTRATION=?,END_REGISTRATION=? WHERE ID=?";
     private static final String FIND_ALL_USERS_ON_SPECIALITY_BY_ID_WITH_LIMIT ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
-            "SPECIALITY_ID FROM USER  WHERE SPECIALITY_ID=? LIMIT ?,10";
+            "SPECIALITY_ID,EMAIL FROM USER  WHERE SPECIALITY_ID=? LIMIT ?,10";
     private static final String FIND_ALL_SPECIALITY_WITH_LIMIT="SELECT ID,SPECIALITY_NAME,RECRUITMENT_PLAN,FACULTY_ID,START_REGISTRATION,END_REGISTRATION FROM SPECIALITY LIMIT ?,10";
     /// /    private static final String FIND_ALL_SPECIALITY_BY_FACULTY_ID="SELECT SPECIALITY.ID,SPECIALITY_NAME,RECRUITMENT_PLAN, FACULTY_ID FROM SPECIALITY" +
 //
@@ -46,7 +46,8 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     @Override
     public List<Speciality> findAllEntity() throws DAOException {
         List<Speciality> specialties=null;
-        try(PooledConnection connection= ConnectionPool.getInstance().getConnection(); Statement statement=connection.createStatement();
+        try(PooledConnection connection= ConnectionPool.getInstance().getConnection();
+            Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_SPECIALITY)) {
             if (rs != null) {
                 specialties=new ArrayList<>();
@@ -67,8 +68,8 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     @Override
     public Speciality findEntityById(long id) throws DAOException {
         Speciality speciality=null;
-        try(PooledConnection conn= ConnectionPool.getInstance().getConnection(); PreparedStatement pStatement=conn.prepareStatement(FIND_SPECIALITY_BY_ID);
-            ) {
+        try(PooledConnection conn= ConnectionPool.getInstance().getConnection();
+            PreparedStatement pStatement=conn.prepareStatement(FIND_SPECIALITY_BY_ID)            ) {
             pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs.next()){
@@ -121,7 +122,8 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
     @Override
     public List<Speciality> findSpecialitiesWithLimit(int count) throws DAOException {
         List<Speciality> specialties=null;
-        try(PooledConnection connection= ConnectionPool.getInstance().getConnection(); PreparedStatement ptatement=connection.prepareStatement(FIND_ALL_SPECIALITY_WITH_LIMIT)) {
+        try(PooledConnection connection= ConnectionPool.getInstance().getConnection();
+            PreparedStatement ptatement=connection.prepareStatement(FIND_ALL_SPECIALITY_WITH_LIMIT)) {
             ptatement.setInt(1,count);
             ResultSet rs=ptatement.executeQuery();
             if (rs != null) {
@@ -161,6 +163,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
                     user.setFirstName(rs.getString("FIRST_NAME"));
                     user.setLastName(rs.getString("LAST_NAME"));
                     user.setCertificateMark(rs.getInt("CERTIFICATE_MARK"));
+                    user.setEmail(rs.getString("EMAIL"));
                     pStatement2=connection.prepareStatement(FIND_SUBJECT_USER);
                     pStatement2.setLong(1,user.getUserId());
                     ResultSet rs2=pStatement2.executeQuery();
@@ -191,7 +194,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
                     connection.setAutoCommit(true);
                     connection.close();
                 }
-                if (pStatement != null & pStatement2!=null) {
+                if (pStatement != null && pStatement2!=null) {
                     pStatement.close();
                     pStatement2.close();
                 }
@@ -301,7 +304,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
                     connection.setAutoCommit(true);
                     connection.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.log(Level.ERROR, e.getMessage());
                 }
 
             }
@@ -330,6 +333,7 @@ public class MySQLSpecialityDAOImpl implements SpecialityDAO {
                     user.setFirstName(rs.getString("FIRST_NAME"));
                     user.setLastName(rs.getString("LAST_NAME"));
                     user.setCertificateMark(rs.getInt("CERTIFICATE_MARK"));
+                    user.setEmail(rs.getString("EMAIL"));
                     pStatement2=connection.prepareStatement(FIND_SUBJECT_USER);
                     pStatement2.setLong(1,user.getUserId());
                     ResultSet rs2=pStatement2.executeQuery();

@@ -1,15 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Enginer
-  Date: 06.04.2018
-  Time: 15:31
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
-<c:import url="/views/jsp/admin/include/menu.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/admin/include/menu.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/footer.jsp"/>
 <html>
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
@@ -24,15 +18,20 @@
     <input type="hidden" name="command" value="add_speciality">
     <label for="id"> <fmt:message key="admin.add_speciality_on_faculty.faculty_id"/></label>
     <input type="text" class="form-control" id="id" name="faculty_id" pattern="[1-9]\d*" required value="${speciality.faculty_id}"><br>
-    <c:if test="${not empty messages.faculty_id}">
+            <small id="idHelpBlock" class="form-text text-muted">
+                <fmt:message key="admin.delete_faculty.helper"/>
+            </small>
+            <c:if test="${not empty messages.faculty_id}">
         <div class="alert alert-danger">
         <fmt:message key="admin.add_speciality_on_faculty.message.id"/>
         </div>
     </c:if>
             <label for="name"><fmt:message key="admin.add_speciality_on_faculty.speciality_name"/></label>
-
-
     <input type="text" id="name" class="form-control" name="speciality_name" pattern="([А-Я]{1}([а-я]{2,50}(\s)?)+)|[A-Z]{1}([a-z]{2,50}(\s)?)+" required value="${speciality.speciality_name}"><br>
+            <small id="nameHelpBlock" class="form-text text-muted">
+                <fmt:message key="admin.add_faculty.helper"/>
+            </small>
+
             <c:if test="${not empty messages.speciality_name}">
             <div class="alert alert-danger">
                 <fmt:message key="admin.add_speciality_on_faculty.speciality_name"/>
@@ -45,6 +44,9 @@
             <div class="alert alert-danger">
                 <fmt:message key="admin.add_speciality_on_faculty.recruitment_plan"/>
             </div>
+                <small id="planHelpBlock" class="form-text text-muted">
+                    <fmt:message key="admin.add_speciality.helper.plan"/>
+                </small>
             </c:if>
            <h3><fmt:message key="admin.add_speciality_on_faculty.subject_for_registration"/></h3>
     <td>
@@ -110,6 +112,9 @@
         </div>
         </c:if>
     </td><br>
+            <small id="subjectHelpBlock" class="form-text text-muted">
+                <fmt:message key="admin.add_speciality.helper.subjects"/>
+            </small>
     <c:if test="${not empty messages.subjects}">
             <div class="alert alert-danger">
         <fmt:message key="user.registration.message.subjects"/>
@@ -117,6 +122,9 @@
     </c:if>
             <label for="start"><fmt:message key="admin.add_speciality_on_faculty.start_registration"/></label>
             <input id="start" class="form-control" name="start_registration" required type="datetime-local" min="2018-05-01T00:00" max="2018-12-31T23:30">
+            <small id="dateHelpBlock" class="form-text text-muted">
+                <fmt:message key="admin.add_speciality.helper.date"/>
+            </small>
             <c:if test="${not empty messages.start_registration}">
                 <div class="alert alert-danger">
                     <fmt:message key="admin.add_speciality_on_faculty.start_registration.message"/>
@@ -124,6 +132,9 @@
             </c:if>
             <label for="end"><fmt:message key="admin.add_speciality_on_faculty.end_registration"/></label>
             <input id="end" class="form-control" name="end_registration"required type="datetime-local" min="2018-05-01T00:00" max="2018-12-31T23:30">
+            <small id="dateHelpBlock" class="form-text text-muted">
+                <fmt:message key="admin.add_speciality.helper.date"/>
+            </small>
             <c:if test="${not empty messages.end_registration}">
                 <div class="alert alert-danger">
                     <fmt:message key="admin.add_speciality_on_faculty.end_registration.message"/>

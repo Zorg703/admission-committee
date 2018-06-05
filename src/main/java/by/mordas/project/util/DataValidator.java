@@ -29,7 +29,7 @@ public class DataValidator {
     private static final String LAST_NAME_REGEX="[А-Я]{1}[а-я]{2,50}|[A-Z]{1}[a-z]{2,50}";
     private static final String DATE_REGEX="(((19\\d\\d)|(200\\d)|(2010))-((0[1-9]|1[012])-(0[1-9]|[12]\\d)|(0[13-9]|1[012])-30|(0[13578]|1[02])-31))";
     private static final String MARK_REGEX="[1-9]\\d?|100";
-    private static final String LOGIN_REGEX="^[a-zA-Z][a-zA-Z0-9-_]{3,30}";
+    private static final String LOGIN_REGEX="(\\w){3,30}";
     private static final String PASSWORD_REGEX="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}";
     private static final String EMAIL_REGEX="^[\\w]+[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$";
     private static final String SUBJECT_ID="[1-9]";

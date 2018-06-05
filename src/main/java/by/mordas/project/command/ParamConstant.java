@@ -51,8 +51,11 @@ public class ParamConstant {
     public final static String END_REGISTRATION="end_registration";
     public final static String COUNTER="counter";
     public final static String PAGES="pages";
+    public final static String USER_PAGES="user_pages";
     public final static String DTO_LIST="dto_list";
     public final static String OLD_PASSWORD="old_password";
+    public final static String DTO_SPECIALITY="dto_speciality";
+    public final static String DTO_USER="dto_user";
 
 
 }

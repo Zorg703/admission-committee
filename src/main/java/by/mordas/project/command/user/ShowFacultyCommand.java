@@ -6,6 +6,7 @@ import by.mordas.project.command.ParamConstant;
 import by.mordas.project.controller.Router;
 import by.mordas.project.controller.SessionRequestContent;
 import by.mordas.project.entity.Faculty;
+import by.mordas.project.entity.User;
 import by.mordas.project.service.FacultyService;
 import by.mordas.project.service.LogicException;
 import by.mordas.project.service.factory.ServiceFactory;
@@ -30,18 +31,25 @@ public class ShowFacultyCommand implements Command {
     @Override
     public Router execute(SessionRequestContent content) {
         Router router=new Router();
-        try {
-            Optional<List<Faculty>> optionalFaculties=facultyService.findAllFaculties();
-            if(optionalFaculties.isPresent()) {
-                List<Faculty> faculties=optionalFaculties.get();
-                content.setRequestAttribute(ParamConstant.FACULTY_LIST, faculties);
+        User user=(User) content.getSessionAttribute(ParamConstant.USER);
+        if(user.getSpecialityId()==0){
+            try {
+                Optional<List<Faculty>> optionalFaculties=facultyService.findAllFaculties();
+                if(optionalFaculties.isPresent()) {
+                    List<Faculty> faculties=optionalFaculties.get();
+                    content.setRequestAttribute(ParamConstant.FACULTY_LIST, faculties);
+                }
+                router.setPagePath(PageConstant.PAGE_SHOW_ALL_FACULTY);
+            } catch (LogicException e) {
+                logger.log(Level.ERROR,e.getMessage());
+                router.setRouter(Router.RouteType.REDIRECT);
+                content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
+                router.setPagePath(PageConstant.PAGE_ERROR);
             }
+        }
+        else {
+            content.setRequestAttribute(ParamConstant.MESSAGE,user.getSpecialityId());
             router.setPagePath(PageConstant.PAGE_SHOW_ALL_FACULTY);
-        } catch (LogicException e) {
-            logger.log(Level.ERROR,e.getMessage());
-            router.setRouter(Router.RouteType.REDIRECT);
-            content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
-            router.setPagePath(PageConstant.PAGE_ERROR);
         }
 
         return router;

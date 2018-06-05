@@ -123,7 +123,7 @@ public class SpecialityServiceImpl implements SpecialityService{
     public Optional<Speciality> findSpecialityById(String specialityId) throws LogicException {
         Optional<Speciality> optional=Optional.empty();
         DataValidator validator = new DataValidator();
-        Speciality speciality = null;
+        Speciality speciality;
         if (validator.checkId(specialityId)) {
             Long id = Long.valueOf(specialityId);
             try {
@@ -189,7 +189,7 @@ public class SpecialityServiceImpl implements SpecialityService{
         DataValidator dataValidator=new DataValidator();
         try {
             if(dataValidator.checkCounter(count)) {
-                Integer counter=Integer.parseInt(count);
+                Integer counter=Integer.parseInt(count)*10;
                 List<Speciality> specialities = mysqlFactory.getSpecialityDAO().findSpecialitiesWithLimit(counter);
                 optional = Optional.ofNullable(specialities);
             }
@@ -202,7 +202,7 @@ public class SpecialityServiceImpl implements SpecialityService{
     @Override
     public boolean checkEndOfSpecialityRegistrationDate(Speciality speciality) {
         LocalDateTime now=LocalDateTime.now();
-        return speciality.getEndRegistration().isAfter(now);
+        return now.isAfter(speciality.getEndRegistration());
 
     }
 }

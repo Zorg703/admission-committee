@@ -27,6 +27,7 @@ public class TestDataValidator {
         goodUserParameters.put(ParamConstant.BIRTHDAY, "1990-03-07");
         goodUserParameters.put(ParamConstant.FIRST_NAME, "Sergey");
         goodUserParameters.put(ParamConstant.LAST_NAME,"Mordas");
+        goodUserParameters.put(ParamConstant.LOG_IN, "Super_user");
         goodUserParameters.put(ParamConstant.EMAIL, "sergei.mordas@mail.ru");
         goodUserParameters.put(ParamConstant.PASSWORD_ONE, "Astra123");
         goodUserParameters.put(ParamConstant.PASSWORD_TWO, "Astra123");
@@ -37,6 +38,7 @@ public class TestDataValidator {
     static {
         badUserParameters = new HashMap<String, String>();
         badUserParameters.put(ParamConstant.USER_ID, "-1");
+        goodUserParameters.put(ParamConstant.LOG_IN, "***");
         badUserParameters.put(ParamConstant.BIRTHDAY, "3000-09-57");
         badUserParameters.put(ParamConstant.FIRST_NAME, "1234");
         badUserParameters.put(ParamConstant.LAST_NAME,"s");
@@ -51,6 +53,7 @@ public class TestDataValidator {
         goodSpecialityParameters=new HashMap<>();
         goodSpecialityParameters.put(ParamConstant.SPECIALITY_NAME,"Best speciality");
         goodSpecialityParameters.put(ParamConstant.RECRUITMENT_PLAN,"10");
+        goodSpecialityParameters.put(ParamConstant.FACULTY_ID,"1");
         goodSpecialityParameters.put(ParamConstant.FIRST_SUBJECT,"1");
         goodSpecialityParameters.put(ParamConstant.SECOND_SUBJECT,"2");
         goodSpecialityParameters.put(ParamConstant.THIRD_SUBJECT,"3");
@@ -63,6 +66,7 @@ public class TestDataValidator {
         badSpecialityParameters=new HashMap<>();
         badSpecialityParameters.put(ParamConstant.SPECIALITY_NAME,"Ц");
         badSpecialityParameters.put(ParamConstant.RECRUITMENT_PLAN,"100000000");
+        badSpecialityParameters.put(ParamConstant.FACULTY_ID,"100");
         badSpecialityParameters.put(ParamConstant.FIRST_SUBJECT,"-1");
         badSpecialityParameters.put(ParamConstant.SECOND_SUBJECT,"-1");
         badSpecialityParameters.put(ParamConstant.THIRD_SUBJECT,"-");
@@ -103,7 +107,7 @@ public class TestDataValidator {
     public void testGoodUserValidate() throws DAOException {
 
            Map<String,String> errorMap= dataValidator.checkUserData(goodUserParameters);
-           int sizeMap=1;
+           int sizeMap=0;
            Assert.assertEquals(sizeMap,errorMap.size());
 
     }
@@ -127,11 +131,13 @@ public class TestDataValidator {
     }
 
     @Test
-    public void testgoodSpecialityValidate() throws DAOException {
+    public void testGoodSpecialityValidate() throws DAOException {
 
         Map<String,String> errorMap= dataValidator.checkSpecialtyData(goodSpecialityParameters);
-        int sizeMap=1;
+        int sizeMap=0;
         Assert.assertEquals(sizeMap,errorMap.size());
 
     }
+
+
 }

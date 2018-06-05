@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public class CommandMap {
     private EnumMap<CommandType,Command> map=new EnumMap<CommandType, Command>(CommandType.class){{
-        this.put(CommandType.SHOW_ALL_USERS,new ShowAllUserCommand());
+        this.put(CommandType.SHOW_ALL_USERS,new ShowAllUsersCommand());
         this.put(CommandType.LOGIN,new LogInCommand());
         this.put(CommandType.UPDATE_LOCALE,new UpdateLocaleCommand());
         this.put(CommandType.SHOW_ALL_FACULTY,new ShowFacultyCommand());
@@ -69,7 +69,7 @@ public class CommandMap {
         this.put(CommandType.GO_TO_CHANGE_SPECIALITY_REGISTER_DATE_PAGE,new GoToChangeRegisterDatePage());
         this.put(CommandType.SHOW_USER_SUBJECTS,new ShowUserSubjectsCommand());
         this.put(CommandType.NEXT_FIND_REGISTER_USERS_PAGE,new ToNextFindUserRegisterOnSpecialityPage());
-        this.put(CommandType.NEXT_FIND_SPECIALITES_PAGE,new ToNextFindSpecialitiesPage());
+        this.put(CommandType.NEXT_FIND_SPECIALITIES_PAGE,new ToNextFindSpecialitiesPage());
     }};
 
     /**

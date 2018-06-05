@@ -25,10 +25,11 @@ public class MySQLSubjectDAOImpl implements SubjectDAO {
 
     @Override
     public List<Subject> findAllEntity() throws DAOException {
-        List<Subject> subjects=new ArrayList<>();
+        List<Subject> subjects=null;
         try(PooledConnection connection= ConnectionPool.getInstance().getConnection(); Statement statement=connection.createStatement();
             ResultSet rs=statement.executeQuery(FIND_ALL_SUBJECT)){
             if (rs != null) {
+                subjects=new ArrayList<>();
                 while (rs.next()) {
                     Subject subject=new Subject();
                     subject.setSubjectId(rs.getLong("ID"));
@@ -46,12 +47,14 @@ public class MySQLSubjectDAOImpl implements SubjectDAO {
     @Override
     public Subject findEntityById(long id) throws DAOException {
 
-        Subject subject=new Subject();
-        try(PooledConnection conn= ConnectionPool.getInstance().getConnection(); PreparedStatement pStatement=conn.prepareStatement(FIND_SUBJECT_BY_ID)
+        Subject subject=null;
+        try(PooledConnection conn= ConnectionPool.getInstance().getConnection();
+            PreparedStatement pStatement=conn.prepareStatement(FIND_SUBJECT_BY_ID)
            ) {
             pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
             if(rs.next()){
+                subject=new Subject();
                 subject.setSubjectId(rs.getLong("ID"));
                 subject.setSubjectName(rs.getString("SUBJECT_NAME"));
             }
@@ -65,7 +68,8 @@ public class MySQLSubjectDAOImpl implements SubjectDAO {
     @Override
     public boolean delete(long id) throws DAOException {
 
-        try (PooledConnection connection = ConnectionPool.getInstance().getConnection(); PreparedStatement pStatement = connection.prepareStatement(DELETE_SUBJECT)) {
+        try (PooledConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement pStatement = connection.prepareStatement(DELETE_SUBJECT)) {
             pStatement.setLong(1,id);
             return pStatement.executeUpdate()==2;
         } catch (SQLException e) {
@@ -76,7 +80,8 @@ public class MySQLSubjectDAOImpl implements SubjectDAO {
     @Override
     public void create(Subject subject) throws DAOException {
 
-        try(PooledConnection connection=ConnectionPool.getInstance().getConnection(); PreparedStatement pStatement=connection.prepareStatement(CREATE_SUBJECT)){
+        try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
+            PreparedStatement pStatement=connection.prepareStatement(CREATE_SUBJECT)){
             subject.setSubjectId(subject.getSubjectId());
             subject.setSubjectName(subject.getSubjectName());
             pStatement.executeUpdate();
@@ -103,12 +108,13 @@ public class MySQLSubjectDAOImpl implements SubjectDAO {
 
     @Override
     public List<Subject> findSubjectsBySpecialityId(long id) throws DAOException {
-        List<Subject> subjects=new ArrayList<>();
+        List<Subject> subjects=null;
         try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
             PreparedStatement pStatement=connection.prepareStatement(FIND_SUBJECTS_FOR_SPECIALITY)) {
           pStatement.setLong(1,id);
             ResultSet resultSet=pStatement.executeQuery();
             if(resultSet!=null){
+                subjects=new ArrayList<>();
                 while (resultSet.next()){
                     Subject subject=new Subject();
                     subject.setSubjectName(resultSet.getString("SUBJECT_NAME"));

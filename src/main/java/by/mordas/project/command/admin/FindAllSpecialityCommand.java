@@ -37,8 +37,8 @@ public class FindAllSpecialityCommand implements Command{
             if(optionalSpecialities.isPresent()) {
                 List<Speciality> specialities = optionalSpecialities.get();
                 if(specialities.size()>10){
-                    int pages=specialities.size()/10;
-                    specialities.subList(0,10);
+                    int pages=(int) Math.ceil((double)specialities.size()/10);
+                    specialities=specialities.subList(0,10);
                     content.setSessionAttribute(ParamConstant.PAGES,pages);
                 }
                 content.setRequestAttribute(ParamConstant.SPECIALITY_LIST, specialities);

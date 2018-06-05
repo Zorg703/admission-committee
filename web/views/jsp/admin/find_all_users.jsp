@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
 <c:import url="${pageContext.request.contextPath}/views/jsp/admin/include/menu.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/footer.jsp"/>
 <html>
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
@@ -10,6 +11,7 @@
     <title><fmt:message key="admin.find_all_user.title"/></title>
 </head>
 <body>
+<div class="container col-md-8">
 <h3><fmt:message key="admin.find_all_user.show"/>:</h3>
 <c:if test="${not empty message}">
 <h4><fmt:message key="admin.find_all_users.message"/></h4>
@@ -33,13 +35,15 @@
         </c:forEach>
     </table>
 </c:if>
-<c:if test="${not empty pages}">
+<c:if test="${not empty user_pages}">
    <h5><fmt:message key="admin.find_all_users.list_pages"/></h5>
 <ul class="pagination">
-<c:forEach var="page" begin="0" end="${pages}">
-        <li><a href="${pageContext.request.contextPath}/controller?command=next_find_users_page&counter=${page}">${page+1}</a></li>
+<c:forEach var="page" begin="0" end="${user_pages-1}" varStatus="loop">
+        <li><a href="${pageContext.request.contextPath}/controller?command=next_find_users_page&counter=${page}">${loop.index+1}</a></li>
     </c:forEach>
 </ul>
 </c:if>
+</div>
+
 </body>
 </html>

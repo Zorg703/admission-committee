@@ -1,15 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 26.03.2018
-  Time: 20:36
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
 <c:import url="${pageContext.request.contextPath}/views/jsp/user/include/menu.jsp"/>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/footer.jsp"/>
 <html>
 <fmt:setLocale value="${sessionScope.locale}" scope="request"/>
 <fmt:setBundle basename="localization"/>
@@ -18,7 +12,8 @@
 </head>
 <body>
 <c:if test="${not empty subjects}">
-    <h3><fmt:message key="user.subject_scores.head"/></h3>
+    <div class="container col-md-8">
+    <h3 class="text"><fmt:message key="user.subject_scores.head"/>:</h3>
 <table class="table table-bordered table-hover"style="width: 50%">
     <tr>
         <th>
@@ -48,6 +43,7 @@
     </tr>
 
 </table>
+    </div>
 </c:if>
 <c:if test="${not empty empty_subjects}">
     <h3><fmt:message key="user.subjects.empty"/></h3>

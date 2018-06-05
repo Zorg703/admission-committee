@@ -1,18 +1,18 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 24.02.2018
-  Time: 11:06
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
+<c:import url="${pageContext.request.contextPath}/views/jsp/common/include/footer.jsp"/>
 <c:choose>
 <c:when test="${not empty user}">
         <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar_common.jsp"/>
 </c:when>
+    <c:when test="${user.roleId==1}">
+        <c:import url="${pageContext.request.contextPath}/views/jsp/user/include/menu.jsp"/>
+    </c:when>
+    <c:when test="${user.roleId==2}">
+        <c:import url="${pageContext.request.contextPath}/views/jsp/admin/include/menu.jsp"/>
+    </c:when>
     <c:otherwise>
         <c:import url="${pageContext.request.contextPath}/views/jsp/common/include/navbar.jsp"/>
     </c:otherwise>
@@ -38,7 +38,7 @@
    <body>
 
   <div class="container col-md-8" style="width: 100%">
-   <h2><fmt:message key="main.page.header"/>, ${user.firstName}, <fmt:message key="main.page.date"/>0 <ctg:date-tag/></h2>
+   <h2 class="text-center"><fmt:message key="main.page.header"/>, ${user.firstName}, <fmt:message key="main.page.date"/> <ctg:date-tag/></h2>
    <div id="UniversityCarousel" class="carousel slide" data-ride="carousel">
        <!-- Indicators -->
        <ol class="carousel-indicators">

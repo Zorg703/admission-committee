@@ -25,17 +25,13 @@ public class MySQLUserDAOImpl implements UserDAO {
 
     private static final String FIND_USER_BY_ID ="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY,CERTIFICATE_MARK," +
             "SPECIALITY_ID,LOGIN,EMAIL,ROLE_ID FROM USER WHERE ID=?";
-    private static final String FIND_ALL_USER="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY," +
-            "SPECIALITY_ID,EMAIL,LOGIN,ROLE_ID FROM USER ORDER BY ID";
+    private static final String FIND_ALL_USERS="SELECT ID,FIRST_NAME,LAST_NAME,BIRTHDAY," +
+            "SPECIALITY_ID,EMAIL,LOGIN,ROLE_ID,CERTIFICATE_MARK FROM USER ORDER BY ID";
     private static final String INSERT_USER ="INSERT INTO USER(FIRST_NAME,LAST_NAME,BIRTHDAY," +
             "LOGIN,PASSWORD,EMAIL) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_USER ="UPDATE USER SET ID=?,FIRST_NAME=?,LAST_NAME=?," +
             "BIRTHDAY=?,CERTIFICATE_AVG=?,SPECIALITY_ID=?,PASSWORD=?,EMAIL=?";
-    private static final String UPDATE_SUBJECT_USER="UPDATE USER_SUBJECT_MARK SET ID_USER=?, ID_SUBJECT=?,USER_MARK=?";
     private static final String DELETE_USER_BY_ID="DELETE FROM USER WHERE ID=?";
-
-    private static final String INSERT_STUDENTS_SUBJECTS="INSERT INTO USER_SUBJECT_MARK(ID_USER,ID_SUBJECT," +
-            "USER_MARK) VALUES(?,?,?)";
     private static final String FIND_USER_BY_PASSWORD_AND_LOGIN="SELECT * FROM USER WHERE LOGIN=? and PASSWORD=?";
     private static final String FIND_SUBJECT_USER="SELECT * FROM USER_SUBJECT_MARK WHERE ID_USER=?";
     private static final String FIND_USER_BY_LOGIN="SELECT * FROM USER WHERE LOGIN=?";
@@ -55,7 +51,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
     public List<User> findAllEntity() throws DAOException {
         List<User> users =null;
         try(PooledConnection conn= ConnectionPool.getInstance().getConnection(); Statement statement=conn.createStatement();
-            ResultSet rs=statement.executeQuery(FIND_ALL_USER)) {
+            ResultSet rs=statement.executeQuery(FIND_ALL_USERS)) {
             if(rs!=null){
                 users=new ArrayList<>();
                 while (rs.next()) {
@@ -76,15 +72,13 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
             PreparedStatement pStatement=connection.prepareStatement(FIND_USER_BY_ID);
             pStatement.setLong(1,id);
             ResultSet rs=pStatement.executeQuery();
-
             if(rs.next()){
                user=getUser(rs);
             }
             pStatement=connection.prepareStatement(FIND_SUBJECT_USER);
-
-                pStatement.setLong(1,id);
+            pStatement.setLong(1,id);
             rs=pStatement.executeQuery();
-                if(rs!=null) {
+                if(rs!=null && user!=null) {
                     while (rs.next()){
                         Subject subject=new Subject();
                         Long subjectId=rs.getLong("ID_SUBJECT");
@@ -101,8 +95,8 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
     @Override
     public boolean delete(long id) throws DAOException {
-        PooledConnection connection = ConnectionPool.getInstance().getConnection();
-        try (PreparedStatement pStatement = connection.prepareStatement(DELETE_USER_BY_ID)) {
+        try (PooledConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement pStatement = connection.prepareStatement(DELETE_USER_BY_ID)) {
             pStatement.setLong(1,id);
             return pStatement.executeUpdate()==7;
         } catch (SQLException e) {
@@ -120,13 +114,6 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
             pStatement.setString(5,user.getPassword());
             pStatement.setString(6,user.getEmail());
             pStatement.executeUpdate();
-//            for(Map.Entry<Integer,Integer> entry: user.getSubjectMark().entrySet()){
-//                pStatement=connection.prepareStatement(INSERT_STUDENTS_SUBJECTS);
-//                pStatement.setLong(1, user.getUserId());
-//                pStatement.setInt(2,entry.getKey());
-//                pStatement.setInt(3,entry.getValue());
-//                pStatement.executeUpdate();
-//            }
         } catch (SQLException e) {
             throw new DAOException("Exception in create method",e);
 
@@ -136,11 +123,9 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
 
     @Override
     public User update(User user) throws DAOException {
-        PooledConnection connection=null;
-        try {
-            connection=ConnectionPool.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            PreparedStatement pStatement=connection.prepareStatement(UPDATE_USER);
+
+        try (PooledConnection connection=ConnectionPool.getInstance().getConnection();
+             PreparedStatement pStatement=connection.prepareStatement(UPDATE_USER)){
             pStatement.setLong(1, user.getUserId());
             pStatement.setString(2, user.getFirstName());
             pStatement.setString(3, user.getLastName());
@@ -150,14 +135,6 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
             pStatement.setString(7,user.getPassword());
             pStatement.setString(8,user.getEmail());
             pStatement.executeUpdate();
-            for(Map.Entry<Subject,Integer> entry: user.getSubjectMark().entrySet()){
-                pStatement=connection.prepareStatement(UPDATE_SUBJECT_USER);
-                pStatement.setLong(1, user.getUserId());
-                pStatement.setLong(2,entry.getKey().getSubjectId());
-                pStatement.setInt(3,entry.getValue());
-                pStatement.executeUpdate();
-            }
-            connection.commit();
         } catch (SQLException e) {
             throw new DAOException("Exception in update method",e);
         }
@@ -169,7 +146,7 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
     public boolean findUserByLogin(String login) throws DAOException {
 
         try(PooledConnection connection=ConnectionPool.getInstance().getConnection();
-            PreparedStatement pStetement=connection.prepareStatement(FIND_USER_BY_LOGIN);){
+            PreparedStatement pStetement=connection.prepareStatement(FIND_USER_BY_LOGIN)){
             pStetement.setString(1,login);
             ResultSet rs=pStetement.executeQuery();
             return !rs.next();
@@ -194,19 +171,6 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
             throw new DAOException("Exception in findUserByPasswordAndLogin",e);
         }
        return user;
-    }
-
-    private User getUser(ResultSet rs) throws SQLException {
-        User user = new User();
-        user.setUserId(rs.getLong("ID"));
-        user.setFirstName(rs.getString("FIRST_NAME"));
-        user.setLastName(rs.getString("LAST_NAME"));
-        user.setBirthday(rs.getDate("BIRTHDAY"));
-        user.setEmail(rs.getString("EMAIL"));
-        user.setRoleId(rs.getInt("ROLE_ID"));
-        user.setLogin(rs.getString("LOGIN"));
-        user.setSpecialityId(rs.getLong("SPECIALITY_ID"));
-    return user;
     }
 
     @Override
@@ -347,5 +311,19 @@ on speciality.id=w.speciality_id - просмотр среднего бала и
             throw new DAOException("Exception in findUsersWithLimit method",e);
         }
         return users;
+    }
+
+    private User getUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setUserId(rs.getLong("ID"));
+        user.setFirstName(rs.getString("FIRST_NAME"));
+        user.setLastName(rs.getString("LAST_NAME"));
+        user.setBirthday(rs.getDate("BIRTHDAY"));
+        user.setEmail(rs.getString("EMAIL"));
+        user.setRoleId(rs.getInt("ROLE_ID"));
+        user.setLogin(rs.getString("LOGIN"));
+        user.setSpecialityId(rs.getLong("SPECIALITY_ID"));
+        user.setCertificateMark(rs.getInt("CERTIFICATE_MARK"));
+        return user;
     }
 }

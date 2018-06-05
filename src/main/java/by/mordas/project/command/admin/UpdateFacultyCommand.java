@@ -55,6 +55,7 @@ public class UpdateFacultyCommand implements Command{
             }
         } catch (LogicException e) {
             logger.log(Level.ERROR, e.getMessage());
+            router.setRouter(Router.RouteType.REDIRECT);
             content.setSessionAttribute(ParamConstant.EXCEPTION_MESSAGE,e.getMessage());
             router.setPagePath(PageConstant.PAGE_ERROR);
         }

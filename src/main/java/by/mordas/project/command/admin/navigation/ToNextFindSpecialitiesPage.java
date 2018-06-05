@@ -34,6 +34,8 @@ public class ToNextFindSpecialitiesPage implements Command{
             if(optionalSpecialities.isPresent()) {
                 List<Speciality> specialities = optionalSpecialities.get();
                 content.setRequestAttribute(ParamConstant.SPECIALITY_LIST, specialities);
+                int counter=Integer.valueOf(count);
+                content.setRequestAttribute(ParamConstant.COUNTER,counter);
             }
             router.setPagePath(PageConstant.PAGE_SHOW_ALL_SPECIALITIES);
         } catch (LogicException e) {

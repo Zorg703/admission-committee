@@ -76,7 +76,6 @@ public class UserServiceImpl  implements UserService {
     public Optional<List<User>> findAllAcceptedUsersOnSpeciality(String specialityId) throws LogicException {
         Optional<List<User>> optionalUsers = findUsersRegisterOnSpeciality(specialityId);
         Optional<Speciality> optionalSpeciality = ServiceFactory.getInstance().getSpecialityService().findSpecialityById(specialityId);
-        Optional<List<User>> optional=Optional.empty();
         if (optionalSpeciality.isPresent() && optionalUsers.isPresent()) {
                 Speciality speciality = optionalSpeciality.get();
                 List<User> users=optionalUsers.get();
@@ -84,11 +83,6 @@ public class UserServiceImpl  implements UserService {
                 if (users.size() <= recruitmentPlan) {
                     return optionalUsers;
                 } else {
-                    List<Integer> scores = new ArrayList<>();
-                    for (User user : users) {
-                        int score = calculateUserSumScore(user);
-                        scores.add(score);
-                    }
                     int acceptedScore = definePassingScore(speciality);
                     List<User> acceptedUsers = new ArrayList<>();
                     for (User user : users) {
@@ -104,7 +98,7 @@ public class UserServiceImpl  implements UserService {
         }
 
 
-        return optional;
+        return Optional.empty();
     }
 
     @Override
@@ -156,7 +150,7 @@ public class UserServiceImpl  implements UserService {
     }
     @Override
     public boolean isAccepted(Speciality speciality, User user) throws LogicException {
-            return calculateUserAvgScore(user) >= definePassingScore(speciality);
+            return calculateUserScore(user) >= definePassingScore(speciality);
 
 
     }
@@ -242,7 +236,11 @@ public class UserServiceImpl  implements UserService {
                 for (Integer score:scores){
                     counter+=score;
                 }
-                return counter / speciality.getRecruitmentPlan();
+                Collections.sort(scores);
+                Collections.reverse(scores);
+                scores=scores.subList(0,speciality.getRecruitmentPlan());
+
+                return scores.get(speciality.getRecruitmentPlan()-1);
             }
             else {
                 return 0;
@@ -264,13 +262,12 @@ public class UserServiceImpl  implements UserService {
 
     @Override
     public Optional<List<User>> findUsersRegisterOnSpecialityWithLimit(String id, String count) throws LogicException {
-
         Optional<List<User>> optional=Optional.empty();
         DataValidator validator=new DataValidator();
         if(validator.checkId(id) && validator.checkCounter(count)){
             try {
                 Long specialityId=Long.valueOf(id);
-                Integer counter=Integer.parseInt(count);
+                Integer counter=Integer.parseInt(count)*10;
                 List<User> userList=mysqlFactory.getSpecialityDAO().findUsersOnSpecialityWithLimit(specialityId,counter);
                 optional=Optional.ofNullable(userList);
             } catch (DAOException e) {
@@ -281,11 +278,15 @@ public class UserServiceImpl  implements UserService {
     }
 
     @Override
-    public Optional<List<User>> findAllAcceptedUsersOnSpecialityWithLimit(String specialityId, String count) throws LogicException {
-        return Optional.empty();
-    }
-
-    private int calculateUserAvgScore(User user){
+    public int calculateUserScore(User user) throws LogicException {
+        if(user.getSubjectMark().isEmpty()){
+            UserDAO userDAO=mysqlFactory.getUserDAO();
+            try {
+                user.setSubjectMark(userDAO.findUserSubjectsAndScores(user.getUserId()));
+            } catch (DAOException e) {
+                throw new LogicException("Problems with calculate User Score",e);
+            }
+        }
         int score=user.getCertificateMark();
         for (Map.Entry<Subject,Integer> entry:user.getSubjectMark().entrySet()){
             score+=entry.getValue();

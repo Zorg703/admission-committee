@@ -12,19 +12,54 @@ import java.util.List;
  ***/
 
 public class SpecialityDTO {
-
+    /** This is speciality*/
     private Speciality speciality;
+
+    /** This is speciality register end status*/
     private boolean registerEnd;
+
+    /**This is count of registered users on speciality*/
     private int countRegisterUser;
+
+    /** This speciality full status*/
     private boolean specialityFull;
+
+    /**This is passing scores on speciality*/
     private int passingScore;
 
+    /**
+     * Instantiates a new speciality dto.
+     */
     public SpecialityDTO(){
 
     }
+
+
+    /**
+     *Instantiates a new speciality dto.
+     *
+     * @param speciality the speciality
+     */
     public SpecialityDTO(Speciality speciality){
         this.speciality=speciality;
     }
+
+    /**
+     *
+     * @param speciality the speciality
+     * @param registerEnd the speciality register end status
+     * @param countRegisterUser the count of registered users on specialit
+     * @param specialityFull the speciality full status
+     * @param passingScore the passing scores on speciality
+     */
+    public SpecialityDTO(Speciality speciality, boolean registerEnd, int countRegisterUser, boolean specialityFull, int passingScore) {
+        this.speciality = speciality;
+        this.registerEnd = registerEnd;
+        this.countRegisterUser = countRegisterUser;
+        this.specialityFull = specialityFull;
+        this.passingScore = passingScore;
+    }
+
 
     public long getFacultyId() {
         return speciality.getFacultyId();

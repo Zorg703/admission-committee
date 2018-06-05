@@ -37,7 +37,6 @@ public class DeleteSpecialityCommand implements Command{
 
             }
             else {
-                //router.setRouter(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.PAGE_DELETE_SPECIALITY);
                 content.setRequestAttribute(ParamConstant.MESSAGE,specialityId);
             }
